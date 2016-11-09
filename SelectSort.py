@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!/usr/bin/python3
 
 '''
 SelectSort.py
@@ -11,8 +11,8 @@ def select_sort(list):
 	tmp = list
 	for i in range(len(tmp)-1):
 		min_index = i
-		for j in range(i, len(tmp)):	# get index of min
-			if tmp[j] < tmp[i]:
+		for j in range(i+1, len(tmp)):	# get index of min
+			if tmp[j] < tmp[min_index]:
 				min_index = j
 		if min_index > i:	# swap value if needed
 			tmp[i], tmp[min_index] = tmp[min_index], tmp[i]
