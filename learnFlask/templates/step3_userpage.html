@@ -1,0 +1,9 @@
+{% extends "step3_base.html" %}
+
+{% block first %}
+<p>Hello, {{ name }}! You are {{ title }}.</p>
+{% endblock %}
+
+{% block second %}
+{{ something|safe }}
+{% endblock %}

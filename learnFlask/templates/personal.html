@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html>
+<title>
+Personal Page
+</title>
+
+{% if name == 'smdsbz' %}
+<h1> Hi, boss! </h1>
+{% elif name == 'President Jiang' %}
+<p> +1s </p>
+{% elif name %}
+<h1> Hi, {{ name }}! Long time no see! </h1>
+{% else %}
+<h1>I don't seem to know you, but hi anyway.</h1>
+{% endif %}
