@@ -21,9 +21,9 @@ def step2():
 	image = url_for('static', filename='img/MetroLoadin.gif'),
 	js = url_for('static', filename='js/step2.js'))
 
-@app.route('/step3')
-def step3():
-	return render_template('step3_index.html')
+@app.route('/step3', methods=['GET', 'POST'])
+def step3_login():
+	return '...'
 
 @app.route('/step3/<title>/<name>')
 def step3_userpage(title, name):
