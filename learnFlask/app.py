@@ -1,9 +1,11 @@
 #!/usr/bin/python3
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, redirect
 
 SVIP = ['咸鱼', 'juju', 'dalao', '大腿', '油条', '萌新', 'other']
 
 app = Flask(__name__)
+
+####################### route ####################################
 
 @app.route('/')
 def index():
@@ -23,7 +25,13 @@ def step2():
 
 @app.route('/step3', methods=['GET', 'POST'])
 def step3_login():
-	return '...'
+	user_title = request.args.get('title', '')
+	user_name = request.args.get('name', '')
+	print(user_title, user_name)
+	# a stupid way of solving the login issue
+	if user_title=='' and user_name=='':
+		return render_template('step3_index.html')
+	return redirect('/step3/%s/%s' % (user_title, user_name))
 
 @app.route('/step3/<title>/<name>')
 def step3_userpage(title, name):
@@ -40,6 +48,8 @@ def step3_userpage(title, name):
 	something += '</p>'
 	return render_template('step3_userpage.html',
 	title = title, name = name, something = something)
+
+#################################################################
 
 if __name__ == '__main__':
 	app.run(debug=True)
