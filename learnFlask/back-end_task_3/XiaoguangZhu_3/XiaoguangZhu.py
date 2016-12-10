@@ -36,7 +36,7 @@ def database():
 	elif request.method == 'POST':
 		database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
 		database.execute('insert into test (name, qq, phonenum, address)\
-		values(?,?,?,?)',
+		values(?,?,?,?)',\
 		[request.form['name'], request.form['qq'], request.form['phonenum'],\
 		request.form['address']])
 		database.commit()
