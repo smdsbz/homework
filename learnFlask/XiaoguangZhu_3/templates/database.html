@@ -1,0 +1,28 @@
+<div class="database" style="width:100%">
+	<div class="display" style="width:50%;float:left">
+		<ul>
+			{% for each in database %}
+			<li>id: {{ each[0] }}</li>
+			<li>name: {{ each[1] }}</li>
+			<li>qq: {{ each[2] }}</li>
+			<li>phone number: {{ each[3] }}</li>
+			<li>address: {{ each[4] }}</li>
+			<br />
+			{% endfor %}
+		</ul>
+	</div>
+
+	<div class="update" style="width:50%;float:left">
+		<div class="fillin" style="height:100px">
+			<br /><br />
+			<a href="{{ url_for('index') }}">-> index</a>
+		</div>
+		<form action="{{ url_for('database') }}", method="post">
+			name: <input type="text" name="name"><br />
+			qq: <input type="text" name="qq"><br />
+			phone number: <input type="text" name="phonenum"><br />
+			address: <input type+"text" name="address"><br />
+			<input type="submit" value="submit">
+		</form>
+	</div>
+</div>
