@@ -1,0 +1,7 @@
+<ul>
+    {% for each in info %}
+        <li>{{ each[0] }}</li><br>
+        <li>{{ each[1] }}</li><br>
+    {% endfor %}
+    <a href="{{ url_for('index') }}">index</a>
+</ul>
