@@ -13,22 +13,24 @@
 	</div>
 
 	<div class="update" style="width:50%;float:left">
-		<div class="fillin" style="height:100px">
-			<br /><br />
-			<a href="{{ url_for('index') }}">-> index</a>
-		</div>
+		<div class="fillin" style="height:100px"></div>
+
+		<a href="{{ url_for('index') }}">-> index</a>
+		<br /><br />
 		<form action="{{ url_for('database') }}", method="post">
-			<!--font color="red">
-				{% for msg in get_flashed_messages() %}
-					{{ msg }}
-				{% endfor %}
-			</font>
-			<br /-->
 			name: <input type="text" name="name"><br />
 			qq: <input type="text" name="qq"><br />
 			phone number: <input type="text" name="phonenum"><br />
 			address: <input type+"text" name="address"><br />
 			<input type="submit" value="submit">
 		</form>
+
+		<font color="red">
+			{% for msg in get_flashed_messages() %}
+			{{ msg }}
+			{% endfor %}
+		</font>
+
 	</div>
+
 </div>
