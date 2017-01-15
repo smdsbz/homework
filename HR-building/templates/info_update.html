@@ -28,55 +28,53 @@
 						<h5 class="center">信息录入</h5>
 						<div class="row">
 							<div class="progress col s6 offset-s3">
-								<div class="indeterminate"></div>
+								<div class="determinate" style="width:100%"></div>
 							</div>
 							<div class="input-field col s12">
-								<input id="name" type="text" class="validate">
+								<input id="name" type="text" class="validate" value="{{ database[0][1] }}">
 								<label for="name">姓名</label>
 							</div>
 							<div class="col s12">
 								<p>性别&nbsp;&nbsp;
-								  <input name="gender" type="radio" id="m" class="with-gap" />
+								  <input name="gender" type="radio" id="m" class="with-gap" {% if database[0][2] == 'm' %}{{"checked=\"true\""}}{% endif %}/>
 								  <label for="男">男</label>
-								  <input name="gender" type="radio" id="f" class="with-gap" />
+								  <input name="gender" type="radio" id="f" class="with-gap" {% if database[0][2] == 'f' %}{{"checked=\"true\""}}{% endif %}/>
 								  <label for="女">女</label>
-								  <input name="gender" type="radio" id="s" class="with-gap" disabled="disabled"/>
-								  <label for="s">保密</label>
 								</p>
 							</div>
 							<div class="input-field col s12">
-								<input id="qq" type="number" class="validate">
+								<input id="qq" type="text" class="validate" value="{{ database[0][3] }}">
 								<label for="qq">QQ</label>
 							</div>
 							<div class="input-field col s12">
-								<input id="tel" type="number" class="validate">
+								<input id="tel" type="text" class="validate" value="{{ database[0][4] }}">
 								<label for="tel">电话</label>
 							</div>
 							<div class="input-field col s12">
-								<input id="wchat" type="text" class="validate">
+								<input id="wchat" type="text" class="validate" value="{{ database[0][5] }}">
 								<label for="wchat">微信</label>
 							</div>
 							<div class="input-field col s12">
-								<input id="emg" type="text" class="validate">
+								<input id="emg" type="text" class="validate" value="{{ database[0][6] }}">
 								<label for="emg">应急联系方式</label>
 							</div>
 							<div class="progress col s6 offset-s3">
-								<div class="determinate" style="width:54%"></div>
+								<div class="determinate" style="width:100%"></div>
 							</div>
 							<div class="input-field col s12">
-								<input id="school" type="text" class="validate">
+								<input id="school" type="text" class="validate" value="{{ database[0][7] }}">
 								<label for="school">院系</label>
 							</div>
 							<div class="input-field col s12">
-								<input id="class" type="text" class="validate">
+								<input id="class" type="text" class="validate" value="{{ database[0][8] }}">
 								<label for="class">班级</label>
 							</div>
 							<div class="input-field col s12">
-								<input id="apart" type="text" class="validate">
+								<input id="apart" type="text" class="validate" value="{{ database[0][9] }}">
 								<label for="apart">寝室（格式：公寓-楼栋号-房间号）</label>
 							</div>
 							<div class="progress col s6 offset-s3">
-								<div class="determinate" style="width:80%"></div>
+								<div class="determinate" style="width:100%"></div>
 							</div>
 							<div class="col s12">
 								<select id="depart">
@@ -120,7 +118,6 @@
 							<div class="progress col s6 offset-s3">
 								<div class="determinate green darken-1" style="width:100%"></div>
 							</div>
-							<div class="col s3 offser-s9">全部填完了!</div>
 						</div>
 						<button class="btn waves-effect waves-light right" type="submit" name="action">提交
 						  <i class="material-icons right">send</i>
@@ -149,6 +146,11 @@
 			selectMonths: true, // Creates a dropdown to control month
 			selectYears: 15 // Creates a dropdown of 15 years to control year
 		});
+		/* prefilling */
+		$(document).ready(function() {
+			Materialize.updateTextFields();
+		});
+
 			/* not yet into use *
 			$(document).ready(function(){
 				$('.parallax').parallax();
