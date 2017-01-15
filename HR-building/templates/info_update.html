@@ -24,7 +24,7 @@
 				<!-- don'no how 2 let <div> auto-fit -->
 				<br><br>
 				<div class="row">
-					<form class="col s12 m6 offset-m3 l6 offset-l3">
+					<form class="col s12 m6 offset-m3 l6 offset-l3" action="{{ url_for('update') }}" method="post">
 						<h5 class="center">信息录入</h5>
 						<div class="row">
 							<div class="progress col s6 offset-s3">
@@ -36,10 +36,10 @@
 							</div>
 							<div class="col s12">
 								<p>性别&nbsp;&nbsp;
-								  <input name="gender" type="radio" id="m" class="with-gap" {% if database[0][2] == 'm' %}{{"checked=\"true\""}}{% endif %}/>
-								  <label for="男">男</label>
-								  <input name="gender" type="radio" id="f" class="with-gap" {% if database[0][2] == 'f' %}{{"checked=\"true\""}}{% endif %}/>
-								  <label for="女">女</label>
+								  <input name="gender" type="radio" id="m" class="with-gap" value="男"/>
+								  <label for="m">男</label>
+								  <input name="gender" type="radio" id="f" class="with-gap" value="女"/>
+								  <label for="f">女</label>
 								</p>
 							</div>
 							<div class="input-field col s12">
@@ -79,55 +79,56 @@
 							<div class="col s12">
 								<select id="depart">
 							      <option value="" disabled selected>部门</option>
-							      <option value="财务部">财务部</option>
-							      <option value="秘书部">秘书部</option>
-							      <option value="人力资源部">人力资源部</option>
-								  <option value="社团部">社团部</option>
-								  <option value="行政监察部">行政监察部</option>
-								  <option value="外联部">外联部</option>
-								  <option value="公共关系部">公共关系部</option>
-								  <option value="宣传部">宣传部</option>
-								  <option value="媒体部">媒体部</option>
-								  <option value="思存工作室">思存工作室</option>
-								  <option value="新媒体工作室">新媒体工作室</option>
-								  <option value="社团外联企划小组">社团外联企划小组</option>
-								  <option value="文艺拓展部">文艺拓展部</option>
-								  <option value="其它">其它</option>
+							      <option value="财务部" id="fun">财务部</option>
+							      <option value="秘书部" id="sec">秘书部</option>
+							      <option value="人力资源部" id="hr">人力资源部</option>
+								  <option value="社团部" id="clb">社团部</option>
+								  <option value="行政监察部" id="sup">行政监察部</option>
+								  <option value="外联部" id="out">外联部</option>
+								  <option value="公共关系部" id="pr">公共关系部</option>
+								  <option value="宣传部" id="pub">宣传部</option>
+								  <option value="媒体部" id="med">媒体部</option>
+								  <option value="思存工作室" id="sicun">思存工作室</option>
+								  <option value="新媒体工作室" id="nmed">新媒体工作室</option>
+								  <option value="社团外联企划小组" id="cop">社团外联企划小组</option>
+								  <option value="文艺拓展部" id="ext">文艺拓展部</option>
+								  <option value="其它" id="o">其它</option>
 							    </select>
 							    <!--label>Materialize Select</label-->
 							</div>
 							<div class="input-field col s12 m6">
-								<input id="group" type="text" class="validate">
+								<input id="group" type="text" class="validate" value="{{ database[0][11] }}">
 								<label for="group">组别</label>
 							</div>
 							<div class="input-field col s12 m6">
-								<input id="occup" type="text" class="validate">
+								<input id="occup" type="text" class="validate" value="{{ database[0][12] }}">
 								<label for="occup">担任职务</label>
 							</div>
 							<div class="progress col s6 offset-s3">
 								<div class="determinate" style="width:98%"></div>
 							</div>
 							<div class="input-field col s12">
-								<input id="id" type="text" class="validate" value="AU">
+								<input id="id" type="text" class="validate" value="{{ database[0][0] }}">
 								<label for="id">社联编号</label>
 							</div>
 							<div class="col s12">
 								<label for="dateofjoin">加入社联的时间</label>
-								<input id="dateofjoin" type="date" class="datepicker">
+								<input id="dateofjoin" type="date" class="datepicker" value="{{ database[0][13] }}">
 							</div>
 							<div class="progress col s6 offset-s3">
 								<div class="determinate green darken-1" style="width:100%"></div>
 							</div>
 						</div>
-						<button class="btn waves-effect waves-light right" type="submit" name="action">提交
-						  <i class="material-icons right">send</i>
-						</button>
-						<font class="col s12 red-text left">
-							<br>
-							{% for msg in get_flashed_messages() %}
-							{{ msg }}
-							{% endfor %}
-						</font>
+						<div class="valign-wrapper">
+							<div class="col s9 red-text left valign">
+								{% for msg in get_flashed_messages() %}
+								{{ msg }}
+								{% endfor %}
+							</div>
+							<button class="btn col s3 waves-effect waves-light right" type="submit" name="action">提交
+								<i class="material-icons right">send</i>
+							</button>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -137,19 +138,77 @@
 		</main>
 
 		<script>
-		/* used in department selection */
-		$(document).ready(function() {
-		   $('select').material_select();
-		});
-		/* used in join-date */
-		$('.datepicker').pickadate({
-			selectMonths: true, // Creates a dropdown to control month
-			selectYears: 15 // Creates a dropdown of 15 years to control year
-		});
-		/* prefilling */
-		$(document).ready(function() {
-			Materialize.updateTextFields();
-		});
+			/* used in defautChecked of gender radio-select */
+			var gen = '{{ database[0][2] }}';
+			if (gen == 'm') {
+				document.getElementById("m").defaultChecked=true;
+			}
+			else if (gen == 'f') {
+				document.getElementById("f").defaultChecked=true;
+			}
+
+			/* used in selected of department */
+			var dpt = '{{ database[0][10] }}';
+			switch (dpt) {
+				case "财务部":
+					document.getElementById("fun").selected=true;
+					break;
+				case "秘书部":
+					document.getElementById("sec").selected=true;
+					break;
+				case "人力资源部":
+					document.getElementById("hr").selected=true;
+					break;
+				case "社团部":
+					document.getElementById("clb").selected=true;
+					break;
+				case "行政监察部":
+					document.getElementById("sup").selected=true;
+					break;
+				case "外联部":
+					document.getElementById("out").selected=true;
+					break;
+				case "公共关系部":
+					document.getElementById("pr").selected=true;
+					break;
+				case "宣传部":
+					document.getElementById("pub").selected=true;
+					break;
+				case "媒体部":
+					document.getElementById("med").selected=true;
+					break;
+				case "思存工作室":
+					document.getElementById("sicun").selected=true;
+					break;
+				case "新媒体工作室":
+					document.getElementById("nmed").selected=true;
+					break;
+				case "社团外联企划小组":
+					document.getElementById("cop").selected=true;
+					break;
+				case "文艺拓展部":
+					document.getElementById("ext").selected=true;
+					break;
+				case "其他":
+					document.getElementById("o").selected=true;
+					break;
+				default:
+				break;
+			}
+
+			/* used in department selection */
+			$(document).ready(function() {
+			   $('select').material_select();
+			});
+			/* used in join-date */
+			$('.datepicker').pickadate({
+				selectMonths: true, // Creates a dropdown to control month
+				selectYears: 15 // Creates a dropdown of 15 years to control year
+			});
+			/* prefilling */
+			$(document).ready(function() {
+				Materialize.updateTextFields();
+			});
 
 			/* not yet into use *
 			$(document).ready(function(){

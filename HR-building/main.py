@@ -19,7 +19,7 @@ def getConditonal(column, conditon, require):
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
 	cursor = database.execute("select %s from test where %s = '%s'" % (column, conditon, require))
 	data = cursor.fetchall()
-	#print(data)
+	print(data)
 	return data
 
 def verify(id, passwd):
@@ -79,6 +79,9 @@ def logout():
 def update():
 	if request.method == 'GET':
 		return render_template('info_update.html', database=getConditonal('*','id',session['id']))
+	if request.method == 'POST':
+		writeDatabase()
+		return redirect(url_for('personal'))
 
 
 ######## main ########
