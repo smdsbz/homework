@@ -14,34 +14,30 @@ def getAll():
 	data = cursor.fetchall()
 	return data
 
-def getCol(a):
+def getConditonal(column, conditon, require):
+	#print('getConditional(%s,%s,%s) called' % (column,conditon,require))
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
-	cursor = database.execute('select %s from test' % a)
+	cursor = database.execute("select %s from test where %s = '%s'" % (column, conditon, require))
 	data = cursor.fetchall()
-	# dumb way to convert data into a list with only one dimension
-	names = []
-	for each in data:
-		for a in each:
-			names.append(a)
-	return names
+	print(data)
+	return data
 
 def verify(id, passwd):
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
 	cursor = database.execute("select passwd from test where id = ?", [id])
 	correct = cursor.fetchone()
-	print(correct[0])
+	#print(correct[0])
 	if passwd == correct[0]:
 		return 1
 	else:
 		return 0
 
-
 def writeDatabase():	# tested
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
-	# ugly line: write to database
+	# EXTREAMLY-ugly line: write to database
 	database.execute('insert into test (name, gender, qq, tel, wchat, emg, school, class, apart, depart, grp, occup, id, dateofjoin) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['id'], request.form['dateofjoin']])
 	database.commit()
-	# ugly lines end here
+	# EXTREAMLY-ugly lines end here
 
 ######## route ########
 
@@ -54,17 +50,33 @@ def login():
 	if request.method == 'GET':
 		return render_template('login.html');
 	elif request.method == 'POST':
-		id = request.form['id']
-		passwd = request.form['passwd']
-		if verify(id, passwd):
-			return redirect('personal/%s' % id)
-		else :
+		session['id'] = request.form['id']
+		session['passwd'] = request.form['passwd']
+		try:
+			if verify(session['id'], session['passwd']):
+				return redirect(url_for('personal'))
+		except TypeError:
 			flash("用户名或密码错误，请仔细核对！")
 			return render_template('login.html')
 
-@app.route('/personal/<name>')
-def personal(name):
-	return "Hello, %s!" % name
+@app.route('/personal/')
+def personal():
+	try:
+		return render_template('personal_base.html', database = getConditonal('*','id',session['id']))
+	except KeyError:
+		flash("请登录再进行操作！")
+		return redirect(url_for('index'))
+
+@app.route('/logout/')
+def logout():
+	if 'id' in session:
+		session.pop('id', None)
+	return redirect(url_for('index'))
+
+'''
+@app.route('/edit_profile/', methods=['GET', 'POST'])
+def update():
+'''
 
 ######## main ########
 
