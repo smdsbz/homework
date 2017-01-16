@@ -37,112 +37,150 @@
 
 
 			<div class="container">
-				{% for each in database %}
-				<h4>你好，{{ each[1] }}!</h4>
-				<table class="highlight responsive-table">
-					<thead>
+				<div class="row">
+					{% for each in database %}
+					<h4 class="col s12">你好，{{ each[1] }}!</h4>
+					<!--table class="highlight responsive-table">
+						<thead>
+							<tr>
+								<th data-field="id">编号</th>
+								<th data-field="gender">性别</th>
+								<th data-field="qq">QQ</th>
+								<th data-field="tel">电话</th>
+								<th data-field="wchat">微信</th>
+								<th data-field="emg">应急联系方式</th>
+								<th data-field="school">院系</th>
+								<th data-field="class">班级</th>
+								<th data-field="apart">寝室</th>
+								<th data-field="depart">部门</th>
+								<th data-field="group">组别</th>
+								<th data-field="occup">职务</th>
+								<th data-field="dateofjoin">加入时间</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{ each[0] }}</td>
+								<td>{{ each[2] }}</td>
+								<td>{{ each[3] }}</td>
+								<td>{{ each[4] }}</td>
+								<td>{{ each[5] }}</td>
+								<td>{{ each[6] }}</td>
+								<td>{{ each[7] }}</td>
+								<td>{{ each[8] }}</td>
+								<td>{{ each[9] }}</td>
+								<td>{{ each[10] }}</td>
+								<td>{{ each[11] }}</td>
+								<td>{{ each[12] }}</td>
+								<td>{{ each[13] }}</td>
+							</tr>
+						</tbody>
+					</table-->
+					{% endfor %}
+					<!--
+					{% for each in database %}
+					<h4>你好，{{ each[1] }}!</h4>
+					<table class="highlight bordered responsive-table">
 						<tr>
 							<th data-field="id">编号</th>
-							<th data-field="gender">性别</th>
-							<th data-field="qq">QQ</th>
-							<th data-field="tel">电话</th>
-							<th data-field="wchat">微信</th>
-							<th data-field="emg">应急联系方式</th>
-							<th data-field="school">院系</th>
-							<th data-field="class">班级</th>
-							<th data-field="apart">寝室</th>
-							<th data-field="depart">部门</th>
-							<th data-field="group">组别</th>
-							<th data-field="occup">职务</th>
-							<th data-field="dateofjoin">加入时间</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
 							<td>{{ each[0] }}</td>
+						</tr>
+						<tr>
+							<th data-field="gender">性别</th>
 							<td>{{ each[2] }}</td>
+						</tr>
+						<tr>
+							<th data-field="qq">QQ</th>
 							<td>{{ each[3] }}</td>
+						</tr>
+						<tr>
+							<th data-field="tel">电话</th>
 							<td>{{ each[4] }}</td>
+						</tr>
+						<tr>
+							<th data-field="wchat">微信</th>
 							<td>{{ each[5] }}</td>
+						</tr>
+						<tr>
+							<th data-field="emg">应急联系方式</th>
 							<td>{{ each[6] }}</td>
+						</tr>
+						<tr>
+							<th data-field="school">院系</th>
 							<td>{{ each[7] }}</td>
+						</tr>
+						<tr>
+							<th data-field="class">班级</th>
 							<td>{{ each[8] }}</td>
+						</tr>
+						<tr>
+							<th data-field="apart">寝室</th>
 							<td>{{ each[9] }}</td>
+						</tr>
+						<tr>
+							<th data-field="depart">部门</th>
 							<td>{{ each[10] }}</td>
+						</tr>
+						<tr>
+							<th data-field="group">组别</th>
 							<td>{{ each[11] }}</td>
+						</tr>
+						<tr>
+							<th data-field="occup">职务</th>
 							<td>{{ each[12] }}</td>
+						</tr>
+						<tr>
+							<th data-field="dateofjoin">加入时间</th>
 							<td>{{ each[13] }}</td>
 						</tr>
-					</tbody>
-				</table>
-				{% endfor %}
-				<!--
-				{% for each in database %}
-				<h4>你好，{{ each[1] }}!</h4>
-				<table class="highlight bordered responsive-table">
-					<tr>
-						<th data-field="id">编号</th>
-						<td>{{ each[0] }}</td>
-					</tr>
-					<tr>
-						<th data-field="gender">性别</th>
-						<td>{{ each[2] }}</td>
-					</tr>
-					<tr>
-						<th data-field="qq">QQ</th>
-						<td>{{ each[3] }}</td>
-					</tr>
-					<tr>
-						<th data-field="tel">电话</th>
-						<td>{{ each[4] }}</td>
-					</tr>
-					<tr>
-						<th data-field="wchat">微信</th>
-						<td>{{ each[5] }}</td>
-					</tr>
-					<tr>
-						<th data-field="emg">应急联系方式</th>
-						<td>{{ each[6] }}</td>
-					</tr>
-					<tr>
-						<th data-field="school">院系</th>
-						<td>{{ each[7] }}</td>
-					</tr>
-					<tr>
-						<th data-field="class">班级</th>
-						<td>{{ each[8] }}</td>
-					</tr>
-					<tr>
-						<th data-field="apart">寝室</th>
-						<td>{{ each[9] }}</td>
-					</tr>
-					<tr>
-						<th data-field="depart">部门</th>
-						<td>{{ each[10] }}</td>
-					</tr>
-					<tr>
-						<th data-field="group">组别</th>
-						<td>{{ each[11] }}</td>
-					</tr>
-					<tr>
-						<th data-field="occup">职务</th>
-						<td>{{ each[12] }}</td>
-					</tr>
-					<tr>
-						<th data-field="dateofjoin">加入时间</th>
-						<td>{{ each[13] }}</td>
-					</tr>
-					<tr>
-					</tr>
-				</table>
-				{% endfor %}
-			-->
+						<tr>
+						</tr>
+					</table>
+					{% endfor %}
+				-->
+
+					<ul class="collapsible popout col s12" data-collapsible="accordion">
+						<li>
+							<div class="collapsible-header"><i class="material-icons">perm_identity</i>人员信息资料</div>
+							<div class="collapsible-body">
+								<div class="collection">
+									<a href="{{ url_for('update') }}" class="collection-item"><i class="material-icons left">library_add</i>录入信息</a>
+									<a href="{{ url_for('search_person') }}" class="collection-item"><i class="material-icons left">search</i>查询信息</a>
+									<a href="#!" class="collection-item"><i class="material-icons left">playlist_add</i>录入事务</a>
+									<a href="#!" class="collection-item"><i class="material-icons left">pageview</i>查询事务</a>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header"><i class="material-icons">schedule</i>空闲时间</div>
+							<div class="collapsible-body">
+								<div class="collection">
+									<a href="#!" class="collection-item"><i class="material-icons left">alarm_on</i>空闲时间信息录入（建设中）</a>
+									<a href="#!" class="collection-item"><i class="material-icons left">search</i>空闲时间人员查询（建设中）</a>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="collapsible-header"><i class="material-icons">thumb_up</i>绩效考核评分</div>
+							<div class="collapsible-body">
+								<div class="collection">
+									<a href="#!" class="collection-item"><i class="material-icons left">thumbs_up_down</i>评分系统</a>
+									<a href="#!" class="collection-item"><i class="material-icons left">search</i>绩效考核评分表查询</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+
+
 			</div>
 		</main>
 
 
 		<script>
-
+		$(document).ready(function(){
+	      $('.collapsible').collapsible();
+	    });
 		</script>
 	</body>
 </html>

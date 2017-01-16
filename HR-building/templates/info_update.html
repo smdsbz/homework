@@ -24,114 +24,117 @@
 				<!-- don'no how 2 let <div> auto-fit -->
 				<br><br>
 				<div class="row">
-					<form class="col s12 m6 offset-m3 l6 offset-l3" action="{{ url_for('update') }}" method="post">
-						<h5 class="center">信息录入</h5>
+					<form class="col s12 m8 offset-m2 l8 offset-l2" action="{{ url_for('update') }}" method="post">
+						<h5 class="center">信息更变</h5>
 						<div class="row">
 							<div class="progress col s6 offset-s3">
 								<div class="determinate" style="width:100%"></div>
 							</div>
-							<div class="input-field col s12">
-								<input id="name" type="text" class="validate" value="{{ database[0][1] }}">
-								<label for="name">姓名</label>
-							</div>
-							<div class="col s12">
-								<p>性别&nbsp;&nbsp;
-								  <input name="gender" type="radio" id="m" class="with-gap" value="男"/>
-								  <label for="m">男</label>
-								  <input name="gender" type="radio" id="f" class="with-gap" value="女"/>
-								  <label for="f">女</label>
-								</p>
-							</div>
-							<div class="input-field col s12">
-								<input id="qq" type="text" class="validate" value="{{ database[0][3] }}">
-								<label for="qq">QQ</label>
-							</div>
-							<div class="input-field col s12">
-								<input id="tel" type="text" class="validate" value="{{ database[0][4] }}">
-								<label for="tel">电话</label>
-							</div>
-							<div class="input-field col s12">
-								<input id="wchat" type="text" class="validate" value="{{ database[0][5] }}">
-								<label for="wchat">微信</label>
-							</div>
-							<div class="input-field col s12">
-								<input id="emg" type="text" class="validate" value="{{ database[0][6] }}">
-								<label for="emg">应急联系方式</label>
-							</div>
-							<div class="progress col s6 offset-s3">
-								<div class="determinate" style="width:100%"></div>
-							</div>
-							<div class="input-field col s12">
-								<input id="school" type="text" class="validate" value="{{ database[0][7] }}">
-								<label for="school">院系</label>
-							</div>
-							<div class="input-field col s12">
-								<input id="class" type="text" class="validate" value="{{ database[0][8] }}">
-								<label for="class">班级</label>
-							</div>
-							<div class="input-field col s12">
-								<input id="apart" type="text" class="validate" value="{{ database[0][9] }}">
-								<label for="apart">寝室（格式：公寓-楼栋号-房间号）</label>
-							</div>
-							<div class="progress col s6 offset-s3">
-								<div class="determinate" style="width:100%"></div>
-							</div>
-							<div class="col s12">
-								<select id="depart">
-							      <option value="" disabled selected>部门</option>
-							      <option value="财务部" id="fun">财务部</option>
-							      <option value="秘书部" id="sec">秘书部</option>
-							      <option value="人力资源部" id="hr">人力资源部</option>
-								  <option value="社团部" id="clb">社团部</option>
-								  <option value="行政监察部" id="sup">行政监察部</option>
-								  <option value="外联部" id="out">外联部</option>
-								  <option value="公共关系部" id="pr">公共关系部</option>
-								  <option value="宣传部" id="pub">宣传部</option>
-								  <option value="媒体部" id="med">媒体部</option>
-								  <option value="思存工作室" id="sicun">思存工作室</option>
-								  <option value="新媒体工作室" id="nmed">新媒体工作室</option>
-								  <option value="社团外联企划小组" id="cop">社团外联企划小组</option>
-								  <option value="文艺拓展部" id="ext">文艺拓展部</option>
-								  <option value="其它" id="o">其它</option>
-							    </select>
-							    <!--label>Materialize Select</label-->
-							</div>
-							<div class="input-field col s12 m6">
-								<input id="group" type="text" class="validate" value="{{ database[0][11] }}">
-								<label for="group">组别</label>
-							</div>
-							<div class="input-field col s12 m6">
-								<input id="occup" type="text" class="validate" value="{{ database[0][12] }}">
-								<label for="occup">担任职务</label>
-							</div>
-							<div class="progress col s6 offset-s3">
-								<div class="determinate" style="width:98%"></div>
-							</div>
-							<div class="input-field col s12">
-								<input id="id" type="text" class="validate" value="{{ database[0][0] }}">
-								<label for="id">社联编号</label>
-							</div>
-							<div class="col s12">
-								<label for="dateofjoin">加入社联的时间</label>
-								<input id="dateofjoin" type="date" class="datepicker" value="{{ database[0][13] }}">
-							</div>
-							<div class="progress col s6 offset-s3">
-								<div class="determinate green darken-1" style="width:100%"></div>
-							</div>
 						</div>
-						<div class="valign-wrapper">
+						<div class="input-field col s12">
+							<input name="name" type="text" class="validate" value="{{ database[0][1] }}">
+							<label for="name">姓名</label>
+						</div>
+						<div class="col s12">
+							<p>性别&nbsp;&nbsp;
+							  <input name="gender" type="radio" id="m" class="with-gap" value="m"/>
+							  <label for="m">男</label>
+							  <input name="gender" type="radio" id="f" class="with-gap" value="f"/>
+							  <label for="f">女</label>
+							</p>
+						</div>
+						<div class="input-field col s12">
+							<input name="qq" type="tel" class="validate" value="{{ database[0][3] }}">
+							<label for="qq">QQ</label>
+						</div>
+						<div class="input-field col s12">
+							<input name="tel" type="tel" class="validate" value="{{ database[0][4] }}">
+							<label for="tel">电话</label>
+						</div>
+						<div class="input-field col s12">
+							<input name="wchat" type="text" class="validate" value="{{ database[0][5] }}">
+							<label for="wchat">微信</label>
+						</div>
+						<div class="input-field col s12">
+							<input name="emg" type="text" class="validate" value="{{ database[0][6] }}">
+							<label for="emg">应急联系方式</label>
+						</div>
+						<div class="progress col s6 offset-s3">
+							<div class="determinate" style="width:100%"></div>
+						</div>
+						<div class="input-field col s12">
+							<input name="school" type="text" class="validate" value="{{ database[0][7] }}">
+							<label for="school">院系</label>
+						</div>
+						<div class="input-field col s12">
+							<input name="class" type="text" class="validate" value="{{ database[0][8] }}">
+							<label for="class">班级</label>
+						</div>
+						<div class="input-field col s12">
+							<input name="apart" type="text" class="validate" value="{{ database[0][9] }}">
+							<label for="apart">寝室（格式：公寓-楼栋号-房间号）</label>
+						</div>
+						<div class="progress col s6 offset-s3">
+							<div class="determinate" style="width:100%"></div>
+						</div>
+						<div class="col s12">
+							<select name="depart">
+						      <option value="" disabled selected>部门</option>
+						      <option value="财务部" id="fun">财务部</option>
+						      <option value="秘书部" id="sec">秘书部</option>
+						      <option value="人力资源部" id="hr">人力资源部</option>
+							  <option value="社团部" id="clb">社团部</option>
+							  <option value="行政监察部" id="sup">行政监察部</option>
+							  <option value="外联部" id="out">外联部</option>
+							  <option value="公共关系部" id="pr">公共关系部</option>
+							  <option value="宣传部" id="pub">宣传部</option>
+							  <option value="媒体部" id="med">媒体部</option>
+							  <option value="思存工作室" id="sicun">思存工作室</option>
+							  <option value="新媒体工作室" id="nmed">新媒体工作室</option>
+							  <option value="社团外联企划小组" id="cop">社团外联企划小组</option>
+							  <option value="文艺拓展部" id="ext">文艺拓展部</option>
+							  <option value="其它" id="o">其它</option>
+						    </select>
+						    <!--label>Materialize Select</label-->
+						</div>
+						<div class="input-field col s12 m6">
+							<input name="group" type="text" class="validate" value="{{ database[0][11] }}">
+							<label for="group">组别</label>
+						</div>
+						<div class="input-field col s12 m6">
+							<input name="occup" type="text" class="validate" value="{{ database[0][12] }}">
+							<label for="occup">担任职务</label>
+						</div>
+						<div class="progress col s6 offset-s3">
+							<div class="determinate" style="width:100%"></div>
+						</div>
+						<div class="input-field col s12">
+							<input disabled name="id" type="text" class="validate" value="{{ database[0][0] }}">
+							<label for="id">社联编号</label>
+						</div>
+						<div class="col s12">
+							<label for="dateofjoin">加入社联的时间</label>
+							<input name="dateofjoin" type="date" class="datepicker" value="{{ database[0][13] }}">
+						</div>
+						<div class="progress col s6 offset-s3">
+							<div class="determinate green darken-1" style="width:100%"></div>
+						</div>
+					</div>
+					<div class="row valign-wrapper">
+						<div class="col s12 m8 offset-m2 l8 offset-l2">
 							<div class="col s9 red-text left valign">
 								{% for msg in get_flashed_messages() %}
 								{{ msg }}
 								{% endfor %}
 							</div>
-							<button class="btn col s3 waves-effect waves-light right" type="submit" name="action">提交
+							<button class="btn col s3 waves-effect waves-light right" type="submit">提交
 								<i class="material-icons right">send</i>
 							</button>
 						</div>
-					</form>
-				</div>
+					</div>
+				</form>
 			</div>
+		</div>
 
 
 
@@ -146,6 +149,7 @@
 			else if (gen == 'f') {
 				document.getElementById("f").defaultChecked=true;
 			}
+
 
 			/* used in selected of department */
 			var dpt = '{{ database[0][10] }}';

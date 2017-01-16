@@ -24,18 +24,19 @@ def getConditonal(column, conditon, require):
 
 def verify(id, passwd):
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
-	cursor = database.execute("select passwd from test where id = ?", [id])
+	cursor = database.execute("select passwd from test where id = '%s'" % id)
 	correct = cursor.fetchone()
 	#print(correct[0])
 	if passwd == correct[0]:
 		return 1
 	else:
+		session.pop('id', None)
 		return 0
 
-def writeDatabase():	# tested
+def writeDatabase():
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
 	# EXTREAMLY-ugly line: write to database
-	database.execute('insert into test (name, gender, qq, tel, wchat, emg, school, class, apart, depart, grp, occup, id, dateofjoin) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['id'], request.form['dateofjoin']])
+	database.execute("update test set name = '%s', gender = '%s', qq = '%s', tel = '%s', wchat = '%s', emg = '%s', school = '%s', class = '%s', apart = '%s', depart = '%s', grp = '%s', occup = '%s', dateofjoin = '%s' where id = '%s'" % (request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin'], session['id']))
 	database.commit()
 	# EXTREAMLY-ugly lines end here
 
@@ -55,19 +56,33 @@ def login():
 		try:
 			if verify(session['id'], session['passwd']):
 				return redirect(url_for('personal'))
-		except ValueError:
-			return redirect(url_for('update'))
+			else:
+				print("no TypeError")
+				flash("用户名或密码错误！")
+				return render_template('login.html')
 		except TypeError:
-			flash("用户名或密码错误，请仔细核对！")
+			print("TypeError")
+			flash("用户名或密码错误！")
 			return render_template('login.html')
 
 @app.route('/personal/')
 def personal():
 	try:
-		return render_template('personal_base.html', database = getConditonal('*','id',session['id']))
+		if session['id'] != '':
+			database = getConditonal('*','id',session['id'])
+			if database != []:
+				return render_template('personal_base.html', database = database)
+			else:
+				flash("请登录！")
+				return redirect(url_for('login'))
+		else:
+			session.pop['id', None]
+			print("session-id = ''")
+			return redirect(url_for('login'))
 	except KeyError:
-		flash("请登录后再进行操作！")
-		return redirect(url_for('index'))
+		print("TypeError")
+		flash("请登录")
+		return redirect(url_for('login'))
 
 @app.route('/logout/')
 def logout():
@@ -77,11 +92,23 @@ def logout():
 
 @app.route('/update/', methods=['GET', 'POST'])
 def update():
-	if request.method == 'GET':
-		return render_template('info_update.html', database=getConditonal('*','id',session['id']))
+	try:
+		if request.method == 'GET':
+			return render_template('info_update.html', database=getConditonal('*','id',session['id']))
+	except KeyError:
+		flash("请登录！")
+		return redirect(url_for('login'))
 	if request.method == 'POST':
 		writeDatabase()
 		return redirect(url_for('personal'))
+
+@app.route('/search_person/')
+def search_person():
+	try:
+		return render_template('search_person.html', result=getConditonal('*','id',session['id']))
+	except KeyError:
+		flash("请登录！")
+		return redirect(url_for('login'))
 
 
 ######## main ########
