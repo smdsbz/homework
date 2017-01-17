@@ -12,6 +12,7 @@ def getAll():
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
 	cursor = database.execute('select * from test')
 	data = cursor.fetchall()
+	database.close()
 	return data
 
 def getConditonal(column, conditon, require):
@@ -20,12 +21,24 @@ def getConditonal(column, conditon, require):
 	cursor = database.execute("select %s from test where %s = '%s'" % (column, conditon, require))
 	data = cursor.fetchall()
 	#print(data)
+	database.close()
 	return data
+
+def getAdmin(column, conditon, require):
+	#print('getConditional(%s,%s,%s) called' % (column,conditon,require))
+	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
+	cursor = database.execute("select %s from admin where %s = '%s'" % (column, conditon, require))
+	data = cursor.fetchall()
+	#print(data)
+	database.close()
+	return data
+
 
 def verify(id, passwd):
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
-	cursor = database.execute("select passwd from test where id = '%s'" % id)
+	cursor = database.execute("select passwd from admin where id = '%s'" % id)
 	correct = cursor.fetchone()
+	database.close()
 	#print(correct[0])
 	if passwd == correct[0]:
 		return 1
@@ -33,11 +46,12 @@ def verify(id, passwd):
 		session.pop('id', None)
 		return 0
 
-def writeDatabase():
+def updatePerson(id):
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
 	# EXTREAMLY-ugly line: write to database
-	database.execute("update test set name = '%s', gender = '%s', qq = '%s', tel = '%s', wchat = '%s', emg = '%s', school = '%s', class = '%s', apart = '%s', depart = '%s', grp = '%s', occup = '%s', dateofjoin = '%s' where id = '%s'" % (request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin'], session['id']))
+	database.execute("update test set name = '%s', gender = '%s', qq = '%s', tel = '%s', wchat = '%s', emg = '%s', school = '%s', class = '%s', apart = '%s', depart = '%s', grp = '%s', occup = '%s', dateofjoin = '%s' where id = '%s'" % (request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin'], id))
 	database.commit()
+	database.close()
 	# EXTREAMLY-ugly lines end here
 
 def grep(column, require):
@@ -45,8 +59,22 @@ def grep(column, require):
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
 	cursor = database.execute("select * from test where %s GLOB '*%s*'" % (column, require))
 	data = cursor.fetchall()
+	database.close()
 	print(data)
 	return data
+
+def addPerson():
+	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
+	# EXTREAMLY-ugly line: write to database
+	print("before execute()")
+	try:
+		print(request.form['emg'])
+		database.execute("insert into test values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (request.form['id'], request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin']))
+	except:
+		print("execute() fail")
+	database.commit()
+	database.close()
+	# EXTREAMLY-ugly lines end here
 
 
 ######## route ########
@@ -78,7 +106,7 @@ def login():
 def personal():
 	try:
 		if session['id'] != '':
-			database = getConditonal('*','id',session['id'])
+			database = getAdmin('*','id',session['id'])
 			if database != []:
 				return render_template('personal_base.html', database = database)
 			else:
@@ -102,11 +130,12 @@ def logout():
 @app.route('/update/<id>', methods=['GET', 'POST'])
 def update(id):
 	try:
+		session['id']
 		if request.method == 'GET':
 			print(id)
 			return render_template('info_update.html', database=getConditonal('*','id',id),id=id)
 		elif request.method == 'POST':
-			writeDatabase()
+			updatePerson(id)
 			return redirect(url_for('personal'))
 	except KeyError:
 		flash("请登录！")
@@ -114,11 +143,25 @@ def update(id):
 
 @app.route('/search_person/', methods=['GET', 'POST'])
 def search_person():
-	if request.method == 'POST':
-		return render_template('search_person.html', result=grep(request.form['direction'],request.form['content']))
-	elif request.method == 'GET':
-		return render_template('search_person.html', result=grep('id',''))
+	try:
+		session['id']
+		if request.method == 'POST':
+			return render_template('search_person.html', result=grep(request.form['direction'],request.form['content']))
+		elif request.method == 'GET':
+			return render_template('search_person.html', result=grep('id','苟'))
+	except KeyError:
+		flash("请登录!")
+		return redirect(url_for('login'))
 
+@app.route('/entry_person/', methods=['GET', 'POST'])
+def entry():
+	print(session['id'])
+	if request.method == 'POST':
+		addPerson()
+		print("addPerson() called")
+		return redirect(url_for('personal'))
+	elif request.method == 'GET':
+		return render_template('info_entry.html')
 
 
 ######## main ########
