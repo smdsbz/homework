@@ -1,90 +1,102 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link type="text/css" rel="stylesheet" href="../static/css/materialize.css"  media="screen,projection"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title>HR系统_demo</title>
-	</head>
+<head>
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="../static/css/materialize.css"  media="screen,projection"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>HR系统_demo</title>
+</head>
 
-	<body>
-		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="../static/js/materialize.min.js"></script>
+<body>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="../static/js/materialize.min.js"></script>
 
-		<main>
-			<div class="navbar-fixed">
-				<nav class="nav-extended light-green darken-4">
-				 	<div class="nav-wrapper">
-						<a href="#" class="brand-logo"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
-						<ul id="out" class="dropdown-content">
-							<li><a href="#!">手滑了....
+	<main>
+		<div class="navbar-fixed">
+			<nav class="light-green darken-4">
+				<div class="nav-wrapper">
+					<a href="#" class="brand-logo center"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
+					<ul id="out" class="dropdown-content">
+						<li><a href="#!">手滑了....
 							<li><a href="{{ url_for('logout') }}">确认登出</a></li>
 						</ul>
 						<ul class="right">
-							<li>
-								<a class="dropdown-button" href="#!" data-activates="out">登出</a>
-							</li>
+							<li><a class="dropdown-button" href="#!" data-activates="out">登出</a></li>
+						</ul>
+						<ul class="left">
+							<li><a href="{{ url_for('personal') }}">返回</a></li>
 						</ul>
 					</div>
 				</nav>
 			</div>
 
+
 			<div class="container">
-				<br>
-				<nav>
-					<div class="nav-wrapper grey lighten-2">
-						<form>
-							<div class="input-field">
-								<input name="content" id="search" type="search" class="black-text"required>
-								<label for="search"><i class="material-icons black-text">search</i></label>
-								<i class="material-icons black-text">close</i>
+				<div class="container">
+					<br>
+					<form>
+						<div class="row valign-wrapper">
+							<div class="input-field col s2 left">
+								<select name="direction">
+									<option value="" disabled selected>项目</option>
+									<option value="name">姓名</option>
+									<option value="apart">寝室</option>
+									<option value="depart">部门</option>
+									<option value="id">编号</option>
+									<option value="school">学院</option>
+								</select>
 							</div>
-						</form>
+							<div class="input-field col s9">
+								<input name="content" id="search" type="text" class="black-text" required>
+								<!--label for="search"><i class="material-icons black-text">search</i>搜索</label-->
+							</div>
+							<button class="btn-flat waves-effect waves-dark col s1 right valign" type="submit"><i class="material-icons">search</i></button>
+						</div>
+					</form>
+				</div>
+
+				{% for each in result %}
+				<div class="card hoverable">
+					<div class="card-content">
+						<div class="row">
+							<span class="card-title col s4 left">{{ each[1] }}</span>
+							<span class="card-title col s7">{{ each[0] }}</span>
+							<span class="card-title"><a href="#!" class="col s1 right"><i class="material-icons light-green-text text-darken-4">edit_mode</i></a></span>
+						</div>
+
+						<div class="row">
+							<table class="striped col s12">
+								<tr>
+									<th>性别</th><td>{{ each[2] }}</td>
+									<th>QQ</th><td>{{ each[3] }}</td>
+								</tr>
+								<tr>
+									<th>电话</th><td>{{ each[4] }}</td>
+									<th>微信</th><td>{{ each[5] }}</td>
+								</tr>
+								<tr>
+									<th>应急联系方式</th><td>{{ each[6] }}</td>
+									<th>院系</th><td>{{ each[7] }}</td>
+								</tr>
+								<tr>
+									<th>班级</th><td>{{ each[8] }}</td>
+									<th>寝室</th><td>{{ each[9] }}</td>
+								</tr>
+								<tr>
+									<th>部门</th><td>{{ each [10] }}</td>
+									<th>组别</th><td>{{ each[11] }}</td>
+								</tr>
+								<tr>
+									<th>职务</th><td>{{ each[12] }}</td>
+									<th>加入时间</th><td>{{ each[13] }}</td>
+								</tr>
+							</table>
+						</div>
 					</div>
-				</nav>
+				</div>
+				{% endfor %}
+
 			</div>
-
-			<div class="container">
-				<div class="row">
-					<div class="col s12">
-						{% for each in result %}
-						<div class="card hoverable">
-							<div class="card-content">
-								<span class="card-title col s6">{{ each[1] }}</span>
-								<span class="card-title col s6">{{ each[0] }}</span>
-								<table class="striped">
-									<tr>
-										<th>性别</th><td>{{ each[2] }}</td>
-										<th>QQ</th><td>{{ each[3] }}</td>
-									</tr>
-									<tr>
-										<th>电话</th><td>{{ each[4] }}</td>
-										<th>微信</th><td>{{ each[5] }}</td>
-									</tr>
-									<tr>
-										<th>应急联系方式</th><td>{{ each[6] }}</td>
-										<th>院系</th><td>{{ each[7] }}</td>
-									</tr>
-									<tr>
-										<th>班级</th><td>{{ each[8] }}</td>
-										<th>寝室</th><td>{{ each[9] }}</td>
-									</tr>
-									<tr>
-										<th>部门</th><td>{{ each [10] }}</td>
-										<th>组别</th><td>{{ each[11] }}</td>
-									</tr>
-									<tr>
-										<th>职务</th><td>{{ each[12] }}</td>
-										<th>加入时间</th><td>{{ each[13] }}</td>
-									</tr>
-
-
-
-
-									{% endfor %}
-
-
-
 
 
 
@@ -92,9 +104,13 @@
 		</main>
 
 		<script>
-		$(document).ready(function(){
-		  $('.collapsible').collapsible();
-		});
+			$(document).ready(function(){
+				$('.collapsible').collapsible();
+			});
+			$(document).ready(function() {
+				$('select').material_select();
+			});
+
 		</script>
 	</body>
-</html>
+	</html>

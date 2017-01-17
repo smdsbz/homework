@@ -90,17 +90,18 @@ def logout():
 		session.pop('id', None)
 	return redirect(url_for('index'))
 
-@app.route('/update/', methods=['GET', 'POST'])
-def update():
+@app.route('/update/<id>', methods=['GET', 'POST'])
+def update(id):
 	try:
 		if request.method == 'GET':
-			return render_template('info_update.html', database=getConditonal('*','id',session['id']))
+			print(id)
+			return render_template('info_update.html', database=getConditonal('*','id',id),id=id)
+		elif request.method == 'POST':
+			writeDatabase()
+			return redirect(url_for('personal'))
 	except KeyError:
 		flash("请登录！")
 		return redirect(url_for('login'))
-	if request.method == 'POST':
-		writeDatabase()
-		return redirect(url_for('personal'))
 
 @app.route('/search_person/')
 def search_person():

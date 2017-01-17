@@ -24,7 +24,7 @@
 				<!-- don'no how 2 let <div> auto-fit -->
 				<br><br>
 				<div class="row">
-					<form class="col s12 m8 offset-m2 l8 offset-l2" action="/update/{{ id }}" method="post">
+					<form class="col s12 m8 offset-m2 l8 offset-l2" action="{{ url_for('update') }}" method="post">
 						<h5 class="center">信息更变</h5>
 						<div class="row">
 							<div class="progress col s6 offset-s3">
@@ -32,7 +32,7 @@
 							</div>
 						</div>
 						<div class="input-field col s12">
-							<input name="name" type="text" class="validate" value="{{ database[0][1] }}">
+							<input name="name" type="text" class="validate">
 							<label for="name">姓名</label>
 						</div>
 						<div class="col s12">
@@ -44,34 +44,34 @@
 							</p>
 						</div>
 						<div class="input-field col s12">
-							<input name="qq" type="tel" class="validate" value="{{ database[0][3] }}">
+							<input name="qq" type="tel" class="validate">
 							<label for="qq">QQ</label>
 						</div>
 						<div class="input-field col s12">
-							<input name="tel" type="tel" class="validate" value="{{ database[0][4] }}">
+							<input name="tel" type="tel" class="validate">
 							<label for="tel">电话</label>
 						</div>
 						<div class="input-field col s12">
-							<input name="wchat" type="text" class="validate" value="{{ database[0][5] }}">
+							<input name="wchat" type="text" class="validate">
 							<label for="wchat">微信</label>
 						</div>
 						<div class="input-field col s12">
-							<input name="emg" type="text" class="validate" value="{{ database[0][6] }}">
+							<input name="emg" type="text" class="validate">
 							<label for="emg">应急联系方式</label>
 						</div>
 						<div class="progress col s6 offset-s3">
 							<div class="determinate" style="width:100%"></div>
 						</div>
 						<div class="input-field col s12">
-							<input name="school" type="text" class="validate" value="{{ database[0][7] }}">
+							<input name="school" type="text" class="validate">
 							<label for="school">院系</label>
 						</div>
 						<div class="input-field col s12">
-							<input name="class" type="text" class="validate" value="{{ database[0][8] }}">
+							<input name="class" type="text" class="validate">
 							<label for="class">班级</label>
 						</div>
 						<div class="input-field col s12">
-							<input name="apart" type="text" class="validate" value="{{ database[0][9] }}">
+							<input name="apart" type="text" class="validate">
 							<label for="apart">寝室（格式：公寓-楼栋号-房间号）</label>
 						</div>
 						<div class="progress col s6 offset-s3">
@@ -98,23 +98,23 @@
 						    <!--label>Materialize Select</label-->
 						</div>
 						<div class="input-field col s12 m6">
-							<input name="group" type="text" class="validate" value="{{ database[0][11] }}">
+							<input name="group" type="text" class="validate">
 							<label for="group">组别</label>
 						</div>
 						<div class="input-field col s12 m6">
-							<input name="occup" type="text" class="validate" value="{{ database[0][12] }}">
+							<input name="occup" type="text" class="validate">
 							<label for="occup">担任职务</label>
 						</div>
 						<div class="progress col s6 offset-s3">
 							<div class="determinate" style="width:100%"></div>
 						</div>
 						<div class="input-field col s12">
-							<input disabled name="id" type="text" class="validate" value="{{ database[0][0] }}">
+							<input disabled name="id" type="text" class="validate">
 							<label for="id">社联编号</label>
 						</div>
 						<div class="col s12">
 							<label for="dateofjoin">加入社联的时间</label>
-							<input name="dateofjoin" type="date" class="datepicker" value="{{ database[0][13] }}">
+							<input name="dateofjoin" type="date" class="datepicker">
 						</div>
 						<div class="progress col s6 offset-s3">
 							<div class="determinate green darken-1" style="width:100%"></div>
@@ -142,17 +142,17 @@
 
 		<script>
 			/* used in defautChecked of gender radio-select */
-			var gen = '{{ database[0][2] }}';
+			/*var gen = '{{ database[0][2] }}';
 			if (gen == '男') {
 				document.getElementById("m").defaultChecked=true;
 			}
 			else if (gen == '女') {
 				document.getElementById("f").defaultChecked=true;
-			}
+			}*/
 
 
 			/* used in selected of department */
-			var dpt = '{{ database[0][10] }}';
+			/*var dpt = '{{ database[0][10] }}';
 			switch (dpt) {
 				case "财务部":
 					document.getElementById("fun").selected=true;
@@ -196,7 +196,7 @@
 				default:
 					document.getElementById("o").selected=true;
 					break;
-			}
+			}*/
 
 			/* used in department selection */
 			$(document).ready(function() {
