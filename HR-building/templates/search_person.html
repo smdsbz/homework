@@ -34,7 +34,7 @@
 			<div class="container">
 				<div class="container">
 					<br>
-					<form>
+					<form method="post">
 						<div class="row valign-wrapper">
 							<div class="input-field col s2 left">
 								<select name="direction">
@@ -61,7 +61,7 @@
 						<div class="row">
 							<span class="card-title col s4 left">{{ each[1] }}</span>
 							<span class="card-title col s7">{{ each[0] }}</span>
-							<span class="card-title"><a href="#!" class="col s1 right"><i class="material-icons light-green-text text-darken-4">edit_mode</i></a></span>
+							<span class="card-title"><a href="/update/{{ each[0] }}" class="col s1 right"><i class="material-icons light-green-text text-darken-4">edit_mode</i></a></span>
 						</div>
 
 						<div class="row">

@@ -19,7 +19,7 @@ def getConditonal(column, conditon, require):
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
 	cursor = database.execute("select %s from test where %s = '%s'" % (column, conditon, require))
 	data = cursor.fetchall()
-	print(data)
+	#print(data)
 	return data
 
 def verify(id, passwd):
@@ -39,6 +39,15 @@ def writeDatabase():
 	database.execute("update test set name = '%s', gender = '%s', qq = '%s', tel = '%s', wchat = '%s', emg = '%s', school = '%s', class = '%s', apart = '%s', depart = '%s', grp = '%s', occup = '%s', dateofjoin = '%s' where id = '%s'" % (request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin'], session['id']))
 	database.commit()
 	# EXTREAMLY-ugly lines end here
+
+def grep(column, require):
+	print('grep(%s,%s) called' % (column,require))
+	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
+	cursor = database.execute("select * from test where %s GLOB '*%s*'" % (column, require))
+	data = cursor.fetchall()
+	print(data)
+	return data
+
 
 ######## route ########
 
@@ -77,7 +86,7 @@ def personal():
 				return redirect(url_for('login'))
 		else:
 			session.pop['id', None]
-			print("session-id = ''")
+			#print("session-id = ''")
 			return redirect(url_for('login'))
 	except KeyError:
 		print("TypeError")
@@ -103,13 +112,13 @@ def update(id):
 		flash("请登录！")
 		return redirect(url_for('login'))
 
-@app.route('/search_person/')
+@app.route('/search_person/', methods=['GET', 'POST'])
 def search_person():
-	try:
-		return render_template('search_person.html', result=getConditonal('*','id',session['id']))
-	except KeyError:
-		flash("请登录！")
-		return redirect(url_for('login'))
+	if request.method == 'POST':
+		return render_template('search_person.html', result=grep(request.form['direction'],request.form['content']))
+	elif request.method == 'GET':
+		return render_template('search_person.html', result=grep('id',''))
+
 
 
 ######## main ########
