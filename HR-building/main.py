@@ -65,7 +65,7 @@ def grepPerson(column, require):
 
 def grepIssue(column, require):
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
-	cursor = database.execute("select * from issue where %s GLOB '*%s*'" % (column, require))
+	cursor = database.execute("select * from issue where %s = '%s'" % (column, require))
 	data = cursor.fetchall()
 	database.close()
 	print(data)
@@ -88,7 +88,7 @@ def addPerson():
 def addIssue():
 	database = sqlite3.connect(os.path.join(app.root_path,'data.db'))
 	try:
-		database.execute("insert into issue values ('%s','%s','%s')" % (request.form['id'],request.form['title'],request.form['body']))
+		database.execute("insert into issue (id,title,body) values ('%s','%s','%s')" % (request.form['id'],request.form['title'],request.form['body']))
 	except:
 		print((request.form['id'],request.form['title'],request.form['body']))
 	database.commit()
@@ -203,19 +203,20 @@ def search_issue():
 	try:
 		session['id']
 		if request.method == 'POST':
-			# what if there are people with same name
-			# that's why id should be PRIMARY KEY!
+			# fxxk the same-name issue!!!
 			if request.form['direction'] == 'name':
-				id_list = getConditonal('id','name',request.form['content'])
+				id_listed = getConditonal('id','name',request.form['content'])
 			else:
-				id_list = [request.form['content']]
-			# manipulate * with id is the safest approach
-			result = []
-			for each in id_list:
-				result.append(grepIssue('id',each))
-			return render_template('search_issue.html', result=result)
+				id_listed = request.form['content']
+			print(id_listed)
+			result = grepIssue('id',id_listed[0][0])
+			if result == []:
+				result = [(id_listed[0][0],"无搜索结果",""),]
+			return render_template('search_issue.html', name=getConditonal('name','id',id_listed[0][0])[0][0], result=result)
 		elif request.method == 'GET':
-			return render_template('search_issue.html', result=grepIssue('id','苟'))
+			return render_template('search_issue.html', name="姓名", result=[("编号","标题","内容"),])
+	except IndexError:
+			return render_template('search_issue.html', name="姓名", result=[("编号","标题","内容"),])
 	except KeyError:
 		flash("请登录!")
 		return redirect(url_for('login'))

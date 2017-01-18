@@ -38,8 +38,8 @@
 						<div class="row valign-wrapper">
 							<div class="input-field col s2 left">
 								<select name="direction">
-									<option value="name" disabled>姓名</option>
-									<option value="id" selected>编号</option>
+									<option value="name" selected>姓名</option>
+									<option value="id">编号</option>
 								</select>
 							</div>
 							<div class="input-field col s9">
@@ -51,24 +51,22 @@
 					</form>
 				</div>
 
-				{% for each in result %}
 				<div class="card">
 					<div class="card-content">
 						<div class="row">
-							<span class="card-title col s4 left">name</span>
-							<span class="card-title col s7">id</span>
+							<span class="card-title col s4 left">{{ name }}</span>
+							<span class="card-title col s7">{{ result[0][1] }}</span>
 						</div>
-						{% for every in each %}
+						{% for each in result %}
 						<div class="row">
 							<div class="divider"></div><br>
-							<div class="col s2"><b>{{ every[1] }}</b></div>
-							<pre class="col s10" style="white-space:pre-wrap;word-wrap:break-word">{{ every[2] }}</pre>
+							<div class="col s2"><a href="#!" class="light-green-text text-darken-4" title="单击以修改"><b>{{ each[2] }}</b></a></div>
+							<pre class="col s10" style="white-space:pre-wrap;word-wrap:break-word">{{ each[3] }}</pre>
 							<br>
 						</div>
 						{% endfor %}
 					</div>
 				</div>
-				{% endfor %}
 
 			</div>
 
