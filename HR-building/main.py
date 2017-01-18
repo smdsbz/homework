@@ -54,10 +54,18 @@ def updatePerson(id):
 	database.close()
 	# EXTREAMLY-ugly lines end here
 
-def grep(column, require):
-	print('grep(%s,%s) called' % (column,require))
+def grepPerson(column, require):
+	print('grepPerson(%s,%s) called' % (column,require))
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
 	cursor = database.execute("select * from test where %s GLOB '*%s*'" % (column, require))
+	data = cursor.fetchall()
+	database.close()
+	print(data)
+	return data
+
+def grepIssue(column, require):
+	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
+	cursor = database.execute("select * from issue where %s GLOB '*%s*'" % (column, require))
 	data = cursor.fetchall()
 	database.close()
 	print(data)
@@ -155,9 +163,9 @@ def search_person():
 	try:
 		session['id']
 		if request.method == 'POST':
-			return render_template('search_person.html', result=grep(request.form['direction'],request.form['content']))
+			return render_template('search_person.html', result=grepPerson(request.form['direction'],request.form['content']))
 		elif request.method == 'GET':
-			return render_template('search_person.html', result=grep('id','苟'))
+			return render_template('search_person.html', result=grepPerson('id','苟'))
 	except KeyError:
 		flash("请登录!")
 		return redirect(url_for('login'))
@@ -188,6 +196,28 @@ def entryIssue():
 			return render_template('issue_entry.html')
 	except KeyError:
 		flash("请登录！")
+		return redirect(url_for('login'))
+
+@app.route('/search_issue/', methods=['GET', 'POST'])
+def search_issue():
+	try:
+		session['id']
+		if request.method == 'POST':
+			# what if there are people with same name
+			# that's why id should be PRIMARY KEY!
+			if request.form['direction'] == 'name':
+				id_list = getConditonal('id','name',request.form['content'])
+			else:
+				id_list = [request.form['content']]
+			# manipulate * with id is the safest approach
+			result = []
+			for each in id_list:
+				result.append(grepIssue('id',each))
+			return render_template('search_issue.html', result=result)
+		elif request.method == 'GET':
+			return render_template('search_issue.html', result=grepIssue('id','苟'))
+	except KeyError:
+		flash("请登录!")
 		return redirect(url_for('login'))
 
 
