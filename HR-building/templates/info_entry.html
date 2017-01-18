@@ -24,7 +24,7 @@
 				<!-- don'no how 2 let <div> auto-fit -->
 				<br><br>
 				<div class="row">
-					<form class="col s12 m8 offset-m2 l8 offset-l2" action="{{ url_for('entry') }}" method="post">
+					<form class="col s12 m8 offset-m2 l8 offset-l2" action="{{ url_for('entryPerson') }}" method="post">
 						<h5 class="center">信息录入</h5>
 						<div class="row">
 							<div class="progress col s6 offset-s3">
@@ -37,9 +37,9 @@
 						</div>
 						<div class="col s12">
 							<p>性别&nbsp;&nbsp;
-							  <input name="gender" type="radio" id="m" class="with-gap" value="男" required/>
+							  <input name="gender" type="radio" id="m" class="with-gap" value="男" required>
 							  <label for="m">男</label>
-							  <input name="gender" type="radio" id="f" class="with-gap" value="女"/>
+							  <input name="gender" type="radio" id="f" class="with-gap" value="女">
 							  <label for="f">女</label>
 							</p>
 						</div>

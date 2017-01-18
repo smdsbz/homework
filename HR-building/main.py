@@ -69,13 +69,22 @@ def addPerson():
 	print("before execute()")
 	try:
 		print(request.form['emg'])
-		database.execute("insert into test values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (request.form['id'], request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin']))
+		database.execute("insert into test (id,name,gender,qq,tel,wchat,emg,school,class,apart,depart,grp,occup,dateofjoin) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (request.form['id'], request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin']))
 	except:
-		print("execute() fail")
+		# issue: execute() fail when NULL exist in request.form
+		print("addPerson() failed due to invalid request.form element!")
 	database.commit()
 	database.close()
 	# EXTREAMLY-ugly lines end here
 
+def addIssue():
+	database = sqlite3.connect(os.path.join(app.root_path,'data.db'))
+	try:
+		database.execute("insert into issue values ('%s','%s','%s')" % (request.form['id'],request.form['title'],request.form['body']))
+	except:
+		print((request.form['id'],request.form['title'],request.form['body']))
+	database.commit()
+	database.close()
 
 ######## route ########
 
@@ -154,14 +163,32 @@ def search_person():
 		return redirect(url_for('login'))
 
 @app.route('/entry_person/', methods=['GET', 'POST'])
-def entry():
-	print(session['id'])
-	if request.method == 'POST':
-		addPerson()
-		print("addPerson() called")
-		return redirect(url_for('personal'))
-	elif request.method == 'GET':
-		return render_template('info_entry.html')
+def entryPerson():
+	try:
+		print(session['id'])
+		if request.method == 'POST':
+			addPerson()
+			print("addPerson() called")
+			return redirect(url_for('personal'))
+		elif request.method == 'GET':
+			return render_template('info_entry.html')
+	except KeyError:
+		flash("请登录！")
+		return redirect(url_for('login'))
+
+@app.route('/entry_issue/', methods=['GET', 'POST'])
+def entryIssue():
+	try:
+		print(session['id'])
+		if request.method == 'POST':
+			addIssue()
+			print("addIssue() called")
+			return redirect(url_for('personal'))
+		elif request.method == 'GET':
+			return render_template('issue_entry.html')
+	except KeyError:
+		flash("请登录！")
+		return redirect(url_for('login'))
 
 
 ######## main ########
