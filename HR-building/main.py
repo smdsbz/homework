@@ -54,6 +54,12 @@ def updatePerson(id):
 	database.close()
 	# EXTREAMLY-ugly lines end here
 
+def updateIssue(idx):
+	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
+	database.execute("update issue set title = '%s', body = '%s' where idx = '%s'" % (request.form['title'], request.form['body'], idx))
+	database.commit()
+	database.close()
+
 def grepPerson(column, require):
 	print('grepPerson(%s,%s) called' % (column,require))
 	database = sqlite3.connect(os.path.join(app.root_path, 'data.db'))
@@ -214,11 +220,25 @@ def search_issue():
 				result = [(id_listed[0][0],"无搜索结果",""),]
 			return render_template('search_issue.html', name=getConditonal('name','id',id_listed[0][0])[0][0], result=result)
 		elif request.method == 'GET':
-			return render_template('search_issue.html', name="姓名", result=[("编号","标题","内容"),])
+			return render_template('search_issue.html', name="姓名", result=[("#!","编号","标题","内容"),])
 	except IndexError:
 			return render_template('search_issue.html', name="姓名", result=[("编号","标题","内容"),])
 	except KeyError:
 		flash("请登录!")
+		return redirect(url_for('login'))
+
+@app.route('/update_issue/<idx>', methods=['GET', 'POST'])
+def alter(idx):
+	try:
+		session['id']
+		if request.method == 'GET':
+			print(id)
+			return render_template('issue_update.html', database=grepIssue('idx',idx))
+		elif request.method == 'POST':
+			updateIssue(idx)
+			return redirect(url_for('personal'))
+	except KeyError:
+		flash("请登录！")
 		return redirect(url_for('login'))
 
 
