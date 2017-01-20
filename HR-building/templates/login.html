@@ -5,6 +5,7 @@
 		<link type="text/css" rel="stylesheet" href="../static/css/materialize.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>HR系统_demo</title>
+		<meta name="theme-color" content="#33691E">
 	</head>
 
 	<body>
@@ -100,18 +101,24 @@
 					</div>
 				</div>
 			</div>
-		</div>
+
+			<div class="container">
+				<br><br>
+				<h5>Known Issue:</h5>
+				<code>
+					1. 无项目的搜索会导致TypeError，原因未知<br>
+					2. 同名问题尚未找到较好的解决方案（太复杂了懒得做。。）
+				</code>
+			</div>
 
 
 		</main>
 
 		<script>
-		$(document).ready(function(){
+		/*$(document).ready(function(){
 			$('ul.tabs').tabs();
-		});
-		$(document).ready(function(){
 			$('ul.tabs').tabs('select_tab', 'tab_id');
-		});
+		});*/
 
 			/* not yet into use *
 			$(document).ready(function(){

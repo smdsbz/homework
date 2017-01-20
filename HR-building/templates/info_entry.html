@@ -5,6 +5,7 @@
 		<link type="text/css" rel="stylesheet" href="../static/css/materialize.css"  media="screen,projection"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>HR系统_demo</title>
+		<meta name="theme-color" content="#33691E">
 	</head>
 
 	<body>
@@ -95,7 +96,6 @@
 							  <option value="文艺拓展部" id="ext">文艺拓展部</option>
 							  <option value="其它" id="o">其它</option>
 						    </select>
-						    <!--label>Materialize Select</label-->
 						</div>
 						<div class="input-field col s12 m6">
 							<input name="group" type="text" class="validate" required>
@@ -141,18 +141,16 @@
 		</main>
 
 		<script>
-			/* used in department selection */
 			$(document).ready(function() {
+				/* used in department selection */
 			   $('select').material_select();
-			});
-			/* used in join-date */
-			$('.datepicker').pickadate({
-				selectMonths: true, // Creates a dropdown to control month
-				selectYears: 15 // Creates a dropdown of 15 years to control year
-			});
-			/* prefilling */
-			$(document).ready(function() {
-				Materialize.updateTextFields();
+			   /* used in join-date */
+			   $('.datepicker').pickadate({
+				   selectMonths: true, // Creates a dropdown to control month
+				   selectYears: 15 // Creates a dropdown of 15 years to control year
+			   });
+			   /* prefilling */
+			   Materialize.updateTextFields();
 			});
 		</script>
 	</body>
