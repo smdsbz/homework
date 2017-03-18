@@ -28,7 +28,7 @@ int main(void) {
      */
 
      int x, p, n;
-     unsigned int mask;
+     unsigned int mask = 0;
 
      scanf("%d %d %d", &x, &p, &n);
 
@@ -59,7 +59,7 @@ int main(void) {
      print_bits(
          x ^ mask
      );
-     
+
 
      return 0;
 }
