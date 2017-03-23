@@ -1,39 +1,10 @@
-#include "stdio.h"
-
-
-#define BITS_OF_INT     sizeof(int)*8
-
-
-short i;    // loop variable
-int mask;   // mask
-
-
-
-void print_bits(int);
-
-
-int main(void) {
-
-    print_bits(1 ^ 3);
-
-    return 0;
+#include<stdio.h>
+void main( )
+{
+    int a, b, t;
+    printf("Input two integers:");
+    scanf("%d %d",&a,&b);
+	b += a, a = b - a, b -= a;
+    printf("\na=%d,b=%d",a,b);
 }
 
-
-
-
-void print_bits(int x) {
-
-    unsigned int mask = 1 << (BITS_OF_INT - 1);
-
-    for (i=0; i<BITS_OF_INT; ++i) {
-
-        putchar( (x & mask) ? '1' : '0' );
-        mask >>= 1;
-
-        !((i+1)%8) && i<BITS_OF_INT-1 ? (putchar(' ')) : 0;
-
-    }
-
-    putchar('\n');
-}
