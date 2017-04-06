@@ -19,7 +19,7 @@ void main(void) {
         getchar(),
         income != 0
     ) {
-        printf("%lf\n", using_if(income));
+        printf("%lf\n", using_switch(income));
     }
 
 }
@@ -57,4 +57,43 @@ double using_if(double income) {
     }
 
     return tax;
+}
+
+
+
+double using_switch(double income) {
+
+    double tax = 0;
+
+    // TODO: 直接计算出结果表达式
+    switch ((int)(income/1000)) {
+        case 4: {
+            tax = (income-4000)*0.20L + 1000*0.15L + 1000*0.10L + 1000*0.05L;
+            break;
+        }
+        case 3: {
+            tax = (income-3000)*0.15L + 1000*0.10L + 1000*0.05L;
+            break;
+        }
+        case 2: {
+            tax = (income-2000)*0.10L + 1000*0.05L;
+            break;
+        }
+        case 1: {
+            tax = (income-1000)*0.05L;
+            break;
+        }
+        case 0: {
+            tax = 0;
+            break;
+        }
+        default: {
+            tax = (income-5000)*0.25L + 1000*0.20L + 1000*0.15L + 1000*0.10L + 1000*0.05L;
+            break;
+        }
+    }
+
+    return tax;
+
+
 }
