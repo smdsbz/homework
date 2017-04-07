@@ -42,9 +42,10 @@ void hailstone(int n) {
         if ( (i%6) == 0 ) { putchar('\n'); }
         degrade(&m);
     }
+    // printf("%d", i);
 
     putchar('\n');
-    if ( (i)%6 ) { putchar('\n'); }
+    if ( (i-1)%6 ) { putchar('\n'); }
 
 }
 
