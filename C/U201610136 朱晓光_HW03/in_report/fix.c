@@ -35,7 +35,7 @@ long sum_fac(int n) {
 }
 */
 
-/* 2nd task */
+// /* 2nd task *
 long sum_fac(int n)
 {
     long s=0;
@@ -47,3 +47,4 @@ long sum_fac(int n)
     }
     return s;
 }
+// */
