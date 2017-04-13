@@ -1,6 +1,8 @@
 #include <stdio.h>
-int x,y; /* 外部变量的定义性说明 */
-char ch; /* 外部变量的定义性说明 */
+#include "file2.h"
+int x,y;
+char ch;
+void func1(void);
 void main(void)
 {
     x=10;

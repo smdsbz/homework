@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1492084070 source:c:\users\administrator\desktop\tmp\homework\c\u201610136 ÖìÏş¹â_hw03\optional\file2.c
+
+1492085123 source:c:\users\administrator\desktop\tmp\homework\c\u201610136 ÖìÏş¹â_hw03\optional\file1.c
+	<stdio.h>
+	"file2.h"
+
+1492085083 c:\users\administrator\desktop\tmp\homework\c\u201610136 ÖìÏş¹â_hw03\optional\file2.h
+	<stdio.h>
+
