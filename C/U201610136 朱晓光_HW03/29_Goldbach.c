@@ -1,4 +1,4 @@
-#include "stdio.h"
+#include <stdio.h>
 unsigned char isPrime(unsigned int);
 void main(void) {
 	puts("GOLDBACH'S CONJECTURE:");
