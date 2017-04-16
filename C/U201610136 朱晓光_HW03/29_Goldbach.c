@@ -8,7 +8,7 @@ void main(void) {
     while (
         scanf("%u %u", &begin, &end),
         getchar(),
-        (begin!=0) && (begin>=6) && (end>=begin)
+        (begin!=0) && (begin>=4) && (end>=begin)
     ) {
         if ( begin % 2 ) { begin = begin / 2 * 2 + 2; }
         for (; begin <= end; begin+=2) {
