@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 // online ver.
-// #define CHANGE(c)   ( (c) % 2 )
+#define CHANGE(c)   ( (c) % 2 )
 // report ver.
-#define CHANGE(c)   0
+// #define CHANGE(c)   0
 
 
 /* alterCase:
@@ -23,7 +23,7 @@ void main(void) {
 
 
     char current;
-    unsigned short change_flag;
+    unsigned char change_flag;
 
 
     for (; N > 0; --N) {

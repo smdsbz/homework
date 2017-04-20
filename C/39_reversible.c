@@ -14,7 +14,7 @@ int isReversible(char *, unsigned, unsigned);
 void main(void) {
 
     unsigned N;     // total data count
-    scanf("%u", &N); getchar();
+    scanf("%u\n", &N);
 
     char s[81] = {'\0'};    // stores the input string
 
