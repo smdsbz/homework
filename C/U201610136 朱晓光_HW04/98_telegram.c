@@ -1,7 +1,9 @@
 #include <stdio.h>
 
-
-#define CHANGE(c)   ( (c) % 2 )
+// online ver.
+// #define CHANGE(c)   ( (c) % 2 )
+// report ver.
+#define CHANGE(c)   0
 
 
 /* alterCase:
@@ -32,7 +34,6 @@ void main(void) {
 
         // dealing with every char
         for (; current != '\n'; current = getchar()) {
-            // putchar(current);
 
             switch (change_flag) {
 
