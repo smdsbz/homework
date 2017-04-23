@@ -17,12 +17,21 @@ void main(void) {
     scanf("%u\n", &N);
 
     char s[81] = {'\0'};    // stores the input string
+    unsigned i;
 
 
     for (; N != 0; --N) {
 
         // get string from user input
-        scanf("%s", s); getchar();
+        // can't use scanf() cuz it jumps whitespaces!!
+        // scanf("%s", s); getchar();
+        for (
+            i = 0;
+            s[i] = getchar(), s[i] != '\n';
+            ++i
+        ) ;
+        s[i] = '\0';
+
 
         // output value
         switch (isReversible(s, 0, strlen(s)-1)) {
