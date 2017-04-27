@@ -10,7 +10,7 @@ int main(void)
     }
 
     i = 0, j = 1;
-    while (1) {
+    while (k!=M) {
         if (a[i]) {                         /* a[i]非零 -> 仍在圈里 */
             if (j == N) {                   /* 数到3 */
                 printf("%6d", a[i]);
@@ -21,7 +21,6 @@ int main(void)
             else {
                 ++j;
             }
-            if (k == M) { break; }
         }
         if (++i == M) { i = 0; }            /* 循环变量处理 - 不管当前元素在不在圈内，指针都要往前走 */
     }

@@ -1,32 +1,17 @@
 #include <stdio.h>
 #include <string.h>
-
-
-
-// parallel structure - imitating behaviours of dict in Python
+unsigned char * divideSearch(unsigned char target, unsigned char *start, unsigned count);
 char Student_name[100][21] = {'\0'};
 unsigned char Student_grade[100] = {0};
-
-
-
 void main(void) {
-
     unsigned N;
     scanf("%u", &N); getchar();
-
     unsigned idx, n;    // loop var
     char ctmp[21]; unsigned char uctmp;
-
-
-    // get Student_name & Student_grade
     for (idx = 0; idx < N; ++idx) {
-        // Thank God there's no spaces in names...
         scanf("%s %hhu", *(Student_name+idx), (Student_grade+idx));
         getchar();      // swallow '\n'
     }
-
-
-    // sort
     for (idx = 0; idx < N; ++idx) {
         for (n = 0; n < N-1-idx; ++n) {
             if (Student_grade[n] < Student_grade[n+1]) {
@@ -39,59 +24,41 @@ void main(void) {
             }
         }
     }
-
-
-
-    // formatted output
     for (idx = 0; idx < N; ++idx) {
         printf("%-20s %hhu\n", Student_name[idx], Student_grade[idx]);
     }
-
-
-    // Task 1 completed
     putchar('\n');
-
-
-
 ////////////////////////////////
-
-
-    // search grade
     unsigned M;
     unsigned char search_cont[100] = {0};
-    // regulation
     scanf("%u", &M); getchar();
     if (M > N) {
         puts("There isn't that much students here!");
         return;
     }
-
-
-    // input search data
     for (idx = 0; idx < M; ++idx) {
         scanf("%hhu", (search_cont+idx));
         getchar();
     }
-
-
-    // find and output
     for (n = 0; n < M; ++n) {
-
-        for (
-            idx = 0;
-            idx<N || (puts("Not found!"), 0);   // utilizing the optimation alg.
-            ++idx
-        ) {
-            if (Student_grade[idx] == search_cont[n]) {
-                printf("%-20s %hhu\n", Student_name[idx], Student_grade[idx]);
-                break;
-            }
+        unsigned char * cur = divideSearch(search_cont[n], Student_grade, N);
+        if (cur != NULL) {
+            printf("%-20s %hhu\n", Student_name[cur-Student_grade], *cur);
         }
-
+        else {
+            puts("Not found!");
+        }
     }   // end of search loop
-
-
-    // 苟利国家生死以，岂因祸福避趋之！
-
     return;
+}
+unsigned char * divideSearch(unsigned char target, unsigned char *start, unsigned count) {
+    unsigned char * pMiddle = start + (int)count/2;
+    if (target == *pMiddle) { return pMiddle; }
+    else if (count == 1) { return NULL; }
+    else if (target > *pMiddle) { return divideSearch(target, start, count/2); }
+    else if (target < *pMiddle) { return divideSearch(target, pMiddle, count - count/2); }
+    else {
+        puts("Unexpected operation!");
+        return NULL;
+    }
 }
