@@ -22,7 +22,7 @@ MyClass __init_MyClass__(
 void func(MyClass *self) {
     /* Some Other Function */
     scanf("%d", &(self->_some_number));
-    puts("Hello, Wolrd!");
+    puts("Hello, World!");
     printf("self._some_number = %d\n", self->_some_number);
     return;
 }

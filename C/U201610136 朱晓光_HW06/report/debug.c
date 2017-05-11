@@ -8,7 +8,10 @@ void main(void)
 }
 char *strcpy(char *s,char *t)
 {
+    // TODO: added line below
+    char *original = s;
     while(*s++=*t++)
     ;
-    return (s);
+    // TODO: modified line below
+    return (original);
 }
