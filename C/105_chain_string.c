@@ -105,7 +105,8 @@ void main(void) {
     //     // printf("Freeing %p\n", str);
     //     free(str);
     // }
-    // free(str_start);
+    // TODO: works on Linux, but not on Windows
+    free(str_start);
 
     return;
 }
