@@ -44,8 +44,9 @@ int nodeCount(Chain *chain) {
     int cnt = 1;
     // add one for each char
     for (; chain->next != NULL; ++cnt) {
-        // add one for \r
-        if (chain->c == '\n') { ++cnt; }
+        // printf("%d\n", cnt);
+        // // add one for \r
+        // if (chain->c == '\n') { ++cnt; }
         chain = chain->next;
     }
     // add one for \0
@@ -66,6 +67,28 @@ void breakChain(Chain *start) {
 
 
 
+
+void insertReturn(Chain *node) {
+    Chain *tmp;
+    while (node->next != NULL) {
+        tmp = node;                         // store previous location
+        node = node->next;                  // move cursor
+        if (tmp->c=='\n' && node->c=='\n') {
+            /* tmp '\n' --> ^($new_node here)^ '\r' --> node '\n' --> (node->next) */
+            Chain *new_node = (Chain *)malloc(sizeof(Chain));
+            new_node->c = '\r';             // instert '\r' between consecutive '\n's
+            new_node->next = node;          // connecting subsequent node
+            tmp->next = new_node;           // connecting previous node
+            // node = new_node->next;          // jump to the subsequent '\n'
+        }
+    }
+}
+
+
+
+
+
+
 //////////////////////////////////////////
 
 void main(void) {
@@ -74,6 +97,8 @@ void main(void) {
     printChain(chain);
 
     putchar('\n');
+
+    insertReturn(chain);
 
     char *str_start = (char *)malloc(sizeof(char) * nodeCount(chain));
     Chain *node = chain; char *str = str_start;
@@ -87,10 +112,10 @@ void main(void) {
     while (node->next != NULL) {
         node = node->next;
         ++str;
-        if (node->c == '\n') {
-            *str = '\r';
-            ++str;
-        }
+        // if (node->c == '\n') {
+        //     *str = '\r';
+        //     ++str;
+        // }
         *str = node->c;
     }
     // end flag
