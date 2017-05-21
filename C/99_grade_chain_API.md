@@ -57,5 +57,6 @@ Node * getNodeById(Node *head, char const *id);
 void modifyChain(Node *head);
 double compareNode(Node A, Node B);
 void sortChainSwapData(Node *head, int cnt);
+void sortChainChangeRoute(Node **headp);
 void freeStudents(Node *cur);
 ```

@@ -216,7 +216,38 @@ void sortChainSwapData(Node *prev, int len) {
 }
 
 
-// void sortChainChangeRoute(...);
+// HACK: got this piece completely from the book, need to study on it
+void sortChainChangeRoute(Node **headp) {
+    Node *prev1, *p1, *prev2, *p2, *tmp;  // notice the sequence here
+    // deal with headp - pointer to head pointer
+    p1 = *headp;
+    p2 = p1->next; prev2 = p1;  // p2 is the current num
+    for (; p2; prev2 = p2, p2 = p2->next) {
+        if (compareNode(*p1, *p2) > 0) {    // swap spaces p1 & p2 are pointing to
+            prev2->next = p1;
+            *tmp = p1->next;
+            p1->next = p2->next;
+            *headp = p2;        // update head pointer
+            p2->next = tmp;
+            p1 = p2;
+        }
+    }
+    // finished with headp
+    prev1 = *headp; p1 = prev1->next;
+    for (; p1->next; prev1 = p1, p1 = p1->next) {
+        p2 = p1->next; prev2 = p1;  // p2 is the current num
+        for (; p2; prev2 = p2, p2 = p2->next) {
+            if (compareNode(*p1, *p2) > 0) {
+                *tmp = p2->next;
+                prev1->next = p2;
+                prev2->next = p1;
+                p2->next = p1->next;
+                p1->next = tmp;
+                p1 = p2;
+            }
+        }
+    }
+}
 
 
 void freeStudents(Node *cur) {
@@ -259,7 +290,8 @@ void main(void) {
     printStudentsStat(chain);
 
     puts("Sort:");
-    sortChainSwapData(chain, cnt);
+    // sortChainSwapData(chain, cnt);
+    sortChainChangeRoute(&chain);
     printStudentsAvg(chain);
 
 
