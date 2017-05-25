@@ -225,7 +225,7 @@ void sortChainChangeRoute(Node **headp) {
     for (; p2; prev2 = p2, p2 = p2->next) {
         if (compareNode(*p1, *p2) > 0) {    // swap spaces p1 & p2 are pointing to
             prev2->next = p1;
-            *tmp = p1->next;
+            tmp = p1->next;
             p1->next = p2->next;
             *headp = p2;        // update head pointer
             p2->next = tmp;
@@ -238,7 +238,7 @@ void sortChainChangeRoute(Node **headp) {
         p2 = p1->next; prev2 = p1;  // p2 is the current num
         for (; p2; prev2 = p2, p2 = p2->next) {
             if (compareNode(*p1, *p2) > 0) {
-                *tmp = p2->next;
+                tmp = p2->next;
                 prev1->next = p2;
                 prev2->next = p1;
                 p2->next = p1->next;
