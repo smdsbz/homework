@@ -3,10 +3,6 @@ Here stores my homework
 
 -------------------------------
 
-a|a|a|a|a|a|a|a|a|a|a|a|aa
--|-|-|-|-|-|-|-|-|-|-|-|---
-a|a|a|a|a|ajfkdasjkl;jl;, jfdlkajkfjlakkjkfdjahfjdalkjfkdjaljklfjdklasjfkldsajklfjasklfjkl;sajkfldsjkl|a|a|a|a|a|a|a
-
 ## LICENSE
 
 _(Just noticed someone stared this repo...)_
