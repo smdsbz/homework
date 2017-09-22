@@ -15,12 +15,6 @@ class FibCache:
             self._cache.append(0)
         self._cache[-1] = 1
     
-    def __getitem__(self, key):
-        '''TEST-USE: show that the list appears to be infinite :-)'''
-        if key >= self._max_size:
-            raise IndexError("Index Out of Range")
-        return self._cache[key % self._max_size]
-    
     def append(self, val):
         self._cache[self._cursor % self._max_size] = val
         self._cursor += 1
