@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+'''
+homework/data_structure/1_17_k_fib.py
+    count the $(m)th $(k)-Fibonacci number
+    with time complexity of O(n)
+'''
+
 class FibCache:
     '''
     Acts like heap?
@@ -7,25 +13,39 @@ class FibCache:
     '''
     
     def __init__(self, k):
+        ''' initialize FibCache instance '''
         self._max_size = k  # pop size
         self._cursor = 0    # get order
         self._cache = []    # actual cache
-        # init self._cache - al zeros
-        for _ in range(k):
+        self._clear_cache()
+
+    def _clear_cache(self):
+        '''
+        init _cache to all 0s
+            NOTE: FibCache can be reused
+        '''
+        for _ in range(self._max_size-1):
             self._cache.append(0)
-        self._cache[-1] = 1
-    
+        self._cache.append(1)
+
     def append(self, val):
+        '''
+        append to LOGICAL tail of cache
+            depricate useless fibonacci value automatically
+        '''
         self._cache[self._cursor % self._max_size] = val
         self._cursor += 1
     
     def _reduce_sum(self):
+        '''
+        a fancier way of saying -
+            SUM from fib_k(n-1) to fib_k(n-k)
+        '''
         return sum(self._cache)
 
     def run(self, tgt):
-        '''
-        Run the session, gives you the result
-        '''
+        ''' starts the calculation session, gives you the result '''
+        self._clear_cache()
         if tgt < self._max_size-1:
             return 0
         if tgt == self._max_size-1:
