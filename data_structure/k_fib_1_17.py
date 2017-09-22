@@ -17,16 +17,22 @@ class FibCache:
         self._max_size = k  # pop size
         self._cursor = 0    # get order
         self._cache = []    # actual cache
-        self._clear_cache()
+        # allocate cache space
+        for _ in range(k-1):
+            self._cache.append(0)
+        self._cache.append(1)
 
-    def _clear_cache(self):
+    def _reset(self):
         '''
         init _cache to all 0s
             NOTE: FibCache can be reused
         '''
-        for _ in range(self._max_size-1):
-            self._cache.append(0)
-        self._cache.append(1)
+        # reset cache
+        for i in range(self._max_size-1):
+            self._cache[i] = 0
+        self._cache[-1] = 1
+        # reset cursor
+        self._cursor = 0
 
     def append(self, val):
         '''
@@ -45,7 +51,7 @@ class FibCache:
 
     def run(self, tgt):
         ''' starts the calculation session, gives you the result '''
-        self._clear_cache()
+        if self._cursor: self._reset() # if not first run -> clean-up
         if tgt < self._max_size-1:
             return 0
         if tgt == self._max_size-1:
