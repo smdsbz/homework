@@ -42,27 +42,27 @@ maxSlidingWindow(int *nums, int numsSize, int k, int *returnSize) {
         go back to 2 till done
   */
 
+  // input validity checking
+  if (numsSize == 0) {
+    // should they give `[]` as `nums`?!
+    *returnSize = 0;
+    return NULL;
+  }
+
   // set `returnSize`
   *returnSize = numsSize - k + 1;
-  if (numsSize == 0) { *returnSize = 0; } // should they give `[]` as `nums`?!
 
   // bakup `nums`
   int *nums_bak = nums; // LeetCode style NFS:
                         //  you magic on the input
 
   // init vars
-  int *maxes = (int *)malloc(*returnSize * sizeof(int));
-  if (maxes == NULL) { return NULL; }
   int left  = 0,
       max_offset = 0, // general offset respective to `nums`
                       // save me the time for `max_offset_from_left--`
       right	= k - 1,
-      i, j;
+      i;
 
-  // validity checking
-  if (k == 0) {
-    return maxes;
-  }
 
   // iter over
   while (right < numsSize) {
