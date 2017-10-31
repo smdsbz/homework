@@ -57,23 +57,28 @@ maxSlidingWindow(int *nums, int numsSize, int k, int *returnSize) {
                         //  you magic on the input
 
   // init vars
-  int left  = 0,
+  int left  = 1,      // skip the first window, specially treated
       max_offset = 0, // general offset respective to `nums`
                       // save me the time for `max_offset_from_left--`
-      right	= k - 1,
+      right	= k,
       i;
 
+  // treat first window
+  for (i = 1; i < k; i++) {
+    if (nums[max_offset] < nums[i]) { max_offset = i; }
+  }
+  nums_bak[0] = nums[max_offset];
+  if (max_offset < left) {
+    for (i = left, max_offset = left; i <= right; i++) {
+      if (nums[max_offset] < nums[i]) { max_offset = i; }
+    }
+  }
 
-  // iter over
+  // iter over the rest
   while (right < numsSize) {
 
-    // set `max_in_curr_win`, `max_offset_from_left`
-    for (i = max_offset + 1; i <= right; i++) {
-      // NOTE: for-loop starts from `max_offset+1`, still O(n)
-      if (nums[max_offset] < nums[i]) {
-        max_offset = i;
-      }
-    }
+    // set `max_offset`
+    if (nums_bak[max_offset] < nums_bak[right]) { max_offset = right; }
 
     // set `nums[left]` to `max_in_curr_win`
     nums_bak[left] = nums[max_offset];
@@ -81,13 +86,14 @@ maxSlidingWindow(int *nums, int numsSize, int k, int *returnSize) {
     // move window
     left++; right++;
     if (max_offset < left) {
-      max_offset = left;
+      for (i = left, max_offset = left; i <= right; i++) {
+        if (nums[max_offset] < nums[i]) { max_offset = i; }
+      }
     }
 
     // DEBUG: print out
     // printList(nums_bak, numsSize);
   }
-
 
   // return
   return nums_bak;  // LeetCode style NFS
@@ -103,13 +109,16 @@ int main(int argc, const char **argv) {
   // int nums[0] = {};
   // int k = 0;
 
-  int nums[3] = {7, 2, 4};
-  int k = 2;
+  // int nums[6] = {1, 3, 1, 2, 0, 5};
+  // int k = 3;
 
-  int *returnSize = (int *)malloc(1 * sizeof(int));
-  int *maxes = maxSlidingWindow(nums, 3, k, returnSize);
+  int nums[2] = {1, -1};
+  int k = 1;
 
-  printList(maxes, *returnSize);
+  int returnSize;
+  int *maxes = maxSlidingWindow(nums, 2, k, &returnSize);
+
+  printList(maxes, returnSize);
 
   return 0;
 }
