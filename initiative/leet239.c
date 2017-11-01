@@ -2,7 +2,7 @@
   LeetCode #239 - Sliding Window Maximum
   (https://leetcode.com/problems/sliding-window-maximum/)
 
-  solution of O(n) below beat only 10% of submissions
+  an O(n)-solution beat only 20% of submissions
 */
 
 
