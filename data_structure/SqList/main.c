@@ -89,7 +89,6 @@ int main(int argc, const char *argv[]) {
     /* 执行操作 */
     switch (op) {
       case 1: {
-        //printf("\n----IntiaList功能待实现！\n");
         if (SqList_init(&L) == OK) { printf("线性表创建成功！\n"); }
         else { printf("线性表创建失败！\n"); }
         getchar(); getchar();
@@ -515,11 +514,9 @@ SqList_selectList(SqList *l, SqList pool[], int *current_list, int idx) {
     return ERROR;
   }
   idx--;
-  // 保存之前的改动到 `pool` 中
-  pool[*current_list].elem = l->elem;
-  pool[*current_list].length = l->length;
-  pool[*current_list].list_size = l->list_size;
+  pool[*current_list] = *l;
   // 加载目标表数据
+  // NOTE: 由于 `L` 不是 malloc 出来的，不能直接改变其指向
   l->elem = pool[idx].elem;
   l->length = pool[idx].length;
   l->list_size = pool[idx].list_size;
