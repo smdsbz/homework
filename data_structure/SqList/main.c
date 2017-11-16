@@ -287,6 +287,12 @@ SqList_clear(SqList *l) {
   }
   // 直接将表大小置 0
   l->length = 0;
+  // 减少空间占用
+  if (l->list_size > LIST_INIT_SIZE) {
+    free(l->elem);
+    l->elem = (ElemType *)malloc(LIST_INIT_SIZE * sizeof(ElemType));
+    if (!l->elem) { exit(OVERFLOW); }
+  }
   return OK;
 }
 
@@ -363,7 +369,7 @@ SqList_priorElem(SqList l, ElemType cur_e, ElemType *pre_e) {
             // 第二个 -1 : 位序转偏移量
   if (idx == ERROR - 2) {
     printf("未找到元素值值为输入值的元素！\n");
-    return ERROR;
+    return FALSE;
   }
   if (idx == -1) {
     printf("元素值为输入值的元素为表中第一个元素！\n");
@@ -388,7 +394,7 @@ SqList_nextElem(SqList l, ElemType cur_e, ElemType *next_e) {
   int idx = Sqlist_locateElem(l, cur_e);  // NOTE: 重复了合法性检测
   if (idx == ERROR) {
     printf("未找到元素值值为输入值的元素！\n");
-    return ERROR;
+    return FALSE;
   }
   if (idx == l.length) {
     printf("元素值为输入值的元素为表中最后一个元素！\n");
@@ -456,8 +462,7 @@ SqList_delete(SqList *l, int i, ElemType *e) {
   }
   // 检查是否可以减小栈容量
   // HACK: 与上一步进行合并可以减小时间消耗
-  if (l->list_size - l->length > LIST_INC_SIZE
-      && l->length != 0) {
+  if (l->list_size - l->length > LIST_INC_SIZE) {
     l->elem = (ElemType *)realloc(l->elem,
         (l->list_size - LIST_INC_SIZE) * sizeof(ElemType));
     if (!l->elem) { exit(OVERFLOW); }
