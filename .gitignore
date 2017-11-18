@@ -1,4 +1,6 @@
 .out
 .pyc
 .DS_Store
+~\$*?.doc?
+^Backup\ of*?.doc?
 
