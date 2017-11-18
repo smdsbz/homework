@@ -21,10 +21,11 @@ typedef int status;
 typedef int ElemType;
 
 /* Page 22 */
-#define LIST_INIT_SIZE  100
-#define LIST_INC_SIZE   10
+#define LIST_INIT_SIZE  2
+#define LIST_INC_SIZE   1
 
 #define LIST_POOL_SIZE  20
+
 /* 基于顺序存储结构的线性表数据结构定义 */
 typedef struct _SqList {
   ElemType *elem;       // 指向线性存储区
@@ -112,7 +113,7 @@ int main(int argc, const char *argv[]) {
         if (result == TRUE) { printf("线性表为空表！\n"); }
         // NOTE: 由于 FALSE 和 ERROR 值均为 0 ，故当线性表还没有创建时，使用
         //       该功能将同时输出“线性表还没有被创建！”和“线性表不为空表！”
-        else if (result == FALSE) { printf("线性表不为空表\n"); }
+        else if (result == FALSE) { printf("线性表不为空表！\n"); }
         else { printf("操作失败！\n"); }
         getchar(); getchar();
         break;
@@ -138,7 +139,7 @@ int main(int argc, const char *argv[]) {
         printf("请输入要查找的元素的值： "); scanf("%d", &target);
         int ret = Sqlist_locateElem(L, target);
         if (ret == 0) { printf("该元素不在线性表中！\n"); }
-        else { printf("该元素在线性表中的位序为 %d\n", ret); }
+        else { printf("该元素在线性表中的位序为 %d 。\n", ret); }
         getchar(); getchar();
         break;
       }
@@ -305,7 +306,7 @@ SqList_length(SqList l) {
     return ERROR;
   }
   // 直接返回结构体中定义的表长
-  return l.length;
+  return l.length;  // NOTE: 表长为零时返回 0 ，正好是 ERROR 的值，主函数无法区分！
 }
 
 
