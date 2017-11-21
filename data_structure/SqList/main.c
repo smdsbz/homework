@@ -64,7 +64,7 @@ int main(int argc, const char *argv[]) {
     list_pool[i].length = 0;
     list_pool[i].list_size = 0;
   }
-  SqList L;
+  SqList L; L.elem = NULL; L.length = 0; L.list_size = 0;  // 初始化
   int op=1; // 操作表示符
   while (op) {
     /*system("cls");*/ system("clear"); printf("\n\n");
@@ -225,9 +225,7 @@ int main(int argc, const char *argv[]) {
 status
 SqList_init(SqList *L) {
   if (L->elem) {
-    printf("该线程下已有挂载的线性表！\n");
-    return ERROR;
-  }
+    printf("该线程下已有挂载的线性表！\n"); return ERROR; }
   L->elem = (ElemType *)malloc(LIST_INIT_SIZE * sizeof(ElemType));
   if (!L->elem) { return ERROR; }
   L->length = 0; L->list_size = LIST_INIT_SIZE;
