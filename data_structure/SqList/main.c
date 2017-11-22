@@ -223,6 +223,12 @@ int main(int argc, const char *argv[]) {
 
 /*** 函数具体实现 ***/
 
+/*
+ * 函数名称：SqList_init
+ * 函数参数：线性表 L 的指针
+ * 函数功能：构造一个空的线性表
+ * 返回值：  成功构造返回 OK ，否则返回 ERROR
+ */
 status
 SqList_init(SqList *L) {
   if (L->elem) {
@@ -238,6 +244,12 @@ SqList_init(SqList *L) {
 }
 
 
+/*
+ * 函数名称：SqList_traverse
+ * 函数参数：线性表 L
+ * 函数功能：依次访问并显示线性表中的每个元素
+ * 返回值：  成功遍历返回 OK ，否则返回ERROR
+ */
 status
 SqList_traverse(SqList L) {
   if (!L.elem) {
@@ -252,6 +264,12 @@ SqList_traverse(SqList L) {
 }
 
 
+/*
+ * 函数名称：SqList_destroy
+ * 函数参数：线性表 L 的指针
+ * 函数功能：销毁线性表
+ * 返回值：  成功销毁返回 OK ，否则返回 ERROR
+ */
 status
 SqList_destroy(SqList *l) {
   // 合法性检测
@@ -265,7 +283,12 @@ SqList_destroy(SqList *l) {
   return OK;
 }
 
-
+/*
+ * 函数名称：SqList_clear
+ * 函数参数：线性表 L 的指针
+ * 函数功能：重置线性表
+ * 返回值：  成功置空返回 OK ，否则返回 ERROR
+ */
 status
 SqList_clear(SqList *l) {
   // 合法性检测
@@ -285,6 +308,13 @@ SqList_clear(SqList *l) {
 }
 
 
+/*
+ * 函数名称：SqList_empty
+ * 函数参数：线性表 L
+ * 函数功能：判断线性表是否为空
+ * 返回值：  若 L 为空表则返回 TRUE ，否则返回 FALSE
+ *           判断失败返回 ERROR
+ */
 status
 SqList_empty(SqList l) {
   // 合法性检测
@@ -297,6 +327,12 @@ SqList_empty(SqList l) {
 }
 
 
+/*
+ * 函数名称：SqList_length
+ * 函数参数：线性表 L
+ * 函数功能：计算线性表 L 中数据元素的个数
+ * 返回值：  计算成功则返回 L 中数据元素的个数，计算失败返回 ERROR
+ */
 int
 SqList_length(SqList l) {
   // 合法性检测
@@ -309,6 +345,12 @@ SqList_length(SqList l) {
 }
 
 
+/*
+ * 函数名称：SqList_getElem
+ * 函数参数：线性表 L ，用 e 带回第 i 个数据元素的值
+ * 函数功能：查找并用 e 带回第 i 个元素的值
+ * 返回值：  查找成功则返回 OK ，否则返回 ERROR
+ */
 status
 SqList_getElem(SqList l, int idx, ElemType *e) {
   // 合法性检测
@@ -326,6 +368,13 @@ SqList_getElem(SqList l, int idx, ElemType *e) {
 }
 
 
+/* 
+ * 函数名称：SqList_locateElem
+ * 函数参数：线性表 L ，相比对的元素值
+ * 函数功能：查找 L 中数据值与 e 相同的元素所在的位序
+ * 返回值：  成功则返回第一个与 e 相同的元素所在的位序，不存在则返回 0，
+ *           否则返回 ERROR
+ */
 status
 Sqlist_locateElem(SqList l, ElemType e) {
   // 合法性检测
@@ -343,6 +392,12 @@ Sqlist_locateElem(SqList l, ElemType e) {
 }
 
 
+/*
+ * 函数名称：SqList_priorElem
+ * 函数参数：线性表 L ，查找的数据 cur_e ，其前驱值用 pre_e 带回
+ * 函数功能：查找 L 中与 cur_e 相同的第一个数据，并用 pre_e 带回其前驱的值
+ * 返回值：  操作成功则返回 OK ，否则返回 ERROR
+ */
 status
 SqList_priorElem(SqList l, ElemType cur_e, ElemType *pre_e) {
   // 合法性检测
@@ -358,7 +413,7 @@ SqList_priorElem(SqList l, ElemType cur_e, ElemType *pre_e) {
   // 检查 `cur_e` 合法性
   if (idx == ERROR - 2) {
     printf("未找到元素值值为输入值的元素！\n");
-    return FALSE;
+    return ERROR;
   }
   if (idx == -1) {
     printf("元素值为输入值的元素为表中第一个元素！\n");
@@ -371,6 +426,12 @@ SqList_priorElem(SqList l, ElemType cur_e, ElemType *pre_e) {
 }
 
 
+/*
+ * 函数名称：SqList_nextElem
+ * 函数参数：线性表 L ，查找的数据 cur_e ，其后继值用 next_e 带回
+ * 函数功能：查找 L 中与 cur_e 相同的第一个数据，并用 next_e 带回其后继的值
+ * 返回值：  操作成功则返回 OK ，否则返回 ERROR
+ */
 status
 SqList_nextElem(SqList l, ElemType cur_e, ElemType *next_e) {
   // 合法性检测
@@ -380,11 +441,11 @@ SqList_nextElem(SqList l, ElemType cur_e, ElemType *next_e) {
   }
   // 获取 `cur_e` 位序
   int idx = Sqlist_locateElem(l, cur_e);
-  // idx = idx + 1 - 1;
+  // idx = idx + 1 - 1;	// 类似于 SqList_priorElem 中的操作，但恰好不改变元素值
   // 检查 `cur_e` 合法性
   if (idx == ERROR) {
     printf("未找到元素值值为输入值的元素！\n");
-    return FALSE;
+    return ERROR;
   }
   if (idx == l.length) {
     printf("元素值为输入值的元素为表中最后一个元素！\n");
@@ -397,6 +458,13 @@ SqList_nextElem(SqList l, ElemType cur_e, ElemType *next_e) {
 }
 
 
+/*
+ * 函数名称：SqList_insert
+ * 函数参数：线性表 L 的地址，插入的位置 i ，插入的数据元素 e
+ * 函数功能：在 L 的第 i 个位置之前插入新的数据元素 e
+ *           若已插满，则按照分配增量，分配更大的空间，再插入
+ * 返回值：  成功插入返回 OK ，否则返回 ERROR
+ */
 status
 SqList_insert(SqList *l, int i, ElemType e) {
   // 合法性检测
@@ -432,6 +500,13 @@ SqList_insert(SqList *l, int i, ElemType e) {
 }
 
 
+/*
+ * 函数名称：SqList_delete
+ * 函数参数：线性表 L 的地址，删除的位序 i ，带回数据的指针 e
+ * 函数功能：删除 L 的第 i 个数据元素，用 e 返回其值
+ *           若可以缩小分配增量所指明的空间，则重新分配更小的空间
+ * 返回值：  成功删除返回 OK ，否则返回 ERROR
+ */
 status
 SqList_delete(SqList *l, int i, ElemType *e) {
   // 合法性检测
@@ -461,6 +536,12 @@ SqList_delete(SqList *l, int i, ElemType *e) {
 }
 
 
+/*
+ * 函数名称：SqList_saveList
+ * 函数参数：文件指针 fp ，线性表 L
+ * 函数功能：将 L 中的数据保存到 fp 指向的文件中
+ * 返回值：  成功保存返回 OK ，否则返回 ERROR
+ */
 status
 SqList_saveList(FILE *fp, SqList l) {
   /*
@@ -495,6 +576,12 @@ SqList_writeToFile(SqList l, const char *filename) {
 }
 
 
+/*
+ * 函数名称：SqList_loadList
+ * 函数参数：文件指针 fp ，线性表 L 的地址
+ * 函数功能：将 fp 指向文件中的数据，加载到线性表 L 中
+ * 返回值：  加载成功返回 OK ，加载失败返回 ERROR
+ */
 status
 SqList_loadList(FILE *fp, SqList *l) {
   /*
@@ -543,6 +630,14 @@ SqList_readFromFile(SqList *l, const char *path) {
 }
 
 
+/*
+ * 函数名称：SqList_selectList
+ * 函数参数：线性表 L 的地址，多表数组 pool ，
+ *           存放 L 在 pool 中位置的 current_list （0-下标）的地址，
+ *           要切换到的线性表在 pool 中的位序 idx （1-下标）
+ * 函数功能：切换工作表到 pool 中第 idx 个线性表
+ * 返回值：  成功切换返回 OK ，否则返回 ERROR
+ */
 status
 SqList_selectList(SqList *l, SqList pool[], int *current_list, int idx) {
   // 合法性检测

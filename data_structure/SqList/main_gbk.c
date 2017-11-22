@@ -34,23 +34,25 @@ typedef struct _SqList {
 } SqList;
 
 /* Page 19 */
-status SqList_init(SqList *l);
-status SqList_destroy(SqList *l);
-status SqList_clear(SqList *l);
-status SqList_empty(SqList l);
-int SqList_length(SqList l);
-status SqList_getElem(SqList l, int i, ElemType *e);
-status Sqlist_locateElem(SqList l, ElemType e);
-status SqList_priorElem(SqList l, ElemType cur, ElemType *pre_e);
-status SqList_nextElem(SqList l, ElemType cur, ElemType *next_e);
-status SqList_insert(SqList *l, int i, ElemType e);
-status SqList_delete(SqList *l, int i, ElemType *e);
-status SqList_traverse(SqList l);
+status IntiaList(SqList *l);
+status DestroyList(SqList *l);
+status ClearList(SqList *l);
+status ListEmpty(SqList l);
+int ListLength(SqList l);
+status GetElem(SqList l, int i, ElemType *e);
+status LocateElem(SqList l, ElemType e);
+status PriorElem(SqList l, ElemType cur, ElemType *pre_e);
+status NextElem(SqList l, ElemType cur, ElemType *next_e);
+status ListInsert(SqList *l, int i, ElemType e);
+status ListDelete(SqList *l, int i, ElemType *e);
+status ListTrabverse(SqList l);
 /* 文件操作 */
+status SaveList(FILE *fp, SqList l);
+status LoadList(FILE *fp, SqList *l);
 status SqList_writeToFile(SqList l, const char *filename);
 status SqList_readFromFile(SqList *l, const char *path);
 /* 多表操作 */
-status SqList_selectList(SqList *l, SqList pool[], int *cur, int idx);
+status SelectList(SqList *l, SqList pool[], int *cur, int idx);
 
 
 /* Main */
@@ -67,21 +69,21 @@ int main(int argc, const char *argv[]) {
   SqList L; L.elem = NULL; L.length = 0; L.list_size = 0;  // 初始化
   int op=1; // 操作表示符
   while (op) {
-    system("cls");  // Win
+    system("cls");	// Win
     printf("\n\n");
 
     /* 操作选择提示 */
     printf("   Menu for Linear Table On Sequence Structure\n");
     printf("-------------------------------------------------\n");
-    printf("       1. InitList        7. LocateElem\n");
+    printf("       1. IntiaList       7. LocateElem\n");
     printf("       2. DestroyList     8. PriorElem\n");
     printf("       3. ClearList       9. NextElem\n");
     printf("       4. ListEmpty      10. ListInsert\n");
     printf("       5. ListLength     11. ListDelete\n");
-    printf("       6. GetElem        12. ListTraverse\n");
+    printf("       6. GetElem        12. ListTrabverse\n");
     printf("\n");
     printf("--------------------- EXTRA ---------------------\n");
-    printf("      13. WriteToFile    14. ReadFromFile\n");
+    printf("      13. SaveList       14. LoadList\n");
     printf("      15. SelectList\n");
     printf("\n");
     printf("       0. Exit\n");
@@ -92,25 +94,25 @@ int main(int argc, const char *argv[]) {
     /* 执行操作 */
     switch (op) {
       case 1: {
-        if (SqList_init(&L) == OK) { printf("线性表创建成功！\n"); }
+        if (IntiaList(&L) == OK) { printf("线性表创建成功！\n"); }
         else { printf("线性表创建失败！\n"); }
         getchar(); getchar();
         break;
       }
       case 2: {
-        if (SqList_destroy(&L) == OK) { printf("线性表销毁成功！\n"); }
+        if (DestroyList(&L) == OK) { printf("线性表销毁成功！\n"); }
         else { printf("线性表销毁失败！\n"); }
         getchar(); getchar();
         break;
       }
       case 3: {
-        if (SqList_clear(&L) == OK) { printf("线性表置空成功！\n"); }
+        if (ClearList(&L) == OK) { printf("线性表置空成功！\n"); }
         else { printf("线性表置空失败！\n"); }
         getchar(); getchar();
         break;
       }
       case 4: {
-        int result = SqList_empty(L);
+        int result = ListEmpty(L);
         if (result == TRUE) { printf("线性表为空表！\n"); }
         // NOTE: 由于 FALSE 和 ERROR 值均为 0 ，故当线性表还没有创建时，使用
         //       该功能将同时输出“线性表还没有被创建！”和“线性表不为空表！”
@@ -120,7 +122,7 @@ int main(int argc, const char *argv[]) {
         break;
       }
       case 5: {
-        int ret = SqList_length(L);
+        int ret = ListLength(L);
         if (ret != ERROR) { printf("线性表表长为 %d 。\n", ret); }
         else { printf("获取线性表表长失败！\n"); }
         getchar(); getchar();
@@ -129,7 +131,7 @@ int main(int argc, const char *argv[]) {
       case 6: {
         int index; ElemType result; // 函数参数
         printf("请输入元素位序： "); scanf("%d", &index);
-        int ret = SqList_getElem(L, index, &result);  // 存取返回状态码
+        int ret = GetElem(L, index, &result);  // 存取返回状态码
         if (ret == OK) { printf("该元素值为 %d 。\n", result); }
         else { printf("获取元素值失败！\n"); }
         getchar(); getchar();
@@ -138,7 +140,7 @@ int main(int argc, const char *argv[]) {
       case 7: {
         int target;
         printf("请输入要查找的元素的值： "); scanf("%d", &target);
-        int ret = Sqlist_locateElem(L, target);
+        int ret = LocateElem(L, target);
         if (ret == 0) { printf("该元素不在线性表中！\n"); }
         else { printf("该元素在线性表中的位序为 %d 。\n", ret); }
         getchar(); getchar();
@@ -147,7 +149,7 @@ int main(int argc, const char *argv[]) {
       case 8: {
         ElemType current, previous;
         printf("请输入要目标元素的直接后继的元素值： "); scanf("%d", &current);
-        int ret = SqList_priorElem(L, current, &previous);
+        int ret = PriorElem(L, current, &previous);
         if (ret == OK) { printf("目标元素值为 %d 。\n", previous); }
         else { printf("获取目标元素失败！\n"); }
         getchar(); getchar();
@@ -156,7 +158,7 @@ int main(int argc, const char *argv[]) {
       case 9: {
         ElemType current, next;
         printf("请输入要目标元素的直接前驱的元素值： "); scanf("%d", &current);
-        int ret = SqList_nextElem(L, current, &next);
+        int ret = NextElem(L, current, &next);
         if (ret == OK) { printf("目标元素值为 %d 。\n", next); }
         else { printf("获取目标元素失败！\n"); }
         getchar(); getchar();
@@ -166,7 +168,7 @@ int main(int argc, const char *argv[]) {
         int key; ElemType value;
         printf("请输入要插入元素的位置： "); scanf("%d", &key);
         printf("请输入要插入元素的值： "); scanf("%d", &value);
-        if (SqList_insert(&L, key, value) == OK) { printf("成功插入元素！\n"); }
+        if (ListInsert(&L, key, value) == OK) { printf("成功插入元素！\n"); }
         else { printf("插入元素失败！\n"); }
         getchar(); getchar();
         break;
@@ -174,14 +176,14 @@ int main(int argc, const char *argv[]) {
       case 11: {
         int key; ElemType value;
         printf("请输入要删除元素的位序： "); scanf("%d", &key);
-        int ret = SqList_delete(&L, key, &value);
+        int ret = ListDelete(&L, key, &value);
         if (ret == OK) { printf("成功删除元素，其值为 %d 。\n", value); }
         else { printf("删除元素失败！\n"); }
         getchar(); getchar();
         break;
       }
       case 12: {
-        if (!SqList_traverse(L)) { printf("线性表是空表！\n"); }
+        if (!ListTrabverse(L)) { printf("线性表是空表！\n"); }
         getchar(); getchar();
         break;
       }
@@ -206,7 +208,7 @@ int main(int argc, const char *argv[]) {
       case 15: {
         int index;
         printf("请输入要操作的表的位序： "); scanf("%d", &index);
-        if (SqList_selectList(&L, list_pool, &current_list, index) == OK) {
+        if (SelectList(&L, list_pool, &current_list, index) == OK) {
           printf("切换操作表成功！\n");
         } else { printf("切换操作表失败！\n"); }
         getchar(); getchar();
@@ -223,8 +225,14 @@ int main(int argc, const char *argv[]) {
 
 /*** 函数具体实现 ***/
 
+/*
+ * 函数名称：IntiaList
+ * 函数参数：线性表 L 的指针
+ * 函数功能：构造一个空的线性表
+ * 返回值：  成功构造返回 OK ，否则返回 ERROR
+ */
 status
-SqList_init(SqList *L) {
+IntiaList(SqList *L) {
   if (L->elem) {
     printf("该线程下已有挂载的线性表！\n"); return ERROR; }
   L->elem = (ElemType *)malloc(LIST_INIT_SIZE * sizeof(ElemType));
@@ -238,8 +246,14 @@ SqList_init(SqList *L) {
 }
 
 
+/*
+ * 函数名称：ListTrabverse
+ * 函数参数：线性表 L
+ * 函数功能：依次访问并显示线性表中的每个元素
+ * 返回值：  成功遍历返回 OK ，否则返回ERROR
+ */
 status
-SqList_traverse(SqList L) {
+ListTrabverse(SqList L) {
   if (!L.elem) {
     printf("线性表还没有被创建！\n");
     return ERROR;
@@ -252,8 +266,14 @@ SqList_traverse(SqList L) {
 }
 
 
+/*
+ * 函数名称：DestroyList
+ * 函数参数：线性表 L 的指针
+ * 函数功能：销毁线性表
+ * 返回值：  成功销毁返回 OK ，否则返回 ERROR
+ */
 status
-SqList_destroy(SqList *l) {
+DestroyList(SqList *l) {
   // 合法性检测
   if (!l->elem) {
     printf("线性表还没有被创建！\n");
@@ -265,9 +285,14 @@ SqList_destroy(SqList *l) {
   return OK;
 }
 
-
+/*
+ * 函数名称：ClearList
+ * 函数参数：线性表 L 的指针
+ * 函数功能：重置线性表
+ * 返回值：  成功置空返回 OK ，否则返回 ERROR
+ */
 status
-SqList_clear(SqList *l) {
+ClearList(SqList *l) {
   // 合法性检测
   if (!l->elem) {
     printf("线性表还没有被创建！\n");
@@ -285,8 +310,15 @@ SqList_clear(SqList *l) {
 }
 
 
+/*
+ * 函数名称：ListEmpty
+ * 函数参数：线性表 L
+ * 函数功能：判断线性表是否为空
+ * 返回值：  若 L 为空表则返回 TRUE ，否则返回 FALSE
+ *           判断失败返回 ERROR
+ */
 status
-SqList_empty(SqList l) {
+ListEmpty(SqList l) {
   // 合法性检测
   if (!l.elem) {
     printf("线性表还没有被创建！\n");
@@ -297,8 +329,14 @@ SqList_empty(SqList l) {
 }
 
 
+/*
+ * 函数名称：ListLength
+ * 函数参数：线性表 L
+ * 函数功能：计算线性表 L 中数据元素的个数
+ * 返回值：  计算成功则返回 L 中数据元素的个数，计算失败返回 ERROR
+ */
 int
-SqList_length(SqList l) {
+ListLength(SqList l) {
   // 合法性检测
   if (!l.elem) {
     printf("线性表还没有被创建！\n");
@@ -309,8 +347,14 @@ SqList_length(SqList l) {
 }
 
 
+/*
+ * 函数名称：GetElem
+ * 函数参数：线性表 L ，用 e 带回第 i 个数据元素的值
+ * 函数功能：查找并用 e 带回第 i 个元素的值
+ * 返回值：  查找成功则返回 OK ，否则返回 ERROR
+ */
 status
-SqList_getElem(SqList l, int idx, ElemType *e) {
+GetElem(SqList l, int idx, ElemType *e) {
   // 合法性检测
   if (!l.elem) {
     printf("线性表还没有被创建！\n");
@@ -326,8 +370,15 @@ SqList_getElem(SqList l, int idx, ElemType *e) {
 }
 
 
+/*
+ * 函数名称：LocateElem
+ * 函数参数：线性表 L ，相比对的元素值
+ * 函数功能：查找 L 中数据值与 e 相同的元素所在的位序
+ * 返回值：  成功则返回第一个与 e 相同的元素所在的位序，不存在则返回 0，
+ *           否则返回 ERROR
+ */
 status
-Sqlist_locateElem(SqList l, ElemType e) {
+LocateElem(SqList l, ElemType e) {
   // 合法性检测
   if (!l.elem) {
     printf("线性表还没有被创建！\n");
@@ -343,22 +394,28 @@ Sqlist_locateElem(SqList l, ElemType e) {
 }
 
 
+/*
+ * 函数名称：PriorElem
+ * 函数参数：线性表 L ，查找的数据 cur_e ，其前驱值用 pre_e 带回
+ * 函数功能：查找 L 中与 cur_e 相同的第一个数据，并用 pre_e 带回其前驱的值
+ * 返回值：  操作成功则返回 OK ，否则返回 ERROR
+ */
 status
-SqList_priorElem(SqList l, ElemType cur_e, ElemType *pre_e) {
+PriorElem(SqList l, ElemType cur_e, ElemType *pre_e) {
   // 合法性检测
   if (!l.elem) {
     printf("线性表还没有被创建！\n");
     return ERROR;
   }
   // 获取 `cur_e` 位序
-  int idx = Sqlist_locateElem(l, cur_e);  // NOTE: 重复了合法性检测
+  int idx = LocateElem(l, cur_e);  // NOTE: 重复了合法性检测
   idx -= 2; // 获取 `pre_e` 对基地址的偏移量
             // 第一个 -1 : 前一个元素
             // 第二个 -1 : 位序转偏移量
   // 检查 `cur_e` 合法性
   if (idx == ERROR - 2) {
     printf("未找到元素值值为输入值的元素！\n");
-    return FALSE;
+    return ERROR;
   }
   if (idx == -1) {
     printf("元素值为输入值的元素为表中第一个元素！\n");
@@ -371,20 +428,26 @@ SqList_priorElem(SqList l, ElemType cur_e, ElemType *pre_e) {
 }
 
 
+/*
+ * 函数名称：NextElem
+ * 函数参数：线性表 L ，查找的数据 cur_e ，其后继值用 next_e 带回
+ * 函数功能：查找 L 中与 cur_e 相同的第一个数据，并用 next_e 带回其后继的值
+ * 返回值：  操作成功则返回 OK ，否则返回 ERROR
+ */
 status
-SqList_nextElem(SqList l, ElemType cur_e, ElemType *next_e) {
+NextElem(SqList l, ElemType cur_e, ElemType *next_e) {
   // 合法性检测
   if (!l.elem) {
     printf("线性表还没有被创建！\n");
     return ERROR;
   }
   // 获取 `cur_e` 位序
-  int idx = Sqlist_locateElem(l, cur_e);
-  // idx = idx + 1 - 1;
+  int idx = LocateElem(l, cur_e);
+  // idx = idx + 1 - 1;	// 类似于 PriorElem 中的操作，但恰好不改变元素值
   // 检查 `cur_e` 合法性
   if (idx == ERROR) {
     printf("未找到元素值值为输入值的元素！\n");
-    return FALSE;
+    return ERROR;
   }
   if (idx == l.length) {
     printf("元素值为输入值的元素为表中最后一个元素！\n");
@@ -397,8 +460,15 @@ SqList_nextElem(SqList l, ElemType cur_e, ElemType *next_e) {
 }
 
 
+/*
+ * 函数名称：ListInsert
+ * 函数参数：线性表 L 的地址，插入的位置 i ，插入的数据元素 e
+ * 函数功能：在 L 的第 i 个位置之前插入新的数据元素 e
+ *           若已插满，则按照分配增量，分配更大的空间，再插入
+ * 返回值：  成功插入返回 OK ，否则返回 ERROR
+ */
 status
-SqList_insert(SqList *l, int i, ElemType e) {
+ListInsert(SqList *l, int i, ElemType e) {
   // 合法性检测
   if (!l->elem) {
     printf("线性表还没有被创建！\n");
@@ -432,8 +502,15 @@ SqList_insert(SqList *l, int i, ElemType e) {
 }
 
 
+/*
+ * 函数名称：ListDelete
+ * 函数参数：线性表 L 的地址，删除的位序 i ，带回数据的指针 e
+ * 函数功能：删除 L 的第 i 个数据元素，用 e 返回其值
+ *           若可以缩小分配增量所指明的空间，则重新分配更小的空间
+ * 返回值：  成功删除返回 OK ，否则返回 ERROR
+ */
 status
-SqList_delete(SqList *l, int i, ElemType *e) {
+ListDelete(SqList *l, int i, ElemType *e) {
   // 合法性检测
   if (!l->elem) {
     printf("线性表还没有被创建！\n");
@@ -461,8 +538,14 @@ SqList_delete(SqList *l, int i, ElemType *e) {
 }
 
 
+/*
+ * 函数名称：SaveList
+ * 函数参数：文件指针 fp ，线性表 L
+ * 函数功能：将 L 中的数据保存到 fp 指向的文件中
+ * 返回值：  成功保存返回 OK ，否则返回 ERROR
+ */
 status
-SqList_saveList(FILE *fp, SqList l) {
+SaveList(FILE *fp, SqList l) {
   /*
    *  配合 API 用的 wrapper
    */
@@ -487,7 +570,7 @@ SqList_writeToFile(SqList l, const char *filename) {
     return ERROR;
   }
   // 写入
-  if (SqList_saveList(fp, l) != OK) {
+  if (SaveList(fp, l) != OK) {
     /* pass */
     return ERROR;
   }
@@ -495,8 +578,14 @@ SqList_writeToFile(SqList l, const char *filename) {
 }
 
 
+/*
+ * 函数名称：LoadList
+ * 函数参数：文件指针 fp ，线性表 L 的地址
+ * 函数功能：将 fp 指向文件中的数据，加载到线性表 L 中
+ * 返回值：  加载成功返回 OK ，加载失败返回 ERROR
+ */
 status
-SqList_loadList(FILE *fp, SqList *l) {
+LoadList(FILE *fp, SqList *l) {
   /*
    *  配合 API 用的 wrapper
    */
@@ -535,7 +624,7 @@ SqList_readFromFile(SqList *l, const char *path) {
     return ERROR;
   }
   // 读取
-  if (SqList_loadList(fp, l) != OK) {
+  if (LoadList(fp, l) != OK) {
     /* pass */
     return ERROR;
   }
@@ -543,8 +632,16 @@ SqList_readFromFile(SqList *l, const char *path) {
 }
 
 
+/*
+ * 函数名称：SelectList
+ * 函数参数：线性表 L 的地址，多表数组 pool ，
+ *           存放 L 在 pool 中位置的 current_list （0-下标）的地址，
+ *           要切换到的线性表在 pool 中的位序 idx （1-下标）
+ * 函数功能：切换工作表到 pool 中第 idx 个线性表
+ * 返回值：  成功切换返回 OK ，否则返回 ERROR
+ */
 status
-SqList_selectList(SqList *l, SqList pool[], int *current_list, int idx) {
+SelectList(SqList *l, SqList pool[], int *current_list, int idx) {
   // 合法性检测
   if (idx < 1 || idx > LIST_POOL_SIZE) {
     printf("输入地址格式不合法！\n");
