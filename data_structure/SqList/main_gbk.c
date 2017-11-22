@@ -69,8 +69,7 @@ int main(int argc, const char *argv[]) {
   SqList L; L.elem = NULL; L.length = 0; L.list_size = 0;  // 初始化
   int op=1; // 操作表示符
   while (op) {
-    system("cls");	// Win
-    printf("\n\n");
+    system("cls"); printf("\n\n");  // PLATFORM: Win only
 
     /* 操作选择提示 */
     printf("   Menu for Linear Table On Sequence Structure\n");
@@ -233,8 +232,7 @@ int main(int argc, const char *argv[]) {
  */
 status
 IntiaList(SqList *L) {
-  if (L->elem) {
-    printf("该线程下已有挂载的线性表！\n"); return ERROR; }
+  if (L->elem) { printf("该线程下已有挂载的线性表！\n"); return ERROR; }
   L->elem = (ElemType *)malloc(LIST_INIT_SIZE * sizeof(ElemType));
   if (!L->elem) { return ERROR; }
   L->length = 0; L->list_size = LIST_INIT_SIZE;
@@ -254,10 +252,7 @@ IntiaList(SqList *L) {
  */
 status
 ListTrabverse(SqList L) {
-  if (!L.elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!L.elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   int i;
   printf("\n-----------all elements -----------------------\n");
   for (i = 0; i < L.length; i++) { printf("%d ", L.elem[i]); }
@@ -275,10 +270,7 @@ ListTrabverse(SqList L) {
 status
 DestroyList(SqList *l) {
   // 合法性检测
-  if (!l->elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!l->elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   // 释放空间
   free(l->elem);
   l->elem = NULL; l->length = 0; l->list_size = 0;
@@ -320,10 +312,7 @@ ClearList(SqList *l) {
 status
 ListEmpty(SqList l) {
   // 合法性检测
-  if (!l.elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!l.elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   if (l.length) { return FALSE; }
   return TRUE;
 }
@@ -338,10 +327,7 @@ ListEmpty(SqList l) {
 int
 ListLength(SqList l) {
   // 合法性检测
-  if (!l.elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!l.elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   // 直接返回结构体中定义的表长
   return l.length;  // NOTE: 表长为零时返回 0 ，正好是 ERROR 的值，主函数无法区分！
 }
@@ -356,10 +342,7 @@ ListLength(SqList l) {
 status
 GetElem(SqList l, int idx, ElemType *e) {
   // 合法性检测
-  if (!l.elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!l.elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   if (idx > l.length || idx < 1) {
     printf("输入地址格式不合法！\n");
     return ERROR;
@@ -380,10 +363,7 @@ GetElem(SqList l, int idx, ElemType *e) {
 status
 LocateElem(SqList l, ElemType e) {
   // 合法性检测
-  if (!l.elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!l.elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   // 遍历查找元素
   int idx = 1;  // 直接从 1 开始加，省得后面序列转位序还要加一
   for (; l.elem[idx - 1] != e; idx++) {
@@ -403,10 +383,7 @@ LocateElem(SqList l, ElemType e) {
 status
 PriorElem(SqList l, ElemType cur_e, ElemType *pre_e) {
   // 合法性检测
-  if (!l.elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!l.elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   // 获取 `cur_e` 位序
   int idx = LocateElem(l, cur_e);  // NOTE: 重复了合法性检测
   idx -= 2; // 获取 `pre_e` 对基地址的偏移量
@@ -437,10 +414,7 @@ PriorElem(SqList l, ElemType cur_e, ElemType *pre_e) {
 status
 NextElem(SqList l, ElemType cur_e, ElemType *next_e) {
   // 合法性检测
-  if (!l.elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!l.elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   // 获取 `cur_e` 位序
   int idx = LocateElem(l, cur_e);
   // idx = idx + 1 - 1;	// 类似于 PriorElem 中的操作，但恰好不改变元素值
@@ -470,10 +444,7 @@ NextElem(SqList l, ElemType cur_e, ElemType *next_e) {
 status
 ListInsert(SqList *l, int i, ElemType e) {
   // 合法性检测
-  if (!l->elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!l->elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   // - `i` 范围限制
   if ((l->length == 0 && i != 1)  // 空表
       || (l->length > 0 && (i < 1 || i > l->length))) {  // 非空表，`i`应有范围
@@ -512,10 +483,7 @@ ListInsert(SqList *l, int i, ElemType e) {
 status
 ListDelete(SqList *l, int i, ElemType *e) {
   // 合法性检测
-  if (!l->elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!l->elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   if (i < 1 || i > l->length) {
     printf("输入地址格式不合法！\n");
     return ERROR;
@@ -559,10 +527,7 @@ SaveList(FILE *fp, SqList l) {
 status
 SqList_writeToFile(SqList l, const char *filename) {
   // 合法性检测
-  if (!l.elem) {
-    printf("线性表还没有被创建！\n");
-    return ERROR;
-  }
+  if (!l.elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   // 创建文件
   FILE *fp;
   if ((fp = fopen(filename, "w")) == NULL) {
@@ -613,10 +578,7 @@ LoadList(FILE *fp, SqList *l) {
 status
 SqList_readFromFile(SqList *l, const char *path) {
   // 检查是否已有表挂载
-  if (l->elem) {
-    printf("已有挂载的线性表！\n");
-    return ERROR;
-  }
+  if (l->elem) { printf("已有挂载的线性表！\n"); return ERROR; }
   // 打开文件
   FILE *fp;
   if ((fp = fopen(path, "r")) == NULL) {
