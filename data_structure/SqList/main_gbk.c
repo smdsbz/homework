@@ -147,7 +147,7 @@ int main(int argc, const char *argv[]) {
       }
       case 8: {
         ElemType current, previous;
-        printf("请输入要目标元素的直接后继的元素值： "); scanf("%d", &current);
+        printf("请输入目标元素的直接后继的值： "); scanf("%d", &current);
         int ret = PriorElem(L, current, &previous);
         if (ret == OK) { printf("目标元素值为 %d 。\n", previous); }
         else { printf("获取目标元素失败！\n"); }
@@ -156,7 +156,7 @@ int main(int argc, const char *argv[]) {
       }
       case 9: {
         ElemType current, next;
-        printf("请输入要目标元素的直接前驱的元素值： "); scanf("%d", &current);
+        printf("请输入要目标元素的直接前驱的值： "); scanf("%d", &current);
         int ret = NextElem(L, current, &next);
         if (ret == OK) { printf("目标元素值为 %d 。\n", next); }
         else { printf("获取目标元素失败！\n"); }
@@ -390,8 +390,8 @@ PriorElem(SqList l, ElemType cur_e, ElemType *pre_e) {
             // 第一个 -1 : 前一个元素
             // 第二个 -1 : 位序转偏移量
   // 检查 `cur_e` 合法性
-  if (idx == ERROR - 2) {
-    printf("未找到元素值值为输入值的元素！\n");
+  if (idx == -2) {
+    printf("未找到元素值为输入值的元素！\n");
     return ERROR;
   }
   if (idx == -1) {
@@ -419,8 +419,8 @@ NextElem(SqList l, ElemType cur_e, ElemType *next_e) {
   int idx = LocateElem(l, cur_e);
   // idx = idx + 1 - 1;	// 类似于 PriorElem 中的操作，但恰好不改变元素值
   // 检查 `cur_e` 合法性
-  if (idx == ERROR) {
-    printf("未找到元素值值为输入值的元素！\n");
+  if (idx == 0) {
+    printf("未找到元素值为输入值的元素！\n");
     return ERROR;
   }
   if (idx == l.length) {
