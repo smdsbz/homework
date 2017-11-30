@@ -69,6 +69,11 @@ int main(int argc, const char *argv[]) {
   SqList L; L.elem = NULL; L.length = 0; L.list_size = 0;  // 初始化
   int op=1; // 操作表示符
   while (op) {
+    puts("[LOG] before cls"); // HACK: 加上这一行可以解决在运行缓慢的
+                              //       Win10 虚拟机中，功能函数正常返回后
+                              //       可能卡死在 `system("cls")` 的问题。
+                              //       至于具体原理我也不清楚，
+                              //       反正它 **真的** 解决问题了
     system("cls"); printf("\n\n");  // PLATFORM: Win only
 
     /* 操作选择提示 */
@@ -214,6 +219,7 @@ int main(int argc, const char *argv[]) {
         break;
       }
       case 0: { break; }  // 无效操作
+      default: { break; }
     } // switch
   } // while
 
@@ -417,7 +423,7 @@ NextElem(SqList l, ElemType cur_e, ElemType *next_e) {
   if (!l.elem) { printf("线性表还没有被创建！\n"); return ERROR; }
   // 获取 `cur_e` 位序
   int idx = LocateElem(l, cur_e);
-  // idx = idx + 1 - 1;	// 类似于 PriorElem 中的操作，但恰好不改变元素值
+  // idx = idx + 1 - 1; // 类似于 PriorElem 中的操作，但恰好不改变元素值
   // 检查 `cur_e` 合法性
   if (idx == 0) {
     printf("未找到元素值为输入值的元素！\n");
@@ -514,9 +520,6 @@ ListDelete(SqList *l, int i, ElemType *e) {
  */
 status
 SaveList(FILE *fp, SqList l) {
-  /*
-   *  配合 API 用的 wrapper
-   */
   if (!fp) { return ERROR; }  // NOTE: **假设** 传进来的 fp 是已打开的文件
   if (!l.elem) { return ERROR; }
   fwrite(l.elem, sizeof(ElemType), l.length, fp);
@@ -551,9 +554,6 @@ SqList_writeToFile(SqList l, const char *filename) {
  */
 status
 LoadList(FILE *fp, SqList *l) {
-  /*
-   *  配合 API 用的 wrapper
-   */
   if (!fp) { return ERROR; }
   if (l->elem) { return ERROR; }  // 不允许覆盖正挂载的表
   // 初始化挂载结构体
