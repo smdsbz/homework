@@ -3,6 +3,11 @@ Here stores my homework
 
 -------------------------------
 
+## NOTICE
+
+You **CAN'T** copy-paste the `.docx` reports, due to policies.  
+
+
 ## LICENSE
 
 _(Just noticed someone stared this repo...)_
