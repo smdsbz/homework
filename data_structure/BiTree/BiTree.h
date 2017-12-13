@@ -38,7 +38,7 @@ BiTree RightSibling(BiTree T, BiNode elem);
 status InsertChild(BiTree T, BiNode *elem, int LR, BiTree c);
 status DeleteChild(BiTree T, BiNode *elem, int LR);
 /** 遍历树操作 **/
-status PreOrderTaverse(BiTree T);
+status PreOrderTraverse(BiTree T);
 status InOrderTraverse(BiTree T);
 status PostOrderTraverse(BiTree T);
 status LevelOrderTraverse(BiTree T);

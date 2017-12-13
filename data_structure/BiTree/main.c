@@ -77,9 +77,23 @@ int main(int argc, const char *argv[]) {
         else { printf("二叉树创建失败！\n"); }
         getchar(); break; // 读取输入的时候已经吞过一个 '\n' 了
       }
-
-      case 20: {
+      case 17: {
+        if (PreOrderTraverse(T) == OK) { ; }
+        else { printf("操作失败！\n"); }
+        getchar(); break;
+      }
+      case 18: {
+        if (InOrderTraverse(T) == OK) { ; }
+        else { printf("操作失败！\n"); }
+        getchar(); break;
+      }
+      case 19: {
         if (PostOrderTraverse(T) == OK) { ; }
+        else { printf("操作失败！\n"); }
+        getchar(); break;
+      }
+      case 20: {
+        if (LevelOrderTraverse(T) == OK) { ; }
         else { printf("操作失败！\n"); }
         getchar(); break;
       }
@@ -213,28 +227,57 @@ CreateBiTree(BiTree T, const char definition[]) {
 
 status
 PostOrderTraverse(BiTree cur) {
-  if (!cur) { printf("二叉树还没有被创建！\n"); return ERROR; }
+  if (!cur) { return ERROR; }
+  PostOrderTraverse(cur->lchild);
+  PostOrderTraverse(cur->rchild);
+  printf("%c", cur->data.data);
+  return OK;
+}
+
+
+status
+PreOrderTraverse(BiTree cur) {
+  if (!cur) { return ERROR; }
+  printf("%c", cur->data.data);
+  PreOrderTraverse(cur->lchild);
+  PreOrderTraverse(cur->rchild);
+  return OK;
+}
+
+
+status
+InOrderTraverse(BiTree cur) {
+  if (!cur) { return ERROR; }
+  InOrderTraverse(cur->lchild);
+  printf("%c", cur->data.data);
+  InOrderTraverse(cur->rchild);
+  return OK;
+}
+
+
+status
+LevelOrderTraverse(BiTree T) {
+  if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
   Stack S = NULL; Stack_init(&S);
-  // 向栈中加入头节点
-  Stack_push(S, cur);
+  // 根节点进栈
+  Stack_append(S, T);
   while (!Stack_empty(S)) {
-    cur = Stack_top(S);
-    // 遍历左子树
-    while (cur->lchild) {
-      cur = cur->lchild;
-      Stack_push(S, cur);
-    }
-    // 遍历右子树
-    while (cur->rchild) {
-      cur = cur->rchild;
-      Stack_push(S, cur);
-    }
     // 执行访问操作
-    printf("%c", Stack_pop(S)->data);
+    printf("%c", Stack_top(S)->data.data);
+    // 左右子树进栈
+    if (Stack_top(S)->lchild) {
+      Stack_append(S, Stack_top(S)->lchild);
+    }
+    if (Stack_top(S)->rchild) {
+      Stack_append(S, Stack_top(S)->rchild);
+    }
+    // 当前节点出队列
+    Stack_pop(S);
   }
   Stack_destroy(&S);
   return OK;
 }
+
 
 #ifdef DEBUG
 #undef DEBUG
