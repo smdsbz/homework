@@ -217,17 +217,17 @@ Stack_pop(Stack L) {
 //}
 
 
-status
-Stack_traverse(Stack L) {
-  if (!L) { printf("线性表还没有被创建！\n");  return ERROR; }
-  // 遍历并输出
-  printf(" ------------- All Elements -------------\n    ");
-  for (L = L->next; L; L = L->next) {
-    printf("%c ", L->data->data);
-  }
-  printf("\n ----------------- End ------------------\n");
-  return OK;
-}
+//status
+//Stack_traverse(Stack L) {
+//  if (!L) { printf("线性表还没有被创建！\n");  return ERROR; }
+//  // 遍历并输出
+//  printf(" ------------- All Elements -------------\n    ");
+//  for (L = L->next; L; L = L->next) {
+//    printf("%c ", L->data->data);
+//  }
+//  printf("\n ----------------- End ------------------\n");
+//  return OK;
+//}
 
 
 // status

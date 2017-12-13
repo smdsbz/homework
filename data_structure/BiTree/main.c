@@ -99,7 +99,8 @@ InitBiTree(BiTree *T) {
     printf("内存空间不足！\n");
     return ERROR;
   }
-  (*T)->data = 0;
+  (*T)->data.id = 0;
+  (*T)->data.data = '\0';
   (*T)->lchild = NULL;
   (*T)->rchild = NULL;
   return OK;
@@ -142,26 +143,25 @@ DestroyBiTree(BiTree *T) {
 }
 
 
-status
-InsertChild(BiTree T, BiNode *elem, int LR, BiTree c) {
-  if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
-  if (!elem) { printf("传入的节点为空！\n"); return ERROR; }
-  if (c->rchild) { printf("要添加的子树右子树不为空！\n"); return ERROR; }
-  if (LR == 0) {  // 插入左子树
-    c->rchild = elem->lchild;
-    elem->lchild = c;
-  } else if (LR == 1) { // 插入右子树
-    c->rchild = elem->rchild;
-    elem->rchild = c;
-  }
-  return OK;
-}
+//status
+//InsertChild(BiTree T, BiNode *elem, int LR, BiTree c) {
+//  if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
+//  if (!elem) { printf("传入的节点为空！\n"); return ERROR; }
+//  if (c->rchild) { printf("要添加的子树右子树不为空！\n"); return ERROR; }
+//  if (LR == 0) {  // 插入左子树
+//    c->rchild = elem->lchild;
+//    elem->lchild = c;
+//  } else if (LR == 1) { // 插入右子树
+//    c->rchild = elem->rchild;
+//    elem->rchild = c;
+//  }
+//  return OK;
+//}
 
 
 
 status
-CreateBiTree(BiTree T, const ElemType definition[]) {
-  // TODO: 空树输入
+CreateBiTree(BiTree T, const char definition[]) {
   if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
   if (definition[0] == ' ') {
     printf("数据输入格式有错误！\n");
@@ -169,23 +169,40 @@ CreateBiTree(BiTree T, const ElemType definition[]) {
   }
   Stack S = NULL; Stack_init(&S);
   // 添加根节点数据
-  T->data = definition[0];
+  T->data.id = 1;
+  T->data.data = definition[0];
   // 根节点进栈
   Stack_append(S, T);
   size_t curr_elem = 2; // 层次遍历位序指示
   while (definition[curr_elem - 1]) {
+    // - 输入空树
+    if (definition[curr_elem - 1] == ' ') {
+      if (curr_elem % 2) {  // 右子树均为空，出队列
+        Stack_pop(S);
+      }
+      curr_elem++;
+      continue;
+    }
+    // - 输入非空
     // 创建新节点
     BiTree new_node = NULL;
     InitBiTree(&new_node);
-    new_node->data = definition[curr_elem - 1];
+    new_node->data.id = curr_elem;
+    new_node->data.data = definition[curr_elem - 1];
     // 添加到树中
+    if (Stack_empty(S)) { // - 输入错误
+      printf("数据输入格式有误！\n");
+      Stack_destroy(&S);
+      DestroyBiTree(&T);
+      return ERROR;
+    }
     if (curr_elem % 2 == 0) {  // - 添加到左子树
       Stack_top(S)->lchild = new_node;
     } else {  // - 添加到右子树
       Stack_top(S)->rchild = new_node;
       Stack_pop(S);
     }
-    // 新节点进栈
+    // 新节点进队列
     Stack_append(S, new_node);
     curr_elem++;
   }

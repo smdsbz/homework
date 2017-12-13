@@ -17,7 +17,10 @@
 #define ELEMTYPE
 /* 数据元素类型定义 */
 typedef int status;
-typedef char ElemType;
+typedef struct _ElemType {
+    size_t  id;
+    char    data;
+} ElemType;
 #endif
 
 #endif
