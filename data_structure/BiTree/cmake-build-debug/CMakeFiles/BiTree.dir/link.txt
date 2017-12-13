@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/cc  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/BiTree.dir/main.c.o CMakeFiles/BiTree.dir/BiTree.c.o CMakeFiles/BiTree.dir/Stack.c.o  -o BiTree 

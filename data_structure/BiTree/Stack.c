@@ -57,7 +57,7 @@ size_t
 Stack_length(Stack L) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
   size_t ret = 0;
-  for (; L; L = L->next) { ret++; }
+  for (L = L->next; L; L = L->next) { ret++; }
   return ret;
 }
 

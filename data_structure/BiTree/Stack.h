@@ -1,6 +1,12 @@
 #ifndef STACK_H_
 #define STACK_H_
 
+/*
+ *  基于二叉链表的二叉树实现
+ *    ---- by U201610136 朱晓光 校际交流1601班
+ */
+
+
 #include "./MACROS.h"
 
 typedef struct _Stack {

@@ -23,7 +23,7 @@ status DestroyBiTree(BiTree *T);
 status CreateBiTree(BiTree T, const char *definition);
 status ClearBiTree(BiTree T);
 status BiTreeEmpty(BiTree T);
-unsigned int BiTreeDepth(BiTree T);
+int BiTreeDepth(BiTree T);
 /** 对节点操作 **/
 BiTree Root(BiTree T);
 ElemType Value(BiTree T, BiNode elem);

@@ -69,14 +69,31 @@ int main(int argc, const char *argv[]) {
         // 读取层次遍历，由于需要读取空格，不能用 scanf
         while ((buffer[0] = (char)getchar()) == '\n') { ; }
         while ((buffer[read_cur] = (char)getchar()) != '\n') { read_cur++; }
-        buffer[read_cur] = '\0';
-        #ifdef DEBUG
-        printf("[LOG] buffer = '%s'\n", buffer);
-        #endif
+        buffer[read_cur] = '\0';  // 补上字符串结束符
         if (CreateBiTree(T, buffer) == OK) { printf("二叉树创建成功！\n"); }
         else { printf("二叉树创建失败！\n"); }
         getchar(); break; // 读取输入的时候已经吞过一个 '\n' 了
       }
+      case 4: {
+        if (ClearBiTree(T) == OK) { printf("二叉树清空成功！\n"); }
+        else { printf("二叉树清空失败！\n"); }
+        getchar(); break;
+      }
+      case 5: {
+        status ret = BiTreeEmpty(T);
+        if (ret == ERROR) { printf("获取二叉树状态失败！\n"); }
+        else {
+          if (ret == TRUE) { printf("二叉树为空树！\n"); }
+          else if (ret == FALSE) { printf("二叉树不为空树！\n"); }
+        }
+        getchar(); break;
+      }
+      // case 6: {
+      //   int ret = BiTreeDepth(T);
+      //   if (ret == ERROR) { printf("获取二叉树深度失败！\n"); }
+      //   else { printf("二叉树深度为 %d 。\n", ret); }
+      //   getchar(); break;
+      // }
       case 17: {
         if (PreOrderTraverse(T) == OK) { ; }
         else { printf("操作失败！\n"); }
@@ -98,185 +115,13 @@ int main(int argc, const char *argv[]) {
         getchar(); break;
       }
       case 0: { break; }
-      default: { break; }
+      default: { getchar(); break; }
     } // switch
 
   } // while
 } // main
 
 
-
-status
-InitBiTree(BiTree *T) {
-  if (*T) { printf("已有挂载的二叉树！\n"); return ERROR; }
-  if ( (*T = (BiTree)malloc(sizeof(BiNode))) == NULL ) {
-    printf("内存空间不足！\n");
-    return ERROR;
-  }
-  (*T)->data.id = 0;
-  (*T)->data.data = '\0';
-  (*T)->lchild = NULL;
-  (*T)->rchild = NULL;
-  return OK;
-}
-
-
-status
-DestroyBiTree(BiTree *T) {
-  Stack S = NULL; Stack_init(&S);
-  BiTree cur = *T;
-  // 向栈中加入头节点
-  Stack_push(S, cur);
-  while (!Stack_empty(S)) {
-    cur = Stack_top(S);
-    // 遍历左子树
-    while (cur->lchild) {
-      cur = cur->lchild;
-      Stack_push(S, cur);
-    }
-    // 遍历右子树
-    while (cur->rchild) {
-      cur = cur->rchild;
-      Stack_push(S, cur);
-    }
-    // 执行访问操作，即销毁
-    cur = Stack_pop(S); // 此后 Stack_top(S) 得到 cur 的双亲节点地址
-    // - 双亲节点的孩子指针置空
-    if (!Stack_empty(S)) {
-      if (cur == Stack_top(S)->lchild) {
-        Stack_top(S)->lchild = NULL;
-      } else if (cur == Stack_top(S)->rchild) {
-        Stack_top(S)->rchild = NULL;
-      } else { return ERROR; }  // 这里啰嗦一下做个判断
-    }
-    free(cur);
-  }
-  Stack_destroy(&S);
-  *T = NULL;
-  return OK;
-}
-
-
-//status
-//InsertChild(BiTree T, BiNode *elem, int LR, BiTree c) {
-//  if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
-//  if (!elem) { printf("传入的节点为空！\n"); return ERROR; }
-//  if (c->rchild) { printf("要添加的子树右子树不为空！\n"); return ERROR; }
-//  if (LR == 0) {  // 插入左子树
-//    c->rchild = elem->lchild;
-//    elem->lchild = c;
-//  } else if (LR == 1) { // 插入右子树
-//    c->rchild = elem->rchild;
-//    elem->rchild = c;
-//  }
-//  return OK;
-//}
-
-
-
-status
-CreateBiTree(BiTree T, const char definition[]) {
-  if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
-  if (definition[0] == ' ') {
-    printf("数据输入格式有错误！\n");
-    return ERROR;
-  }
-  Stack S = NULL; Stack_init(&S);
-  // 添加根节点数据
-  T->data.id = 1;
-  T->data.data = definition[0];
-  // 根节点进栈
-  Stack_append(S, T);
-  size_t curr_elem = 2; // 层次遍历位序指示
-  while (definition[curr_elem - 1]) {
-    // - 输入空树
-    if (definition[curr_elem - 1] == ' ') {
-      if (curr_elem % 2) {  // 右子树均为空，出队列
-        Stack_pop(S);
-      }
-      curr_elem++;
-      continue;
-    }
-    // - 输入非空
-    // 创建新节点
-    BiTree new_node = NULL;
-    InitBiTree(&new_node);
-    new_node->data.id = curr_elem;
-    new_node->data.data = definition[curr_elem - 1];
-    // 添加到树中
-    if (Stack_empty(S)) { // - 输入错误
-      printf("数据输入格式有误！\n");
-      Stack_destroy(&S);
-      DestroyBiTree(&T);
-      return ERROR;
-    }
-    if (curr_elem % 2 == 0) {  // - 添加到左子树
-      Stack_top(S)->lchild = new_node;
-    } else {  // - 添加到右子树
-      Stack_top(S)->rchild = new_node;
-      Stack_pop(S);
-    }
-    // 新节点进队列
-    Stack_append(S, new_node);
-    curr_elem++;
-  }
-  Stack_destroy(&S);
-  return OK;
-}
-
-
-status
-PostOrderTraverse(BiTree cur) {
-  if (!cur) { return ERROR; }
-  PostOrderTraverse(cur->lchild);
-  PostOrderTraverse(cur->rchild);
-  printf("%c", cur->data.data);
-  return OK;
-}
-
-
-status
-PreOrderTraverse(BiTree cur) {
-  if (!cur) { return ERROR; }
-  printf("%c", cur->data.data);
-  PreOrderTraverse(cur->lchild);
-  PreOrderTraverse(cur->rchild);
-  return OK;
-}
-
-
-status
-InOrderTraverse(BiTree cur) {
-  if (!cur) { return ERROR; }
-  InOrderTraverse(cur->lchild);
-  printf("%c", cur->data.data);
-  InOrderTraverse(cur->rchild);
-  return OK;
-}
-
-
-status
-LevelOrderTraverse(BiTree T) {
-  if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
-  Stack S = NULL; Stack_init(&S);
-  // 根节点进栈
-  Stack_append(S, T);
-  while (!Stack_empty(S)) {
-    // 执行访问操作
-    printf("%c", Stack_top(S)->data.data);
-    // 左右子树进栈
-    if (Stack_top(S)->lchild) {
-      Stack_append(S, Stack_top(S)->lchild);
-    }
-    if (Stack_top(S)->rchild) {
-      Stack_append(S, Stack_top(S)->rchild);
-    }
-    // 当前节点出队列
-    Stack_pop(S);
-  }
-  Stack_destroy(&S);
-  return OK;
-}
 
 
 #ifdef DEBUG
