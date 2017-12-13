@@ -21,6 +21,6 @@ status Stack_delete(Stack, int, BiTree *);
 BiTree Stack_pop(Stack);
 status Stack_priorElem(Stack, BiTree, BiTree *);
 status Stack_nextElem(Stack, BiTree, BiTree *);
-
+status Stack_traverse(Stack);
 
 #endif

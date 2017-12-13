@@ -86,14 +86,12 @@ Stack_top(Stack L) {
 status
 Stack_insert(Stack L, int key, BiTree val) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
-  // if ((Stack_length(L) == 0 && key != 1)
-  //     || (Stack_length(L) != 0
-  //         && (key < 1 || key > Stack_length(L)))) {
-  //   printf("输入的位序大小不合法！\n");
-  //   return ERROR;
-  // }
-  // 先修改表长，下面 L 不再指向表头节点
-  // L->data += 1;
+  if ((Stack_length(L) == 0 && key != 1)
+      || (Stack_length(L) != 0
+          && (key < 1 || key > Stack_length(L)))) {
+    printf("输入的位序大小不合法！\n");
+    return ERROR;
+  }
   // 获取要添加位置元素的前驱（由 L 指向）
   for (; key > 1; key--) { L = L->next; }
   // 为新的数据元素分配空间
@@ -122,7 +120,7 @@ Stack_append(Stack L, BiTree val) {
   if ( (L->next = (Stack)malloc(sizeof(SNode))) == NULL ) {
     printf("内存空间不足！\n"); return ERROR;
   }
-  L->next->data = val;
+  L->next->data = val; L->next->next = NULL;
   return OK;
 }
 
@@ -131,10 +129,10 @@ status
 Stack_delete(Stack L, int key, BiTree *val) {
   // 合法性检查
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
-  // if (key < 1 || key > L->data) {
-  //   printf("输入地址格式不合法！\n");
-  //   return ERROR;
-  // }
+  if (key < 1 || key > Stack_length(L)) {
+    printf("输入地址格式不合法！\n");
+    return ERROR;
+  }
   // 更改表长
   // L->data -= 1;
   // 删除元素
@@ -172,64 +170,64 @@ Stack_pop(Stack L) {
 // }
 
 
-status
-Stack_priorElem(Stack L, BiTree cur_e, BiTree *pre_e) {
-  // 合法性检查
-  if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
-  // 遍历链表找 cur_e 的前驱
-  Stack prev = L;
-  for (; prev->next && prev->next->data != cur_e;
-         prev = prev->next) { /* pass */ ; }
-  // 对找到的前驱进行判断
-  if (prev->next == NULL) { // - 没有找到
-    printf("未找到元素值为输入值的元素！\n");
-    return ERROR;
-  }
-  if (prev == L) {  // - cur_e 为表中第一个元素，
-                    //   即 prev 指向表头节点
-    printf("元素值为输入值的元素是表中的第一个元素！\n");
-    return ERROR;
-  }
-  // - 正常情况
-  *pre_e = prev->data;
-  return OK;
-}
+//status
+//Stack_priorElem(Stack L, BiTree cur_e, BiTree *pre_e) {
+//  // 合法性检查
+//  if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
+//  // 遍历链表找 cur_e 的前驱
+//  Stack prev = L;
+//  for (; prev->next && prev->next->data != cur_e;
+//         prev = prev->next) { /* pass */ ; }
+//  // 对找到的前驱进行判断
+//  if (prev->next == NULL) { // - 没有找到
+//    printf("未找到元素值为输入值的元素！\n");
+//    return ERROR;
+//  }
+//  if (prev == L) {  // - cur_e 为表中第一个元素，
+//                    //   即 prev 指向表头节点
+//    printf("元素值为输入值的元素是表中的第一个元素！\n");
+//    return ERROR;
+//  }
+//  // - 正常情况
+//  *pre_e = prev->data;
+//  return OK;
+//}
+
+
+//status
+//Stack_nextElem(Stack L, BiTree cur_e, BiTree *nxt_e) {
+//  // 合法性检查
+//  if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
+//  // 遍历链表找 cur_e
+//  Stack curr = L->next;  // NOTE: curr 指向当前元素
+//  for (; curr && curr->data != cur_e;
+//         curr = curr->next) { /* pass */ ; }
+//  // 对找到的元素进行判断
+//  if (curr == NULL) { // - 没有找到
+//    printf("未找到元素值为输入值的元素！\n");
+//    return ERROR;
+//  }
+//  if (curr->next == NULL) { // - cur_e 为表中最后一个元素
+//    printf("元素值为输入值的元素是表中的最后一个元素！\n");
+//    return ERROR;
+//  }
+//  // - 正常情况
+//  *nxt_e = curr->next->data;
+//  return OK;
+//}
 
 
 status
-Stack_nextElem(Stack L, BiTree cur_e, BiTree *nxt_e) {
-  // 合法性检查
-  if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
-  // 遍历链表找 cur_e
-  Stack curr = L->next;  // NOTE: curr 指向当前元素
-  for (; curr && curr->data != cur_e;
-         curr = curr->next) { /* pass */ ; }
-  // 对找到的元素进行判断
-  if (curr == NULL) { // - 没有找到
-    printf("未找到元素值为输入值的元素！\n");
-    return ERROR;
+Stack_traverse(Stack L) {
+  if (!L) { printf("线性表还没有被创建！\n");  return ERROR; }
+  // 遍历并输出
+  printf(" ------------- All Elements -------------\n    ");
+  for (L = L->next; L; L = L->next) {
+    printf("%c ", L->data->data);
   }
-  if (curr->next == NULL) { // - cur_e 为表中最后一个元素
-    printf("元素值为输入值的元素是表中的最后一个元素！\n");
-    return ERROR;
-  }
-  // - 正常情况
-  *nxt_e = curr->next->data;
+  printf("\n ----------------- End ------------------\n");
   return OK;
 }
-
-
-// status
-// Stack_traverse(Stack L) {
-//   if (!L) { printf("线性表还没有被创建！\n");  return ERROR; }
-//   // 遍历并输出
-//   printf(" ------------- All Elements -------------\n    ");
-//   for (L = L->next; L; L = L->next) {
-//     printf("%d ", L->data);
-//   }
-//   printf("\n ----------------- End ------------------\n");
-//   return OK;
-// }
 
 
 // status

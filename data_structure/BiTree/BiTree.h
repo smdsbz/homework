@@ -43,4 +43,6 @@ status InOrderTraverse(BiTree T);
 status PostOrderTraverse(BiTree T);
 status LevelOrderTraverse(BiTree T);
 
+// #define DEBUG
+
 #endif
