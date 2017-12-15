@@ -11,6 +11,12 @@
 #include "./Stack.h"
 
 
+/*
+ * 函数名称：InitBiTree
+ * 函数参数：二叉树的头节点 T 的指针
+ * 函数功能：初始化二叉树
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 InitBiTree(BiTree *T) {
   if (*T) { printf("已有挂载的二叉树！\n"); return ERROR; }
@@ -26,6 +32,12 @@ InitBiTree(BiTree *T) {
 }
 
 
+/*
+ * 函数名称：DestroyBiTree
+ * 函数参数：二叉树的头节点 T 的指针
+ * 函数功能：销毁二叉树
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 DestroyBiTree(BiTree *T) {
   if (ClearBiTree(*T) != OK) { return ERROR; }
@@ -35,6 +47,12 @@ DestroyBiTree(BiTree *T) {
 }
 
 
+/*
+ * 函数名称：ClearBiTree
+ * 函数参数：二叉树的头节点 T
+ * 函数功能：置空二叉树
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 ClearBiTree(BiTree T) {
   if (!T) { printf("二叉树还没有被创建！\n"); }
@@ -45,9 +63,6 @@ ClearBiTree(BiTree T) {
   while (!Stack_empty(S) || T) {
     if (T) { Stack_push(S, T); T = T->lchild; }
     else {
-      // T = Stack_pop(S);
-      // printf("%c", T->data.data);
-      // T = T->rchild;
       T = Stack_top(S)->rchild;
       free(Stack_pop(S));
     }
@@ -58,6 +73,12 @@ ClearBiTree(BiTree T) {
 }
 
 
+/*
+ * 函数名称：CreateBiTree
+ * 函数参数：二叉树的头节点 T，要创建的二叉树的层次遍历序列 definition
+ * 函数功能：创建二叉树
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 CreateBiTree(BiTree T, const char definition[]) {
   if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
@@ -115,6 +136,12 @@ CreateBiTree(BiTree T, const char definition[]) {
 }
 
 
+/*
+ * 函数名称：BiTreeEmpty
+ * 函数参数：二叉树的头节点 T
+ * 函数功能：判断二叉树是否为空树
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 BiTreeEmpty(BiTree T) {
   if (!T) { printf("二叉树还没有被创建！\n"); return ERROR; }
@@ -123,6 +150,12 @@ BiTreeEmpty(BiTree T) {
 }
 
 
+/*
+ * 函数名称：_PostOrderTraverse_RecursionBlcok
+ * 函数参数：二叉树的头节点 T
+ * 函数功能：递归调用自身来对二叉树进行后序遍历
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 _PostOrderTraverse_RecursionBlock(BiTree T) {
   if (!T) { return ERROR; }
@@ -133,6 +166,12 @@ _PostOrderTraverse_RecursionBlock(BiTree T) {
 }
 
 
+/*
+ * 函数名称：PostOrderTraverse
+ * 函数参数：二叉树的头节点 T
+ * 函数功能：输出二叉树的后序遍历序列
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 PostOrderTraverse(BiTree T) {
   if (!T) { return ERROR; }
@@ -142,6 +181,12 @@ PostOrderTraverse(BiTree T) {
 }
 
 
+/*
+ * 函数名称：PreOrderTraverse
+ * 函数参数：二叉树的头节点 T
+ * 函数功能：输出二叉树的先序遍历序列
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 PreOrderTraverse(BiTree T) {
   if (!T) { printf("二叉树还没有被创建！"); return ERROR; }
@@ -168,6 +213,12 @@ PreOrderTraverse(BiTree T) {
 }
 
 
+/*
+ * 函数名称：_ReassignIDsInLevelOrder
+ * 函数参数：二叉树的头节点 T
+ * 函数功能：根据二叉树的层次遍历顺序对二叉树节点重新进行编号
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 _ReassignIDsInLevelOrder(BiTree T) {
   if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
@@ -195,6 +246,12 @@ _ReassignIDsInLevelOrder(BiTree T) {
 }
 
 
+/*
+ * 函数名称：InOrderTraverse
+ * 函数参数：二叉树的头节点 T
+ * 函数功能：输出二叉树的中序遍历序列
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 InOrderTraverse(BiTree T) {
   if (!T) { printf("二叉树还没有被创建！\n"); }
@@ -215,6 +272,12 @@ InOrderTraverse(BiTree T) {
 }
 
 
+/*
+ * 函数名称：LevelOrderTraverse
+ * 函数参数：二叉树的头节点 T
+ * 函数功能：输出二叉树的层次遍历序列
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 LevelOrderTraverse(BiTree T) {
   if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
@@ -241,6 +304,12 @@ LevelOrderTraverse(BiTree T) {
 }
 
 
+/*
+ * 函数名称：_BiTreeDepth_RecursionBlock
+ * 函数参数：子树节点 cur
+ * 函数功能：递归调用自身来求该节点子树的深度+1
+ * 返回值：  返回左右子树深度+1
+ */
 int
 _BiTreeDepth_RecursionBlock(BiTree cur) {
   if (!cur) { return 0; }
@@ -251,6 +320,12 @@ _BiTreeDepth_RecursionBlock(BiTree cur) {
 }
 
 
+/*
+ * 函数名称：BiTreeDepth
+ * 函数参数：二叉树的头节点 T
+ * 函数功能：求二叉树的深度
+ * 返回值：  操作成功返回树高，否则返回 ERROR
+ */
 int
 BiTreeDepth(BiTree T) {
   if (!T) { printf("二叉树还没有被创建！"); return ERROR; }
@@ -260,13 +335,25 @@ BiTreeDepth(BiTree T) {
 }
 
 
+/*
+ * 函数名称：Root
+ * 函数参数：二叉树的头节点 T
+ * 函数功能：获得二叉树的根节点地址
+ * 返回值：  操作成功返回根节点地址，否则返回 NULL
+ */
 BiTree
 Root(BiTree T) {
-  if (!T) { printf("二叉树还没有被创建！\n"); }
+  if (!T) { printf("二叉树还没有被创建！\n"); return NULL; }
   return T->lchild; // 包含返回 NULL 的情况
 }
 
 
+/*
+ * 函数名称：_GetNodeAddressByKey
+ * 函数参数：二叉树的头节点 T，所求节点在层次遍历序列中的位序 key
+ * 函数功能：获得所求节点的地址
+ * 返回值：  操作成功返回所求节点地址，否则返回 NULL
+ */
 BiTree
 _GetNodeAddressByKey(BiTree T, size_t key) {
   if (!T) { printf("二叉树还没有被创建！\n"); return NULL; }
@@ -303,6 +390,12 @@ _GetNodeAddressByKey(BiTree T, size_t key) {
 }
 
 
+/*
+ * 函数名称：Value
+ * 函数参数：二叉树的头节点 T，节点在层次遍历序列中的位序 key
+ * 函数功能：获得所求节点储存的数据
+ * 返回值：  操作成功返回所求节点储存的数据，否则返回 '\0'
+ */
 char
 Value(BiTree T, size_t key) {
   BiTree node = _GetNodeAddressByKey(T, key);
@@ -311,6 +404,12 @@ Value(BiTree T, size_t key) {
 }
 
 
+/*
+ * 函数名称：Assign
+ * 函数参数：二叉树的头节点 T，节点在层次遍历序列中的位序 key，新值 val
+ * 函数功能：将对应节点的数据更新为 val
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 Assign(BiTree T, size_t key, char val) {
   BiTree node = _GetNodeAddressByKey(T, key);
@@ -320,6 +419,12 @@ Assign(BiTree T, size_t key, char val) {
 }
 
 
+/*
+ * 函数名称：Parent
+ * 函数参数：二叉树的头节点 T，节点在层次遍历序列中的位序 key
+ * 函数功能：求对应节点的双亲节点
+ * 返回值：  操作成功返回双亲节点地址，否则返回 NULL
+ */
 BiTree
 Parent(BiTree T, size_t key) {
   if (!T) { printf("二叉树还没有被创建！\n"); return NULL; }
@@ -348,6 +453,12 @@ Parent(BiTree T, size_t key) {
 }
 
 
+/*
+ * 函数名称：LeftChild
+ * 函数参数：二叉树的头节点 T，节点在层次遍历序列中的位序 key
+ * 函数功能：求对应节点的左孩子
+ * 返回值：  操作成功返回所求节点的地址，否则返回 NULL
+ */
 BiTree
 LeftChild(BiTree T, size_t key) {
   BiTree node = _GetNodeAddressByKey(T, key);
@@ -356,6 +467,12 @@ LeftChild(BiTree T, size_t key) {
 }
 
 
+/*
+ * 函数名称：RightChild
+ * 函数参数：二叉树的头节点 T，节点在层次遍历序列中的位序 key
+ * 函数功能：求对应节点的右孩子
+ * 返回值：  操作成功返回所求节点的地址，否则返回 NULL
+ */
 BiTree
 RightChild(BiTree T, size_t key) {
   BiTree node = _GetNodeAddressByKey(T, key);
@@ -364,6 +481,12 @@ RightChild(BiTree T, size_t key) {
 }
 
 
+/*
+ * 函数名称：LeftSibling
+ * 函数参数：二叉树的头节点 T，节点在层次遍历序列中的位序 key
+ * 函数功能：求对应节点的左兄弟
+ * 返回值：  操作成功返回所求节点的地址，否则返回 NULL
+ */
 BiTree
 LeftSibling(BiTree T, size_t key) {
   BiTree parent = Parent(T, key);
@@ -376,18 +499,29 @@ LeftSibling(BiTree T, size_t key) {
 }
 
 
+/*
+ * 函数名称：RightSibling
+ * 函数参数：二叉树的头节点 T，节点在层次遍历序列中的位序 key
+ * 函数功能：求对应节点的右兄弟
+ * 返回值：  操作成功返回所求节点的地址，否则返回 NULL
+ */
 BiTree
 RightSibling(BiTree T, size_t key) {
   BiTree parent = Parent(T, key);
   if (parent == NULL) { printf("未找到节点！\n"); return NULL; }
-  // 可能的情况：
-  // - parent->rchild == NULL：那么双亲的左孩子为 key，返回 NULL
-  // - parent->rchlid->data.id == key：已经是右孩子了，返回 NULL
   if (parent->rchild && parent->rchild->data.id == key) { return NULL; }
   return parent->rchild;
 }
 
 
+/*
+ * 函数名称：InsertChild
+ * 函数参数：二叉树的头节点 T，节点在层次遍历序列中的位序 key，
+ *          插入位置标识 LR，插入子树的层次遍历序列 definition
+ * 函数功能：将由 definition 所代表的二叉树，插入到 T 中 key 元素的子树中
+ *          （ LR 为 0 时插入到左子树，为 1 时插入到右子树）
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 InsertChild(BiTree T, size_t key, int LR, const char definition[]) {
   if (!T) { printf("二叉树还没有被创建！\n"); return ERROR; }
@@ -413,6 +547,13 @@ InsertChild(BiTree T, size_t key, int LR, const char definition[]) {
 }
 
 
+/*
+ * 函数名称：DeleteChild
+ * 函数参数：二叉树的头节点 T，节点在层次遍历序列中的位序 key，删除位置标识 LR
+ * 函数功能：删除 T 中 key 元素的子树
+ *          （ LR 为 0 时删除左子树，为 1 时删除右子树）
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 DeleteChild(BiTree T, size_t key, int LR) {
   if (!T) { printf("二叉树还没有被创建！\n"); return ERROR; }
@@ -431,6 +572,12 @@ DeleteChild(BiTree T, size_t key, int LR) {
 }
 
 
+/*
+ * 函数名称：SaveBiTree
+ * 函数参数：文件指针 fp，二叉树的头节点 T
+ * 函数功能：将二叉树 T 保存到由 fp 指向的文件中
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 SaveBiTree(FILE *fp, BiTree T) {
   if (!fp) { return ERROR; }
@@ -457,6 +604,12 @@ SaveBiTree(FILE *fp, BiTree T) {
 }
 
 
+/*
+ * 函数名称：LoadBiTree
+ * 函数参数：文件指针 fp，二叉树的头节点 T 的指针
+ * 函数功能：将由 fp 指向的文件中二叉树加载到 T 上
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 LoadBiTree(FILE *fp, BiTree *T) {
   if (!fp) { return ERROR; }
@@ -478,6 +631,13 @@ LoadBiTree(FILE *fp, BiTree *T) {
 }
 
 
+/*
+ * 函数名称：SelectBiTree
+ * 函数参数：树头节点数组 pool，操作树的头节点 T 的指针，
+ *          操作树在 pool 中的位置 curr_tree，切换目标树 tgt
+ * 函数功能：将 T 指向的二叉树保存到 pool 对应位置上，并让 T 指向由 tgt 说明的树
+ * 返回值：  操作成功返回 OK，否则返回 ERROR
+ */
 status
 SelectBiTree(BiTree pool[], BiTree *T, size_t *curr_tree, size_t tgt) {
   if (tgt > 20) { printf("输入的位序不合法！\n"); return ERROR; }
