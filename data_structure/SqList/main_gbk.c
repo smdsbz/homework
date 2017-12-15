@@ -283,6 +283,7 @@ DestroyList(SqList *l) {
   return OK;
 }
 
+
 /*
  * 函数名称：ClearList
  * 函数参数：线性表 L 的指针

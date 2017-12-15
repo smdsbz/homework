@@ -221,7 +221,12 @@ int main(int argc, const char *argv[]) {
 }
 
 
-
+/*
+ * 函数名称：IntiaList
+ * 函数参数：线性表 L 的指针
+ * 函数功能：构造一个空的线性表
+ * 返回值：  成功构造返回 OK ，否则返回 ERROR
+ */
 status
 IntiaList(LkList *L) {
   if (*L) { printf("已有挂载的线性表！\n"); return ERROR; }
@@ -233,6 +238,12 @@ IntiaList(LkList *L) {
 }
 
 
+/*
+ * 函数名称：DestroyList
+ * 函数参数：线性表 L 的指针
+ * 函数功能：销毁线性表
+ * 返回值：  成功销毁返回 OK ，否则返回 ERROR
+ */
 status
 DestroyList(LkList *L) {
   LkList cur = *L;
@@ -247,6 +258,12 @@ DestroyList(LkList *L) {
 }
 
 
+/*
+ * 函数名称：ClearList
+ * 函数参数：线性表 L 的指针
+ * 函数功能：重置线性表
+ * 返回值：  成功置空返回 OK ，否则返回 ERROR
+ */
 status
 ClearList(LkList *L) {
   if (DestroyList(L) == OK && IntiaList(L) == OK) { return OK; }
@@ -254,6 +271,13 @@ ClearList(LkList *L) {
 }
 
 
+/*
+ * 函数名称：ListEmpty
+ * 函数参数：线性表 L
+ * 函数功能：判断线性表是否为空
+ * 返回值：  若 L 为空表则返回 TRUE ，否则返回 FALSE
+ *           判断失败返回 ERROR
+ */
 status
 ListEmpty(LkList L) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
@@ -262,6 +286,12 @@ ListEmpty(LkList L) {
 }
 
 
+/*
+ * 函数名称：ListLength
+ * 函数参数：线性表 L
+ * 函数功能：计算线性表 L 中数据元素的个数
+ * 返回值：  计算成功则返回 L 中数据元素的个数，计算失败返回 ERROR
+ */
 int
 ListLength(LkList L) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
@@ -269,6 +299,12 @@ ListLength(LkList L) {
 }
 
 
+/*
+ * 函数名称：GetElem
+ * 函数参数：线性表 L ，用 e 带回第 i 个数据元素的值
+ * 函数功能：查找并用 e 带回第 i 个元素的值
+ * 返回值：  查找成功则返回 OK ，否则返回 ERROR
+ */
 status
 GetElem(LkList L, int idx, ElemType *rst) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
@@ -282,6 +318,13 @@ GetElem(LkList L, int idx, ElemType *rst) {
 }
 
 
+/*
+ * 函数名称：ListInsert
+ * 函数参数：线性表 L 的地址，插入的位置 i ，插入的数据元素 e
+ * 函数功能：在 L 的第 i 个位置之前插入新的数据元素 e
+ *           若已插满，则按照分配增量，分配更大的空间，再插入
+ * 返回值：  成功插入返回 OK ，否则返回 ERROR
+ */
 status
 ListInsert(LkList L, int key, ElemType val) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
@@ -307,6 +350,13 @@ ListInsert(LkList L, int key, ElemType val) {
 }
 
 
+/*
+ * 函数名称：ListDelete
+ * 函数参数：线性表 L 的地址，删除的位序 i ，带回数据的指针 e
+ * 函数功能：删除 L 的第 i 个数据元素，用 e 返回其值
+ *           若可以缩小分配增量所指明的空间，则重新分配更小的空间
+ * 返回值：  成功删除返回 OK ，否则返回 ERROR
+ */
 status
 ListDelete(LkList L, int key, ElemType *val) {
   // 合法性检查
@@ -332,6 +382,13 @@ ListDelete(LkList L, int key, ElemType *val) {
 }
 
 
+/*
+ * 函数名称：LocateElem
+ * 函数参数：线性表 L ，相比对的元素值
+ * 函数功能：查找 L 中数据值与 e 相同的元素所在的位序
+ * 返回值：  成功则返回第一个与 e 相同的元素所在的位序，不存在则返回 0，
+ *           否则返回 ERROR
+ */
 int
 LocateElem(LkList L, ElemType val) {
   // 合法性检测
@@ -344,13 +401,19 @@ LocateElem(LkList L, ElemType val) {
 }
 
 
+/*
+ * 函数名称：PriorElem
+ * 函数参数：线性表 L ，查找的数据 cur_e ，其前驱值用 pre_e 带回
+ * 函数功能：查找 L 中与 cur_e 相同的第一个数据，并用 pre_e 带回其前驱的值
+ * 返回值：  操作成功则返回 OK ，否则返回 ERROR
+ */
 status
 PriorElem(LkList L, ElemType cur_e, ElemType *pre_e) {
   // 合法性检查
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
   // 遍历链表找 cur_e 的前驱
   LkList prev = L;
-  for (; prev->next && prev->next->data != cur_e; 
+  for (; prev->next && prev->next->data != cur_e;
          prev = prev->next) { /* pass */ ; }
   // 对找到的前驱进行判断
   if (prev->next == NULL) { // - 没有找到
@@ -368,6 +431,12 @@ PriorElem(LkList L, ElemType cur_e, ElemType *pre_e) {
 }
 
 
+/*
+ * 函数名称：NextElem
+ * 函数参数：线性表 L ，查找的数据 cur_e ，其后继值用 next_e 带回
+ * 函数功能：查找 L 中与 cur_e 相同的第一个数据，并用 next_e 带回其后继的值
+ * 返回值：  操作成功则返回 OK ，否则返回 ERROR
+ */
 status
 NextElem(LkList L, ElemType cur_e, ElemType *nxt_e) {
   // 合法性检查
@@ -390,6 +459,13 @@ NextElem(LkList L, ElemType cur_e, ElemType *nxt_e) {
   return OK;
 }
 
+
+/*
+ * 函数名称：ListTrabverse
+ * 函数参数：线性表 L
+ * 函数功能：依次访问并显示线性表中的每个元素
+ * 返回值：  成功遍历返回 OK ，否则返回ERROR
+ */
 status
 ListTrabverse(LkList L) {
   if (!L) { printf("线性表还没有被创建！\n");  return ERROR; }
@@ -403,6 +479,12 @@ ListTrabverse(LkList L) {
 }
 
 
+/*
+ * 函数名称：SaveList
+ * 函数参数：文件指针 fp ，线性表 L
+ * 函数功能：将 L 中的数据保存到 fp 指向的文件中
+ * 返回值：  成功保存返回 OK ，否则返回 ERROR
+ */
 status
 SaveList(FILE *fp, LkList L) {
   if (!fp) { return ERROR; }
@@ -414,6 +496,12 @@ SaveList(FILE *fp, LkList L) {
 }
 
 
+/*
+ * 函数名称：LoadList
+ * 函数参数：文件指针 fp ，线性表 L 的地址
+ * 函数功能：将 fp 指向文件中的数据，加载到线性表 L 中
+ * 返回值：  加载成功返回 OK ，加载失败返回 ERROR
+ */
 status
 LoadList(FILE *fp, LkList *L) {
   if (!fp) { return ERROR; }
@@ -445,6 +533,14 @@ LoadList(FILE *fp, LkList *L) {
 }
 
 
+/*
+ * 函数名称：SelectList
+ * 函数参数：线性表 L 的地址，多表数组 pool ，
+ *           存放 L 在 pool 中位置的 current_list （0-下标）的地址，
+ *           要切换到的线性表在 pool 中的位序 idx （1-下标）
+ * 函数功能：切换工作表到 pool 中第 idx 个线性表
+ * 返回值：  成功切换返回 OK ，否则返回 ERROR
+ */
 status
 SelectList(LkList *L, LkList pool[], int *cur, int tgt) {
   if (tgt < 1 || tgt > LIST_POOL_SIZE) {

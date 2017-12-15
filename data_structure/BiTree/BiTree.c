@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "./BiTree.h"
 #include "./Stack.h"
 
@@ -28,6 +29,7 @@ InitBiTree(BiTree *T) {
 status
 DestroyBiTree(BiTree *T) {
   if (ClearBiTree(*T) != OK) { return ERROR; }
+  free(*T);
   *T = NULL;
   return OK;
 }
@@ -36,7 +38,7 @@ DestroyBiTree(BiTree *T) {
 status
 ClearBiTree(BiTree T) {
   if (!T) { printf("二叉树还没有被创建！\n"); }
-  if (T->lchild == NULL) { printf("二叉树已经为空树！\n"); }
+  if (T->lchild == NULL) { return OK; }
   BiTree T_bak = T;
   T = T->lchild;
   Stack S = NULL; Stack_init(&S);
@@ -50,26 +52,10 @@ ClearBiTree(BiTree T) {
       free(Stack_pop(S));
     }
   }
+  Stack_destroy(&S);
   T_bak->lchild = NULL;
   return OK;
 }
-
-
-//status
-//InsertChild(BiTree T, BiNode *elem, int LR, BiTree c) {
-//  if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
-//  if (!elem) { printf("传入的节点为空！\n"); return ERROR; }
-//  if (c->rchild) { printf("要添加的子树右子树不为空！\n"); return ERROR; }
-//  if (LR == 0) {  // 插入左子树
-//    c->rchild = elem->lchild;
-//    elem->lchild = c;
-//  } else if (LR == 1) { // 插入右子树
-//    c->rchild = elem->rchild;
-//    elem->rchild = c;
-//  }
-//  return OK;
-//}
-
 
 
 status
@@ -82,14 +68,15 @@ CreateBiTree(BiTree T, const char definition[]) {
   }
   Stack S = NULL; Stack_init(&S);
   BiTree  new_node = NULL;
+  size_t elem_id = 1;   // 元素 id，用于查找元素的 key
   // 添加根节点至树林中
   if (!InitBiTree(&new_node)) { return ERROR; };
-  new_node->data.id = 1;
+  new_node->data.id = elem_id++;
   new_node->data.data = definition[0];
   T->lchild = new_node;
   // 根节点进栈
   Stack_append(S, new_node);
-  size_t curr_elem = 2; // 层次遍历位序指示
+  size_t curr_elem = 2; // definition 标示
   while (definition[curr_elem - 1]) {
     // - 输入空树
     if (definition[curr_elem - 1] == ' ') { // 输入空树
@@ -103,7 +90,7 @@ CreateBiTree(BiTree T, const char definition[]) {
     // 创建新节点
     new_node = NULL;
     if (!InitBiTree(&new_node)) { return ERROR; }
-    new_node->data.id = curr_elem;
+    new_node->data.id = elem_id++;
     new_node->data.data = definition[curr_elem - 1];
     Stack_append(S, new_node);
     // 添加到树中
@@ -123,6 +110,7 @@ CreateBiTree(BiTree T, const char definition[]) {
     curr_elem++;
   }
   Stack_destroy(&S);
+  T->data.id = elem_id - 1; // HACK: 根节点 id 存放节点总个数
   return OK;
 }
 
@@ -134,43 +122,6 @@ BiTreeEmpty(BiTree T) {
   return TRUE;
 }
 
-
-
-// status
-// PostOrderTraverse(BiTree T) {
-//   if (!T) { printf("二叉树还没有被创建！\n"); return ERROR; }
-//   if (T->lchild == NULL) { printf("二叉树为空树！\n"); return ERROR; }
-//   T = T->lchild;
-//   Stack S = NULL; Stack_init(&S);
-//   Stack_push(S, T); // 头节点进栈
-//   while (!Stack_empty(S)) { // 外层循环，一次遍历一个分支
-//     // - 中间节点
-//     while (T->lchild || T->rchild) {
-//       Stack_push(S, T); // 后续遍历，最后访问节点
-//       if (T->lchild) { T = T->lchild; continue; } // 先左
-//       if (T->rchild) { T = T->rchild; continue; } // 后右
-//     }
-//     // - 叶节点
-//     printf("%c", T->data.data);
-//     // -- 叶节点为双亲的右孩子
-//     while (T == Stack_top(S)->rchild) {
-//       printf("%c", Stack_top(S)->data.data);
-//       T = Stack_pop(S);
-//     }
-//     // -- 叶节点为双亲的左孩子
-//     if (T == Stack_top(S)->lchild) {
-//       // --- 双亲有右子树，则继续遍历右子树
-//       if (Stack_top(S)->rchild) { T = Stack_top(S)->rchild; continue; }
-//       // --- 双亲无右子树，一路回溯至分叉节点，即有右子树的节点
-//       while (T->rchild == NULL) { // NOTE: 条件同样对叶节点成立
-//         printf("%c", Stack_top(S)->data.data);
-//         T = Stack_pop(S);
-//       } // 现在 T 左子树遍历完成，右子树等待遍历，且有 T == Stack_top(S)
-//       T = T->rchild;  // 继续遍历 Stack_top(S) 的右子树
-//     }
-//   }
-//   return OK;
-// }
 
 status
 _PostOrderTraverse_RecursionBlock(BiTree T) {
@@ -190,6 +141,7 @@ PostOrderTraverse(BiTree T) {
   return OK;
 }
 
+
 status
 PreOrderTraverse(BiTree T) {
   if (!T) { printf("二叉树还没有被创建！"); return ERROR; }
@@ -204,28 +156,41 @@ PreOrderTraverse(BiTree T) {
       T = T->lchild;  // 先遍历左子树
       continue;
     }
-    if (T->lchild) {
-      T = T->lchild;
-      continue;
-    }
-    if (T->rchild) {
-      T = T->rchild;
-      continue;
-    } // if (T->lchild || T->rchild)
+    if (T->lchild) { T = T->lchild; continue; }
+    if (T->rchild) { T = T->rchild; continue; }
+    // if (T->lchild || T->rchild)
     // - 叶子节点
     T = Stack_pop(S)->rchild;  // 后遍历右子树
   }
   printf("\n");
+  Stack_destroy(&S);
   return OK;
 }
 
 
 status
-_InOrderTraverse_RecursionBlock(BiTree T) {
-  if (!T) { return ERROR; }
-  _InOrderTraverse_RecursionBlock(T->lchild);
-  printf("%c", T->data.data);
-  _InOrderTraverse_RecursionBlock(T->rchild);
+_ReassignIDsInLevelOrder(BiTree T) {
+  if (!T) { printf("二叉树没有被创建！\n"); return ERROR; }
+  if (T->lchild == NULL) { return OK; }
+  T = T->lchild;
+  Stack S = NULL; Stack_init(&S);
+  size_t curr_id = 1;
+  // 根节点进栈
+  Stack_append(S, T);
+  while (!Stack_empty(S)) {
+    // 执行访问操作
+    Stack_top(S)->data.id = curr_id++;
+    // 左右子树进栈
+    if (Stack_top(S)->lchild) {
+      Stack_append(S, Stack_top(S)->lchild);
+    }
+    if (Stack_top(S)->rchild) {
+      Stack_append(S, Stack_top(S)->rchild);
+    }
+    Stack_pop(S); // 当前节点出队列
+  }
+  Stack_destroy(&S);
+  T->data.id = curr_id - 1;
   return OK;
 }
 
@@ -244,6 +209,8 @@ InOrderTraverse(BiTree T) {
       T = T->rchild;
     }
   }
+  printf("\n");
+  Stack_destroy(&S);
   return OK;
 }
 
@@ -266,8 +233,7 @@ LevelOrderTraverse(BiTree T) {
     if (Stack_top(S)->rchild) {
       Stack_append(S, Stack_top(S)->rchild);
     }
-    // 当前节点出队列
-    Stack_pop(S);
+    Stack_pop(S); // 当前节点出队列
   }
   Stack_destroy(&S);
   printf("\n");
@@ -275,19 +241,248 @@ LevelOrderTraverse(BiTree T) {
 }
 
 
-// int
-// _BiTreeDepth_RecursionBlock(BiTree cur) {
-//   if (!cur) { return 0; }
-//   int ldepth = _BiTreeDepth_RecursionBlock(cur->lchild);
-//   int rdepth = _BiTreeDepth_RecursionBlock(cur->rchild);
-//   if (ldepth < rdepth) { return rdepth; }
-//   return ldepth;
-// }
-//
-// int
-// BiTreeDepth(BiTree T) {
-//   if (!T) { printf("二叉树还没有被创建！"); return ERROR; }
-//   if (T->lchild == NULL) { printf("二叉树为空树！\n"); return ERROR; }
-//   T = T->lchild;
-//   return _BiTreeDepth_RecursionBlock(T);
-// }
+int
+_BiTreeDepth_RecursionBlock(BiTree cur) {
+  if (!cur) { return 0; }
+  int ldepth = _BiTreeDepth_RecursionBlock(cur->lchild);
+  int rdepth = _BiTreeDepth_RecursionBlock(cur->rchild);
+  if (ldepth < rdepth) { return rdepth + 1; } // 返回时 +1，即加上当前节点这一层
+  return ldepth + 1;
+}
+
+
+int
+BiTreeDepth(BiTree T) {
+  if (!T) { printf("二叉树还没有被创建！"); return ERROR; }
+  if (T->lchild == NULL) { printf("二叉树为空树！\n"); return ERROR; }
+  T = T->lchild;
+  return _BiTreeDepth_RecursionBlock(T) - 1;  // 返回时 -1，因为根节点也算了一次
+}
+
+
+BiTree
+Root(BiTree T) {
+  if (!T) { printf("二叉树还没有被创建！\n"); }
+  return T->lchild; // 包含返回 NULL 的情况
+}
+
+
+BiTree
+_GetNodeAddressByKey(BiTree T, size_t key) {
+  if (!T) { printf("二叉树还没有被创建！\n"); return NULL; }
+  if (T->lchild == NULL) { printf("二叉树为空树\n"); return NULL; }
+  T = T->lchild;
+  if (T->data.id == key) { return T; } // 根即是要查找的节点
+  Stack S = NULL; Stack_init(&S);
+  Stack_push(S, T);
+  while (!Stack_empty(S)) {
+    if (T->lchild && T->rchild) { // - 分岔节点
+      Stack_push(S, T);
+      T = T->lchild;  // 先遍历左子树
+      if (T->data.id == key) { break; }
+      else { continue; }
+    }
+    if (T->lchild) {
+      T = T->lchild;
+      if (T->data.id == key) { break; }
+      else { continue; }
+    }
+    if (T->rchild) {
+      T = T->rchild;
+      if (T->data.id == key) { break; }
+      else { continue; }
+    }
+    // if (T->lchild || T->rchild)
+    // - 叶子节点
+    T = Stack_pop(S)->rchild;  // 后遍历右子树
+    if (T && T->data.id == key) { break; }
+  }
+  Stack_destroy(&S);
+  if (T && T->data.id == key) { return T; }
+  else { return NULL; }
+}
+
+
+char
+Value(BiTree T, size_t key) {
+  BiTree node = _GetNodeAddressByKey(T, key);
+  if (node == NULL) { printf("未找到节点！\n"); return ERROR; }
+  return node->data.data;
+}
+
+
+status
+Assign(BiTree T, size_t key, char val) {
+  BiTree node = _GetNodeAddressByKey(T, key);
+  if (node == NULL) { printf("未找到节点！\n"); return ERROR; }
+  node->data.data = val;
+  return OK;
+}
+
+
+BiTree
+Parent(BiTree T, size_t key) {
+  if (!T) { printf("二叉树还没有被创建！\n"); return NULL; }
+  if (T->lchild == NULL) { printf("二叉树为空树\n"); return NULL; }
+  if (T->lchild->data.id == key) { printf("根节点无双亲节点！\n"); return NULL; }
+  T = T->lchild;
+  Stack S = NULL; Stack_init(&S);
+  Stack_push(S, T);
+  while (!Stack_empty(S)) {
+    if ((T->lchild && T->lchild->data.id == key)
+        || (T->rchild && T->rchild->data.id == key)) { return T; }
+    if (T->lchild && T->rchild) { // - 分岔节点
+      Stack_push(S, T);
+      T = T->lchild;  // 先遍历左子树
+      continue;
+    }
+    if (T->lchild && T->lchild->data.id != key) { T = T->lchild; continue; }
+    if (T->rchild && T->rchild->data.id != key) { T = T->rchild; continue; }
+    if ((T->lchild && T->lchild->data.id == key)
+        || (T->rchild && T->rchild->data.id == key)) { return T; }
+    // - 叶子节点
+    T = Stack_pop(S)->rchild;  // 后遍历右子树
+  }
+  Stack_destroy(&S);
+  return NULL;
+}
+
+
+BiTree
+LeftChild(BiTree T, size_t key) {
+  BiTree node = _GetNodeAddressByKey(T, key);
+  if (node == NULL) { printf("未找到节点！\n"); return NULL; }
+  return node->lchild;
+}
+
+
+BiTree
+RightChild(BiTree T, size_t key) {
+  BiTree node = _GetNodeAddressByKey(T, key);
+  if (node == NULL) { printf("未找到节点！\n"); return NULL; }
+  return node->rchild;
+}
+
+
+BiTree
+LeftSibling(BiTree T, size_t key) {
+  BiTree parent = Parent(T, key);
+  if (parent == NULL) { printf("未找到节点！\n"); return NULL; }
+  // 可能的情况：
+  // - parent->lchild == NULL：那么双亲的右孩子为 key，返回 NULL
+  // - parent->lchlid->data.id == key：已经是左孩子了，返回 NULL
+  if (parent->lchild && parent->lchild->data.id == key) { return NULL; }
+  return parent->lchild;
+}
+
+
+BiTree
+RightSibling(BiTree T, size_t key) {
+  BiTree parent = Parent(T, key);
+  if (parent == NULL) { printf("未找到节点！\n"); return NULL; }
+  // 可能的情况：
+  // - parent->rchild == NULL：那么双亲的左孩子为 key，返回 NULL
+  // - parent->rchlid->data.id == key：已经是右孩子了，返回 NULL
+  if (parent->rchild && parent->rchild->data.id == key) { return NULL; }
+  return parent->rchild;
+}
+
+
+status
+InsertChild(BiTree T, size_t key, int LR, const char definition[]) {
+  if (!T) { printf("二叉树还没有被创建！\n"); return ERROR; }
+  if (!T->lchild) { printf("二叉树为空树！\n"); return ERROR; }
+  BiTree c = NULL; InitBiTree(&c);
+  if (CreateBiTree(c, definition) != OK) { DestroyBiTree(&c); return ERROR; }
+  if (c->lchild->rchild) {
+    printf("要插入的子树右子树不为空！\n");
+    DestroyBiTree(&c); return ERROR;
+  }
+  BiTree elem = _GetNodeAddressByKey(T, key);
+  if (LR == 0) {  // 插入左子树
+    c->lchild->rchild = elem->lchild;
+    elem->lchild = c->lchild;
+  } else if (LR == 1) { // 插入右子树
+    c->lchild->rchild = elem->rchild;
+    elem->rchild = c->lchild;
+  }
+  // 释放子树的头节点
+  free(c);
+  _ReassignIDsInLevelOrder(T);
+  return OK;
+}
+
+
+status
+DeleteChild(BiTree T, size_t key, int LR) {
+  if (!T) { printf("二叉树还没有被创建！\n"); return ERROR; }
+  if (!T->lchild) { printf("二叉树为空树！\n"); return ERROR; }
+  BiTree elem = _GetNodeAddressByKey(T, key);
+  if (LR == 0) {
+    if (!elem->lchild) { printf("该节点没有左孩子！\n"); return ERROR; }
+    DestroyBiTree(&(elem->lchild));
+  }
+  else if (LR == 1) {
+    if (!elem->rchild) { printf("该节点没有右孩子！\n"); return ERROR; }
+    DestroyBiTree(&(elem->rchild));
+  }
+  else { return ERROR; }
+  return OK;
+}
+
+
+status
+SaveBiTree(FILE *fp, BiTree T) {
+  if (!fp) { return ERROR; }
+  if (!T) { printf("二叉树还没有被创建！\n"); return ERROR; }
+  fprintf(fp, "%lu\n", T->data.id); // 第一行存放总节点数
+  T = T->lchild;
+  Stack S = NULL; Stack_init(&S);
+  // 根节点进栈
+  Stack_append(S, T);
+  while (!Stack_empty(S)) {
+    // 执行访问操作
+    fprintf(fp, "%c", Stack_top(S)->data.data);
+    // 左右子树进栈
+    if (Stack_top(S)->lchild) {
+      Stack_append(S, Stack_top(S)->lchild);
+    }
+    if (Stack_top(S)->rchild) {
+      Stack_append(S, Stack_top(S)->rchild);
+    }
+    Stack_pop(S); // 当前节点出队列
+  }
+  Stack_destroy(&S);
+  return OK;
+}
+
+
+status
+LoadBiTree(FILE *fp, BiTree *T) {
+  if (!fp) { return ERROR; }
+  if (*T) { printf("已有挂载的二叉树！\n"); return ERROR; }
+  if (InitBiTree(T) != OK) { return ERROR; }
+  fscanf(fp, "%lu", &(*T)->data.id);
+  char buffer[100] = { '\0' };
+  fgetc(fp);  // 吞掉空行
+  size_t curr_elem = 0;
+  while ((buffer[curr_elem++] = (char)fgetc(fp)) != EOF) { ; }
+  buffer[curr_elem - 1] = '\0';
+  // 检查文件完整性
+  if ((*T)->data.id != strlen(buffer)) {
+    printf("文件损坏！\n");
+    DestroyBiTree(T); return ERROR;
+  }
+  if (CreateBiTree(*T, buffer) == OK) { return OK; }
+  else { printf("从文件读取失败！\n"); return ERROR; }
+}
+
+
+status
+SelectBiTree(BiTree pool[], BiTree *T, size_t *curr_tree, size_t tgt) {
+  if (tgt > 20) { printf("输入的位序不合法！\n"); return ERROR; }
+  pool[*curr_tree] = *T;
+  *curr_tree = tgt - 1;
+  *T = pool[*curr_tree];
+  return OK;
+}

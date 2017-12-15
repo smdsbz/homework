@@ -26,22 +26,28 @@ status BiTreeEmpty(BiTree T);
 int BiTreeDepth(BiTree T);
 /** 对节点操作 **/
 BiTree Root(BiTree T);
-ElemType Value(BiTree T, BiNode elem);
-status Assign(BiTree T, BiNode *elem, ElemType val);
-BiTree Parent(BiTree T, BiNode elem);
+char Value(BiTree T, size_t key);
+status Assign(BiTree T, size_t key, char val);
+BiTree Parent(BiTree T, size_t key);
 /** 浏览树操作 **/
-BiTree LeftChild(BiTree T, BiNode elem);
-BiTree RightChild(BiTree T, BiNode elem);
-BiTree LeftSibling(BiTree T, BiNode elem);
-BiTree RightSibling(BiTree T, BiNode elem);
+BiTree LeftChild(BiTree T, size_t key);
+BiTree RightChild(BiTree T, size_t key);
+BiTree LeftSibling(BiTree T, size_t key);
+BiTree RightSibling(BiTree T, size_t key);
 /** 更改树操作 **/
-status InsertChild(BiTree T, BiNode *elem, int LR, BiTree c);
-status DeleteChild(BiTree T, BiNode *elem, int LR);
+status InsertChild(BiTree T, size_t key, int LR, const char definition[]);
+status DeleteChild(BiTree T, size_t key, int LR);
 /** 遍历树操作 **/
 status PreOrderTraverse(BiTree T);
 status InOrderTraverse(BiTree T);
 status PostOrderTraverse(BiTree T);
 status LevelOrderTraverse(BiTree T);
+/** 文件操作 **/
+status SaveBiTree(FILE *fp, BiTree T);
+status LoadBiTree(FILE *fp, BiTree *T);
+/** 多表操作 **/
+status SelectBiTree(BiTree pool[], BiTree *working_tree,
+                    size_t *curr_tree, size_t tgt);
 
 // #define DEBUG
 
