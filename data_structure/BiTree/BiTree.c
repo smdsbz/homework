@@ -55,7 +55,7 @@ DestroyBiTree(BiTree *T) {
  */
 status
 ClearBiTree(BiTree T) {
-  if (!T) { printf("二叉树还没有被创建！\n"); }
+  if (!T) { printf("二叉树还没有被创建！\n"); return ERROR; }
   if (T->lchild == NULL) { return OK; }
   BiTree T_bak = T;
   T = T->lchild;
@@ -189,7 +189,7 @@ PostOrderTraverse(BiTree T) {
  */
 status
 PreOrderTraverse(BiTree T) {
-  if (!T) { printf("二叉树还没有被创建！"); return ERROR; }
+  if (!T) { printf("二叉树还没有被创建！\n"); return ERROR; }
   if (T->lchild == NULL) { printf("二叉树为空树！\n"); return ERROR; }
   T = T->lchild;
   Stack S = NULL; Stack_init(&S);
@@ -331,7 +331,7 @@ BiTreeDepth(BiTree T) {
   if (!T) { printf("二叉树还没有被创建！"); return ERROR; }
   if (T->lchild == NULL) { printf("二叉树为空树！\n"); return ERROR; }
   T = T->lchild;
-  return _BiTreeDepth_RecursionBlock(T) - 1;  // 返回时 -1，因为根节点也算了一次
+  return _BiTreeDepth_RecursionBlock(T);
 }
 
 
@@ -593,16 +593,27 @@ SaveBiTree(FILE *fp, BiTree T) {
     // 左右子树进栈
     if (Stack_top(S)->lchild) {
       Stack_append(S, Stack_top(S)->lchild);
-    }
+    } else { fprintf(fp, " "); }
     if (Stack_top(S)->rchild) {
       Stack_append(S, Stack_top(S)->rchild);
-    }
+    } else { fprintf(fp, " "); }
     Stack_pop(S); // 当前节点出队列
   }
   Stack_destroy(&S);
   return OK;
 }
 
+
+size_t
+_strlen_exbs(const char *str) {
+  if (!str) { return 0; }
+  size_t ret = 0, bscount = 0;
+  while (str[ret + bscount] != '\0') {
+    if (str[ret + bscount] == ' ') { bscount++; }
+    else { ret++; }
+  }
+  return ret;
+}
 
 /*
  * 函数名称：LoadBiTree
@@ -622,7 +633,7 @@ LoadBiTree(FILE *fp, BiTree *T) {
   while ((buffer[curr_elem++] = (char)fgetc(fp)) != EOF) { ; }
   buffer[curr_elem - 1] = '\0';
   // 检查文件完整性
-  if ((*T)->data.id != strlen(buffer)) {
+  if ((*T)->data.id != _strlen_exbs(buffer)) {
     printf("文件损坏！\n");
     DestroyBiTree(T); return ERROR;
   }
