@@ -95,13 +95,19 @@ CreateBiTree(BiTree T, const char definition[]) {
   new_node->data.id = elem_id++;
   new_node->data.data = definition[0];
   T->lchild = new_node;
-  // 根节点进栈
+  // 根节点进队列
   Stack_append(S, new_node);
-  size_t curr_elem = 2; // definition 标示
+  size_t curr_elem = 2; // definition 读取位置标示
   while (definition[curr_elem - 1]) {
     // - 输入空树
     if (definition[curr_elem - 1] == ' ') { // 输入空树
       if (curr_elem % 2) {  // 右子树为空，出队列
+        if (Stack_empty(S)) { // - 输入错误
+          printf("数据输入格式有误！\n");
+          Stack_destroy(&S);
+          DestroyBiTree(&T);
+          return ERROR;
+        }
         Stack_pop(S);
       }
       curr_elem++;
@@ -115,20 +121,13 @@ CreateBiTree(BiTree T, const char definition[]) {
     new_node->data.data = definition[curr_elem - 1];
     Stack_append(S, new_node);
     // 添加到树中
-    if (Stack_empty(S)) { // - 输入错误
-      printf("数据输入格式有误！\n");
-      Stack_destroy(&S);
-      DestroyBiTree(&T);
-      return ERROR;
-    }
     if (curr_elem % 2 == 0) {  // - 添加到左子树
       Stack_top(S)->lchild = new_node;
     } else {  // - 添加到右子树
       Stack_top(S)->rchild = new_node;
       Stack_pop(S);
     }
-    // 新节点进队列
-    curr_elem++;
+    curr_elem++;  // 准备读取下一个元素
   }
   Stack_destroy(&S);
   T->data.id = elem_id - 1; // HACK: 根节点 id 存放节点总个数
@@ -344,7 +343,7 @@ BiTreeDepth(BiTree T) {
 BiTree
 Root(BiTree T) {
   if (!T) { printf("二叉树还没有被创建！\n"); return NULL; }
-  return T->lchild; // 包含返回 NULL 的情况
+  return T->lchild; // NOTE: 包含返回 NULL 的情况
 }
 
 
@@ -362,31 +361,26 @@ _GetNodeAddressByKey(BiTree T, size_t key) {
   if (T->data.id == key) { return T; } // 根即是要查找的节点
   Stack S = NULL; Stack_init(&S);
   Stack_push(S, T);
-  while (!Stack_empty(S)) {
-    if (T->lchild && T->rchild) { // - 分岔节点
-      Stack_push(S, T);
-      T = T->lchild;  // 先遍历左子树
+  while (1) {
+    if (T->lchild || T->rchild) { // - 中间节点（或根节点）
+      if (T->lchild && T->rchild) { // -- 分岔节点
+        Stack_push(S, T); // 栈中只保存分岔节点
+        T = T->lchild;  // 先序遍历先遍历左子树
+      }
+      else if (T->lchild) { T = T->lchild; }
+      else if (T->rchild) { T = T->rchild; }
+      // 检查当前节点是否就是要查找的节点
       if (T->data.id == key) { break; }
       else { continue; }
-    }
-    if (T->lchild) {
-      T = T->lchild;
-      if (T->data.id == key) { break; }
-      else { continue; }
-    }
-    if (T->rchild) {
-      T = T->rchild;
-      if (T->data.id == key) { break; }
-      else { continue; }
-    }
-    // if (T->lchild || T->rchild)
+    } // if (T->lchild || T->rchild)
     // - 叶子节点
-    T = Stack_pop(S)->rchild;  // 后遍历右子树
-    if (T && T->data.id == key) { break; }
+    if (!Stack_empty(S)) {
+      T = Stack_pop(S)->rchild; // 先序遍历后遍历右子树
+      if (T->data.id == key) { break; }
+    } else { T = NULL; break; } // 遍历结束
   }
   Stack_destroy(&S);
-  if (T && T->data.id == key) { return T; }
-  else { return NULL; }
+  return T;
 }
 
 
@@ -399,7 +393,7 @@ _GetNodeAddressByKey(BiTree T, size_t key) {
 char
 Value(BiTree T, size_t key) {
   BiTree node = _GetNodeAddressByKey(T, key);
-  if (node == NULL) { printf("未找到节点！\n"); return ERROR; }
+  if (node == NULL) { printf("未找到节点！\n"); return '\0'; }
   return node->data.data;
 }
 

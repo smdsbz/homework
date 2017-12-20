@@ -46,8 +46,8 @@ int main(int argc, const char *argv[]) {
     printf("      19. PostOrderTraverse\n");
     printf("      20. LevelOrderTraverse\n");
     printf("--------------------- EXTRA -----------------------\n");
-    printf("      21. SaveList       22. LoadList\n");
-    printf("      23. SelectList\n");
+    printf("      21. SaveTree       22. LoadTree\n");
+    printf("      23. SelectTree\n");
     printf("\n");
     printf("       0. Exit\n");
     printf("---------------------------------------------------\n");
