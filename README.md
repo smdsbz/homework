@@ -5,16 +5,10 @@ Here stores my homework
 
 ## NOTICE
 
-You **CAN'T** copy-paste the `.docx` reports, due to policies.  
+You **CAN'T** copy-paste the `.docx` reports, due to related policies.  
 
 
 ## LICENSE
-
-_(Just noticed someone stared this repo...)_
-
-This repo obeys the MIT License, for every line of codes under this repo is **NEITHER authoritative/canonical NOR safe**.  
-Just copy what ever you want, but be sure to **THINK TWICE** before you apply it into your own project!
-
 
 ```
 MIT License
