@@ -24,6 +24,7 @@ InitBiTree(BiTree *T) {
     printf("内存空间不足！\n");
     return ERROR;
   }
+  // 初始化数据域
   (*T)->data.id = 0;
   (*T)->data.data = '\0';
   (*T)->lchild = NULL;
@@ -40,9 +41,9 @@ InitBiTree(BiTree *T) {
  */
 status
 DestroyBiTree(BiTree *T) {
-  if (ClearBiTree(*T) != OK) { return ERROR; }
-  free(*T);
-  *T = NULL;
+  if (ClearBiTree(*T) != OK) { return ERROR; }  // 清空子树
+  free(*T); // 删除头节点
+  *T = NULL;  // 拒绝悬挂指针
   return OK;
 }
 
@@ -61,14 +62,14 @@ ClearBiTree(BiTree T) {
   T = T->lchild;
   Stack S = NULL; Stack_init(&S);
   while (!Stack_empty(S) || T) {
-    if (T) { Stack_push(S, T); T = T->lchild; }
-    else {
-      T = Stack_top(S)->rchild;
+    if (T) { Stack_push(S, T); T = T->lchild; } // - 非叶子节点
+    else {  // - 叶子节点
+      T = Stack_top(S)->rchild; // 继续清空祖先节点的右子树
       free(Stack_pop(S));
     }
   }
   Stack_destroy(&S);
-  T_bak->lchild = NULL;
+  T_bak->lchild = NULL; // 在表头节点注册清空操作
   return OK;
 }
 
@@ -89,8 +90,8 @@ CreateBiTree(BiTree T, const char definition[]) {
   }
   Stack S = NULL; Stack_init(&S);
   BiTree  new_node = NULL;
-  size_t elem_id = 1;   // 元素 id，用于查找元素的 key
-  // 添加根节点至树林中
+  size_t elem_id = 1;   // 元素 id，用于查找元素的 key，实质为元素的层次遍历序列
+  // 添加根节点至树中
   if (!InitBiTree(&new_node)) { return ERROR; };
   new_node->data.id = elem_id++;
   new_node->data.data = definition[0];
@@ -100,8 +101,8 @@ CreateBiTree(BiTree T, const char definition[]) {
   size_t curr_elem = 2; // definition 读取位置标示
   while (definition[curr_elem - 1]) {
     // - 输入空树
-    if (definition[curr_elem - 1] == ' ') { // 输入空树
-      if (curr_elem % 2) {  // 右子树为空，出队列
+    if (definition[curr_elem - 1] == ' ') {
+      if (curr_elem % 2) {  // -- 右子树为空，出队列
         if (Stack_empty(S)) { // - 输入错误
           printf("数据输入格式有误！\n");
           Stack_destroy(&S);
@@ -127,7 +128,7 @@ CreateBiTree(BiTree T, const char definition[]) {
       Stack_top(S)->rchild = new_node;
       Stack_pop(S);
     }
-    curr_elem++;  // 准备读取下一个元素
+    curr_elem++;
   }
   Stack_destroy(&S);
   T->data.id = elem_id - 1; // HACK: 根节点 id 存放节点总个数
@@ -173,8 +174,8 @@ _PostOrderTraverse_RecursionBlock(BiTree T) {
  */
 status
 PostOrderTraverse(BiTree T) {
-  if (!T) { return ERROR; }
-  if (!T->lchild) { return ERROR; }
+  if (!T) { printf("二叉树还没有给创建！\n"); return ERROR; }
+  if (!T->lchild) { printf("二叉树为空树！\n"); return ERROR; }
   _PostOrderTraverse_RecursionBlock(T->lchild);
   return OK;
 }
@@ -195,16 +196,19 @@ PreOrderTraverse(BiTree T) {
   Stack_push(S, T);
   while (!Stack_empty(S)) {
     printf("%c", T->data.data);
-    if (T->lchild && T->rchild) { // - 分岔节点
+    // - 中间节点
+    // -- 分叉节点
+    if (T->lchild && T->rchild) {
       Stack_push(S, T);
       T = T->lchild;  // 先遍历左子树
       continue;
     }
+    // -- 其他形态的中间节点
     if (T->lchild) { T = T->lchild; continue; }
     if (T->rchild) { T = T->rchild; continue; }
-    // if (T->lchild || T->rchild)
+    // end of case (T->lchild || T->rchild)
     // - 叶子节点
-    T = Stack_pop(S)->rchild;  // 后遍历右子树
+    T = Stack_pop(S)->rchild;  // 继续遍历右子树
   }
   printf("\n");
   Stack_destroy(&S);
@@ -231,12 +235,8 @@ _ReassignIDsInLevelOrder(BiTree T) {
     // 执行访问操作
     Stack_top(S)->data.id = curr_id++;
     // 左右子树进栈
-    if (Stack_top(S)->lchild) {
-      Stack_append(S, Stack_top(S)->lchild);
-    }
-    if (Stack_top(S)->rchild) {
-      Stack_append(S, Stack_top(S)->rchild);
-    }
+    if (Stack_top(S)->lchild) { Stack_append(S, Stack_top(S)->lchild); }
+    if (Stack_top(S)->rchild) { Stack_append(S, Stack_top(S)->rchild); }
     Stack_pop(S); // 当前节点出队列
   }
   Stack_destroy(&S);
@@ -289,12 +289,8 @@ LevelOrderTraverse(BiTree T) {
     // 执行访问操作
     printf("%c", Stack_top(S)->data.data);
     // 左右子树进栈
-    if (Stack_top(S)->lchild) {
-      Stack_append(S, Stack_top(S)->lchild);
-    }
-    if (Stack_top(S)->rchild) {
-      Stack_append(S, Stack_top(S)->rchild);
-    }
+    if (Stack_top(S)->lchild) { Stack_append(S, Stack_top(S)->lchild); }
+    if (Stack_top(S)->rchild) { Stack_append(S, Stack_top(S)->rchild); }
     Stack_pop(S); // 当前节点出队列
   }
   Stack_destroy(&S);
@@ -360,27 +356,27 @@ _GetNodeAddressByKey(BiTree T, size_t key) {
   T = T->lchild;
   if (T->data.id == key) { return T; } // 根即是要查找的节点
   Stack S = NULL; Stack_init(&S);
-  Stack_push(S, T);
-  while (1) {
-    if (T->lchild || T->rchild) { // - 中间节点（或根节点）
-      if (T->lchild && T->rchild) { // -- 分岔节点
-        Stack_push(S, T); // 栈中只保存分岔节点
-        T = T->lchild;  // 先序遍历先遍历左子树
+  while (!Stack_empty(S) || T) {
+    // - 中间节点（或根节点）
+    if (T->lchild || T->rchild) {
+      if (T->lchild && T->rchild) {
+        Stack_push(S, T); // NOTE: 栈中只保存分岔节点
+        T = T->lchild;    // 先遍历左子树
       }
       else if (T->lchild) { T = T->lchild; }
       else if (T->rchild) { T = T->rchild; }
       // 检查当前节点是否就是要查找的节点
       if (T->data.id == key) { break; }
       else { continue; }
-    } // if (T->lchild || T->rchild)
+    } // - 中间节点
     // - 叶子节点
     if (!Stack_empty(S)) {
-      T = Stack_pop(S)->rchild; // 先序遍历后遍历右子树
-      if (T->data.id == key) { break; }
+      T = Stack_pop(S)->rchild; // 继续遍历右子树
+      if (T && T->data.id == key) { break; }
     } else { T = NULL; break; } // 遍历结束
   }
   Stack_destroy(&S);
-  return T;
+  return T; // 包含返回 NULL 的情况
 }
 
 
@@ -562,6 +558,7 @@ DeleteChild(BiTree T, size_t key, int LR) {
     DestroyBiTree(&(elem->rchild));
   }
   else { return ERROR; }
+  _ReassignIDsInLevelOrder(T);
   return OK;
 }
 
@@ -576,19 +573,21 @@ status
 SaveBiTree(FILE *fp, BiTree T) {
   if (!fp) { return ERROR; }
   if (!T) { printf("二叉树还没有被创建！\n"); return ERROR; }
+  if (!T->lchild) { printf("二叉树为空树！\n"); return ERROR; }
   fprintf(fp, "%lu\n", T->data.id); // 第一行存放总节点数
   T = T->lchild;
+  fprintf(fp, "%c", T->data.data);
   Stack S = NULL; Stack_init(&S);
-  // 根节点进栈
+  // 根节点进队列
   Stack_append(S, T);
   while (!Stack_empty(S)) {
-    // 执行访问操作
-    fprintf(fp, "%c", Stack_top(S)->data.data);
-    // 左右子树进栈
+    // 左右子树进栈队列
     if (Stack_top(S)->lchild) {
+      fprintf(fp, "%c", Stack_top(S)->lchild->data.data);
       Stack_append(S, Stack_top(S)->lchild);
     } else { fprintf(fp, " "); }
     if (Stack_top(S)->rchild) {
+      fprintf(fp, "%c", Stack_top(S)->rchild->data.data);
       Stack_append(S, Stack_top(S)->rchild);
     } else { fprintf(fp, " "); }
     Stack_pop(S); // 当前节点出队列
@@ -598,6 +597,12 @@ SaveBiTree(FILE *fp, BiTree T) {
 }
 
 
+/*
+ * 函数名称：_strlen_exbs
+ * 函数参数：字符串 str
+ * 函数功能：统计 str 中的非空格字符数目
+ * 返回值：  字符串中非空格字符数目
+ */
 size_t
 _strlen_exbs(const char *str) {
   if (!str) { return 0; }
@@ -608,6 +613,7 @@ _strlen_exbs(const char *str) {
   }
   return ret;
 }
+
 
 /*
  * 函数名称：LoadBiTree
@@ -622,6 +628,9 @@ LoadBiTree(FILE *fp, BiTree *T) {
   if (InitBiTree(T) != OK) { return ERROR; }
   fscanf(fp, "%lu", &(*T)->data.id);
   char buffer[100] = { '\0' };
+#if defined(_WIN32) || defined(_WIN64)
+  fgetc(fp);  // 吞掉 Win 下的 '\r'
+#endif
   fgetc(fp);  // 吞掉空行
   size_t curr_elem = 0;
   while ((buffer[curr_elem++] = (char)fgetc(fp)) != EOF) { ; }
@@ -631,6 +640,7 @@ LoadBiTree(FILE *fp, BiTree *T) {
     printf("文件损坏！\n");
     DestroyBiTree(T); return ERROR;
   }
+  // 创建二叉树
   if (CreateBiTree(*T, buffer) == OK) { return OK; }
   else { printf("从文件读取失败！\n"); return ERROR; }
 }

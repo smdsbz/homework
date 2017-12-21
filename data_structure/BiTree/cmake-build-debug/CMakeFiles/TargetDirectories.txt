@@ -1,3 +1,0 @@
-/Users/smdsbz/tmp/homework/data_structure/BiTree/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/smdsbz/tmp/homework/data_structure/BiTree/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/smdsbz/tmp/homework/data_structure/BiTree/cmake-build-debug/CMakeFiles/BiTree.dir

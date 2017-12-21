@@ -13,12 +13,17 @@
 /* Main */
 int main(int argc, const char *argv[]) {
 
+#if defined(_WIN32) || defined(_WIN64)
+  system("chcp 65001"); // NOTE: 如果你不修改文件编码，直接在 Win 下编译，
+                        //       这个可能有用
+#endif
+
   BiTree tree_pool[20] = { NULL };
   size_t curr_tree = 0;
   BiTree T = NULL;
 
 
-  int op = 1;
+  int op = -1;
   while (op) {
 #if defined(__unix__) || defined(__linux__) || defined(__MACH__)
     system("clear");
@@ -269,6 +274,10 @@ int main(int argc, const char *argv[]) {
     } // switch
 
   } // while
+#if defined(_WIN32) || defined(_WIN64)
+  system("chcp 936"); // 恢复 Win 终端的字符编码
+#endif
+  return 0;
 } // main
 
 

@@ -2,7 +2,8 @@
  *  辅助栈数据结构定义
  *
  *  重用 LkList 代码
- *    链表中第一个元素为栈顶，最后一个元素为栈底
+ *  链表中第一个元素为栈顶，最后一个元素为栈底
+ *    ---- by U201610136 朱晓光 校际交流1601班
  */
 
 #include <stdio.h>
@@ -13,6 +14,12 @@
 #include "Stack.h"
 
 
+/*
+ * 函数名称：Stack_init
+ * 函数参数：栈挂载点指针 L
+ * 函数功能：初始化辅助栈，并令 L 指向该栈
+ * 返回值：  成功初始化返回 OK，否则返回 ERROR
+ */
 status
 Stack_init(Stack *L) {
   if (*L) { printf("已有挂载的线性表！\n"); return ERROR; }
@@ -24,6 +31,12 @@ Stack_init(Stack *L) {
 }
 
 
+/*
+ * 函数名称：Stack_destroy
+ * 函数参数：栈指针 L
+ * 函数功能：销毁栈 L，释放其空间
+ * 返回值：  成功销毁返回 OK，否则返回 ERROR
+ */
 status
 Stack_destroy(Stack *L) {
   Stack cur = *L;
@@ -38,13 +51,12 @@ Stack_destroy(Stack *L) {
 }
 
 
-// status
-// Stack_clear(Stack *L) {
-//   if (Stack_destroy(L) == OK && Stack_init(L) == OK) { return OK; }
-//   else { return ERROR; }
-// }
-
-
+/*
+ * 函数名称：Stack_empty
+ * 函数参数：栈 L
+ * 函数功能：判断 L 是否为空栈
+ * 返回值：  若 L 是空栈则返回 TRUE，否则返回 FALSE
+ */
 status
 Stack_empty(Stack L) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
@@ -53,6 +65,12 @@ Stack_empty(Stack L) {
 }
 
 
+/*
+ * 函数名称：Stack_length
+ * 函数参数：栈 L
+ * 函数功能：返回 L 的长度
+ * 返回值：  返回栈 L 中元素的个数
+ */
 size_t
 Stack_length(Stack L) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
@@ -62,6 +80,12 @@ Stack_length(Stack L) {
 }
 
 
+/*
+ * 函数名称：Stack_getElem
+ * 函数参数：栈 L，目标位序 idx，结果带回指针 rst
+ * 函数功能：将 L 中第 idx 个元素赋值给 rst 带回
+ * 返回值：  成功获取元素返回 OK，否则返回 ERROR
+ */
 status
 Stack_getElem(Stack L, int idx, BiTree *rst) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
@@ -75,14 +99,26 @@ Stack_getElem(Stack L, int idx, BiTree *rst) {
 }
 
 
+/*
+ * 函数名称：Stack_top
+ * 函数参数：栈 L
+ * 函数功能：返回 L 的栈顶元素
+ * 返回值：  栈 L 的栈顶元素
+ */
 BiTree
 Stack_top(Stack L) {
-  BiTree ret;
+  BiTree ret = NULL;
   Stack_getElem(L, 1, &ret);
   return ret;
 }
 
 
+/*
+ * 函数名称：Stack_insert
+ * 函数参数：栈 L，插入位置 key，插入值 val
+ * 函数功能：在 L 的第 key 个位置之前插入值为 val 的节点
+ * 返回值：  成功插入返回 OK，否则返回 ERROR
+ */
 status
 Stack_insert(Stack L, int key, BiTree val) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
@@ -106,6 +142,12 @@ Stack_insert(Stack L, int key, BiTree val) {
 }
 
 
+/*
+ * 函数名称：Stack_push
+ * 函数参数：栈 L，压栈元素 val
+ * 函数功能：将值为 val 的节点压入栈 L 中
+ * 返回值：  成功压栈返回 OK，否则返回 ERROR
+ */
 status
 Stack_push(Stack L, BiTree val) {
   if (!L) { return ERROR; }
@@ -113,6 +155,12 @@ Stack_push(Stack L, BiTree val) {
 }
 
 
+/*
+ * 函数名称：Stack_append
+ * 函数参数：栈 L，入队元素 val
+ * 函数功能：将栈 L 看作队列，把 val 添加到队尾
+ * 返回值：  成功入队返回 OK，否则返回 ERROR
+ */
 status
 Stack_append(Stack L, BiTree val) {
   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
@@ -125,6 +173,12 @@ Stack_append(Stack L, BiTree val) {
 }
 
 
+/*
+ * 函数名称：Stack_delete
+ * 函数参数：栈 L，删除元素位序 key，结果带回指针 val
+ * 函数功能：将栈 L 中第 key 个元素删除，并把其值赋给 val 带回
+ * 返回值：  成功删除返回 OK，否则返回 ERROR
+ */
 status
 Stack_delete(Stack L, int key, BiTree *val) {
   // 合法性检查
@@ -133,8 +187,6 @@ Stack_delete(Stack L, int key, BiTree *val) {
     printf("输入地址格式不合法！\n");
     return ERROR;
   }
-  // 更改表长
-  // L->data -= 1;
   // 删除元素
   // - 寻找前驱
   Stack prev = L;
@@ -150,136 +202,15 @@ Stack_delete(Stack L, int key, BiTree *val) {
 }
 
 
+/*
+ * 函数名称：Stack_pop
+ * 函数参数：栈 L
+ * 函数功能：删除并返回栈 L 的栈顶元素
+ * 返回值：  成功出栈返回出栈元素，否则返回 NULL
+ */
 BiTree
 Stack_pop(Stack L) {
-  BiTree ret;
+  BiTree ret = NULL;
   Stack_delete(L, 1, &ret);
-  return ret;
+  return ret; // 包含返回 NULL 的情况
 }
-
-
-// int
-// Stack_locateElem(Stack L, BiTree val) {
-//   // 合法性检测
-//   if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
-//   // 遍历表寻找符合条件的元素
-//   int idx = 1;
-//   for (L = L->next; L && val != L->data; L = L->next) { idx++; }
-//   if (!L) { return 0; } // 遍历一遍没有找到符合条件的元素
-//   return idx;
-// }
-
-
-//status
-//Stack_priorElem(Stack L, BiTree cur_e, BiTree *pre_e) {
-//  // 合法性检查
-//  if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
-//  // 遍历链表找 cur_e 的前驱
-//  Stack prev = L;
-//  for (; prev->next && prev->next->data != cur_e;
-//         prev = prev->next) { /* pass */ ; }
-//  // 对找到的前驱进行判断
-//  if (prev->next == NULL) { // - 没有找到
-//    printf("未找到元素值为输入值的元素！\n");
-//    return ERROR;
-//  }
-//  if (prev == L) {  // - cur_e 为表中第一个元素，
-//                    //   即 prev 指向表头节点
-//    printf("元素值为输入值的元素是表中的第一个元素！\n");
-//    return ERROR;
-//  }
-//  // - 正常情况
-//  *pre_e = prev->data;
-//  return OK;
-//}
-
-
-//status
-//Stack_nextElem(Stack L, BiTree cur_e, BiTree *nxt_e) {
-//  // 合法性检查
-//  if (!L) { printf("线性表还没有被创建！\n"); return ERROR; }
-//  // 遍历链表找 cur_e
-//  Stack curr = L->next;  // NOTE: curr 指向当前元素
-//  for (; curr && curr->data != cur_e;
-//         curr = curr->next) { /* pass */ ; }
-//  // 对找到的元素进行判断
-//  if (curr == NULL) { // - 没有找到
-//    printf("未找到元素值为输入值的元素！\n");
-//    return ERROR;
-//  }
-//  if (curr->next == NULL) { // - cur_e 为表中最后一个元素
-//    printf("元素值为输入值的元素是表中的最后一个元素！\n");
-//    return ERROR;
-//  }
-//  // - 正常情况
-//  *nxt_e = curr->next->data;
-//  return OK;
-//}
-
-
-//status
-//Stack_traverse(Stack L) {
-//  if (!L) { printf("线性表还没有被创建！\n");  return ERROR; }
-//  // 遍历并输出
-//  printf(" ------------- All Elements -------------\n    ");
-//  for (L = L->next; L; L = L->next) {
-//    printf("%c ", L->data->data);
-//  }
-//  printf("\n ----------------- End ------------------\n");
-//  return OK;
-//}
-
-
-// status
-// Stack_saveToFile(FILE *fp, Stack L) {
-//   if (!fp) { return ERROR; }
-//   if (!L) { printf("线性表还没有创建！\n"); return ERROR; }
-//   for (; L; L = L->next) {
-//     fwrite(&L->data, sizeof(BiTree), 1, fp);
-//   }
-//   return OK;
-// }
-
-
-// status
-// Stack_loadFromFile(FILE *fp, Stack *L) {
-//   if (!fp) { return ERROR; }
-//   if ((*L)) { printf("已有挂载的线性表！\n"); return ERROR; }
-//   // 计算文件中表长
-//   fseek(fp, 0, SEEK_END);
-//   size_t filesize = ftell(fp) / sizeof(BiTree) - 1; // 表头节点不计表长
-//   rewind(fp);
-//   //  读取线性表，一次读一个
-//   // - 读取表头，挂载线性表
-//   *L = (Stack)malloc(sizeof(SNode));
-//   if (!(*L)) { return ERROR; }
-//   fread(&( (*L)->data ), sizeof(BiTree), 1, fp);
-//   // - 检查表头数据是否为表长
-//   if ((*L)->data != filesize) {
-//     printf("文件损坏！\n");
-//     free(*L); *L = NULL;
-//     return ERROR;
-//   }
-//   // - 读取剩余部分
-//   Stack new_node = *L;
-//   for (; filesize; filesize--) {
-//     new_node->next = (Stack)malloc(sizeof(SNode));
-//     if (!new_node->next) { return ERROR; }
-//     new_node = new_node->next; new_node->next = NULL;
-//     fread(&new_node->data, sizeof(BiTree), 1, fp);
-//   }
-//   return OK;
-// }
-
-
-// status
-// Stack_selectStack(Stack *L, Stack pool[], int *cur, int tgt) {
-//   if (tgt < 1 || tgt > Stack_POOL_SIZE) {
-//     printf("输入地址格式不合法！\n");
-//     return ERROR;
-//   }
-//   pool[*cur] = *L;
-//   *L = pool[tgt - 1];
-//   *cur = tgt - 1;
-//   return OK;
-// }
