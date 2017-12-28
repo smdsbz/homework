@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
-    <generated>
-      <config projectName="BiTree" targetName="BiTree" />
-    </generated>
+    <generated />
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
     <configurations>
@@ -12,15 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9647ac10-1cb5-4cee-97d1-7e40078d7d84" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/a.out" afterPath="$PROJECT_DIR$/a.out" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/BiTree" afterPath="$PROJECT_DIR$/cmake-build-debug/BiTree" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BiTree.dir/BiTree.c.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BiTree.dir/BiTree.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BiTree.dir/Stack.c.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BiTree.dir/Stack.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BiTree.dir/main.c.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BiTree.dir/main.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../charts.pptx" afterPath="$PROJECT_DIR$/../charts.pptx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BiTree.c" afterPath="$PROJECT_DIR$/BiTree.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BiTree.dir/C.includecache" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BiTree.dir/C.includecache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../计科校交-U201610136-朱晓光.docx" afterPath="$PROJECT_DIR$/../计科校交-U201610136-朱晓光.docx" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,22 +29,12 @@
       <file leaf-file-name="BiTree.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/BiTree.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="593" column="44" lean-forward="false" selection-start-line="593" selection-start-column="44" selection-end-line="593" selection-end-column="44" />
+            <state relative-caret-position="294">
+              <caret line="590" column="44" lean-forward="false" selection-start-line="590" selection-start-column="44" selection-end-line="590" selection-end-column="44" />
               <folding>
                 <element signature="e#66#84#0" expanded="true" />
-                <marker date="1513771109064" expanded="true" signature="15268:15269" ph="{...}" />
+                <marker date="1513855701555" expanded="true" signature="15593:15594" ph="{...}" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="45" lean-forward="false" selection-start-line="6" selection-start-column="45" selection-end-line="6" selection-end-column="45" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -62,8 +42,8 @@
       <file leaf-file-name="Stack.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Stack.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="885">
-              <caret line="59" column="45" lean-forward="false" selection-start-line="59" selection-start-column="45" selection-end-line="59" selection-end-column="45" />
+            <state relative-caret-position="1155">
+              <caret line="77" column="45" lean-forward="false" selection-start-line="77" selection-start-column="45" selection-end-line="77" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -105,8 +85,8 @@
   </component>
   <component name="OCFindUsagesOptions" text="false" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
-    <option name="width" value="1920" />
-    <option name="height" value="1080" />
+    <option name="width" value="1280" />
+    <option name="height" value="720" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -347,7 +327,7 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="BiTree" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="BiTree" TARGET_NAME="BiTree" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="BiTree" RUN_TARGET_NAME="BiTree">
+    <configuration default="false" name="BiTree" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="BiTree" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Project" RUN_TARGET_NAME="BiTree">
       <envs>
         <env name="TERM" value="xterm-256color" />
         <env name="" value="" />
@@ -384,6 +364,7 @@
       <workItem from="1513241160107" duration="415000" />
       <workItem from="1513260584611" duration="510000" />
       <workItem from="1513770682878" duration="414000" />
+      <workItem from="1514451985220" duration="15000" />
     </task>
     <task id="LOCAL-00001" summary="blahblahblah">
       <created>1513147354490</created>
@@ -410,7 +391,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21785000" />
+    <option name="totallyTimeSpent" value="21800000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -422,12 +403,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
+    <frame x="0" y="0" width="1280" height="720" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30830672" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31340873" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276923" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3138614" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19846153" sideWeight="0.49676898" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="CMake" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19846153" sideWeight="0.49676898" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5048465" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276923" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.43239227" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="263" y="79" width="752" height="513" />
@@ -437,6 +418,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34851485" sideWeight="0.4951535" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23482428" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3138614" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -487,7 +469,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.c</url>
-          <line>273</line>
+          <line>282</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -497,7 +479,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/BiTree.c</url>
-          <line>576</line>
+          <line>573</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
@@ -509,13 +491,21 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Stack.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="59" column="45" lean-forward="false" selection-start-line="59" selection-start-column="45" selection-end-line="59" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/BiTree.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#66#84#0" expanded="true" />
-            <marker date="1513771109064" expanded="true" signature="15268:15269" ph="{...}" />
+            <marker date="1513855701555" expanded="true" signature="15593:15594" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -542,7 +532,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#66#84#0" expanded="true" />
-            <marker date="1513771109064" expanded="true" signature="15268:15269" ph="{...}" />
+            <marker date="1513855701555" expanded="true" signature="15593:15594" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -569,7 +559,7 @@
           <caret line="245" column="0" lean-forward="false" selection-start-line="245" selection-start-column="0" selection-end-line="245" selection-end-column="0" />
           <folding>
             <element signature="e#66#84#0" expanded="true" />
-            <marker date="1513771109064" expanded="true" signature="15268:15269" ph="{...}" />
+            <marker date="1513855701555" expanded="true" signature="15593:15594" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -605,7 +595,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
           <caret line="43" column="25" lean-forward="false" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -646,7 +635,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
           <caret line="43" column="25" lean-forward="false" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -687,7 +675,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
           <caret line="43" column="25" lean-forward="false" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -728,7 +715,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
           <caret line="43" column="25" lean-forward="false" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -769,7 +755,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="17" lean-forward="false" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -886,7 +871,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
           <caret line="43" column="25" lean-forward="false" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -911,19 +895,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Stack.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="885">
-          <caret line="59" column="45" lean-forward="false" selection-start-line="59" selection-start-column="45" selection-end-line="59" selection-end-column="45" />
+        <state relative-caret-position="1155">
+          <caret line="77" column="45" lean-forward="false" selection-start-line="77" selection-start-column="45" selection-end-line="77" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/BiTree.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="593" column="44" lean-forward="false" selection-start-line="593" selection-start-column="44" selection-end-line="593" selection-end-column="44" />
+        <state relative-caret-position="294">
+          <caret line="590" column="44" lean-forward="false" selection-start-line="590" selection-start-column="44" selection-end-line="590" selection-end-column="44" />
           <folding>
             <element signature="e#66#84#0" expanded="true" />
-            <marker date="1513771109064" expanded="true" signature="15268:15269" ph="{...}" />
+            <marker date="1513855701555" expanded="true" signature="15593:15594" ph="{...}" />
           </folding>
         </state>
       </provider>

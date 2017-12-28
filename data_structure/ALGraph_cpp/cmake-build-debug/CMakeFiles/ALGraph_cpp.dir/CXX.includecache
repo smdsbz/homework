@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/smdsbz/tmp/homework/data_structure/ALGraph_cpp/ALGraph.cpp
+iostream
+-
+configs.hpp
+/Users/smdsbz/tmp/homework/data_structure/ALGraph_cpp/configs.hpp
+ALGraph.hpp
+/Users/smdsbz/tmp/homework/data_structure/ALGraph_cpp/ALGraph.hpp
+
+/Users/smdsbz/tmp/homework/data_structure/ALGraph_cpp/ALGraph.hpp
+
+/Users/smdsbz/tmp/homework/data_structure/ALGraph_cpp/configs.hpp
+
+/Users/smdsbz/tmp/homework/data_structure/ALGraph_cpp/main.cpp
+iostream
+-
+configs.hpp
+/Users/smdsbz/tmp/homework/data_structure/ALGraph_cpp/configs.hpp
+ALGraph.hpp
+/Users/smdsbz/tmp/homework/data_structure/ALGraph_cpp/ALGraph.hpp
+
