@@ -8,8 +8,8 @@
 typedef int InfoType;
 
 typedef struct _VertexType {
-  size_t  id;
-  int     data;
+  int   id;
+  int   data;
 } VertexType;
 
 typedef struct _ArcNode {
@@ -33,7 +33,7 @@ typedef struct _VNode {
 
 
 class ALGraph {
-private:
+public: // a very Pythonic `public` sign :P
 
   AdjList vertices;
   int     vexnum;
@@ -41,6 +41,7 @@ private:
 
 public:
 
+  ALGraph();
   ALGraph(size_t V, InfoType **VR);
   ~ALGraph(void);
   size_t LocateVex(int key);
@@ -52,13 +53,26 @@ public:
   status DeleteVex(int key);
   status InsertArc(int v, int w, InfoType weight=1);
   status DeleteArc(int v, int w);
-  // status DFSTraverse(status visit(VNode &));
-  // status BFSTraverse(status visit(void));
+  status DFSTraverse(status (*visit)(VNode *));
+  status BFSTraverse(status (*visit)(VNode *));
+
+  status CommitToFile(const char *filename, bool overwrite=true);
+
+private:
+
+  inline int _Index2Key(size_t safe_idx);
+  inline size_t _Address2Index(VNode *node);
+  status _DFSTraverse_RecursionBlock(size_t idx,
+        bool *seen, status (*visit)(VNode *));
 };
 
 
 status CreateGraph(ALGraph *&G, size_t V, InfoType **VR);
 status DestroyGraph(ALGraph *&G);
+status RestoreFromFile(ALGraph *&G, const char *filename);
+status SelectGraph(ALGraph *pool[], size_t &working, size_t target);
 
+
+status VisitNode(VNode *node);
 
 #endif

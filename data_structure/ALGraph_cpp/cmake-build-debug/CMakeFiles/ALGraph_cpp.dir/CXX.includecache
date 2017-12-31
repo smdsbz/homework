@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -8,6 +8,8 @@
 
 /Users/smdsbz/tmp/homework/data_structure/ALGraph_cpp/ALGraph.cpp
 iostream
+-
+vector
 -
 configs.hpp
 /Users/smdsbz/tmp/homework/data_structure/ALGraph_cpp/configs.hpp

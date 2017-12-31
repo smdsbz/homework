@@ -45,22 +45,23 @@ int main(void) {
     cout << "    请选择你的操作[0~16] ";
     cin >> op;
 
+
     // 检查是否有图的实例可以操作
     if (graph_pool[working] == nullptr
         && (op != 0 && op != 1 && op != 15 && op != 16)) {
       cout << "图还没有被创建！" << endl;
-      getchar(); getchar();
-      continue;
+      getchar(); getchar(); continue;
     }
+
 
     // 执行操作
     switch (op) {
       case 1: {
         cout << "请输入图顶点的个数：";
-        size_t V; cin >> V;
+        int V; cin >> V;
         if (V <= 0 || V > MAX_VERTEX_NUM) {
           cout << "无法初始化图！" << endl;
-          break;
+          getchar(); getchar(); break;
         }
         cout << "请输入图的邻接矩阵：" << endl;
         InfoType **VR = new InfoType *[V];
@@ -70,10 +71,10 @@ int main(void) {
             cin >> VR[row][col];
           }
         } // VR input
-        if (CreateGraph(graph_pool[working], V, VR) == OK) {
-          cout << "成功初始化图！" << endl;
+        if (CreateGraph(graph_pool[working], (size_t) V, VR) == OK) {
+          cout << "操作成功！" << endl;
         } else {
-          cout << "初始化图失败！" << endl;
+          cout << "操作失败！" << endl;
         }
         // delete VR
         for (size_t row = 0; row < V; row++) {
@@ -84,9 +85,9 @@ int main(void) {
       }
       case 2: {
         if (DestroyGraph(graph_pool[working]) == OK) {
-          cout << "成功销毁图！" << endl;
+          cout << "操作成功！" << endl;
         } else {
-          cout << "销毁图失败！" << endl;
+          cout << "操作失败！" << endl;
         }
         getchar(); getchar(); break;
       }
@@ -132,7 +133,7 @@ int main(void) {
           cout << "操作失败！" << endl;
         } else {
           cout << "所求顶点为 "
-               << "<VNode @ " << vex << "ID = " << vex->data.id
+               << "<VNode @ " << vex << " ID = " << vex->data.id
                << " data = " << vex->data.data << ">" << endl;
         }
         getchar(); getchar(); break;
@@ -147,16 +148,113 @@ int main(void) {
           cout << "操作失败！" << endl;
         } else {
           cout << "所求顶点为 "
-               << "<VNode @ " << vex << "ID = " << vex->data.id
+               << "<VNode @ " << vex << " ID = " << vex->data.id
                << " data = " << vex->data.data << ">" << endl;
+        }
+        getchar(); getchar(); break;
+      }
+      case 8: {
+        cout << "请输入新顶点的数据值：";
+        int data; cin >> data;
+        if (graph_pool[working]->InsertVex(data) == OK) {
+          cout << "操作成功！" << endl;
+        } else {
+          cout << "操作失败！" << endl;
+        }
+        getchar(); getchar(); break;
+      }
+      case 9: {
+        cout << "请输入要删除顶点的ID：";
+        int key; cin >> key;
+        if (graph_pool[working]->DeleteVex(key) == OK) {
+          cout << "操作成功！" << endl;
+        } else {
+          cout << "操作失败！" << endl;
+        }
+        getchar(); getchar(); break;
+      }
+      case 10: {
+        cout << "请输入要插入弧的弧尾顶点的ID：";
+        int v; cin >> v;
+        cout << "请输入要插入弧的弧头顶点的ID：";
+        int w; cin >> w;
+        // InfoType weight = 1;
+        if (graph_pool[working]->InsertArc(v, w) == OK) {
+          cout << "操作成功！" << endl;
+        } else {
+          cout << "操作失败！" << endl;
+        }
+        getchar(); getchar(); break;
+      }
+      case 11: {
+        cout << "请输入要删除弧的弧尾顶点的ID：";
+        int v; cin >> v;
+        cout << "请输入要删除弧的弧头顶点的ID：";
+        int w; cin >> w;
+        // InfoType weight = 1;
+        if (graph_pool[working]->DeleteArc(v, w) == OK) {
+          cout << "操作成功！" << endl;
+        } else {
+          cout << "操作失败！" << endl;
+        }
+        getchar(); getchar(); break;
+      }
+      case 12: {
+        if (graph_pool[working]->DFSTraverse(VisitNode) == OK) {
+          cout << "操作成功！" << endl;
+        } else {
+          cout << "操作失败！" << endl;
+        }
+        getchar(); getchar(); break;
+      }
+      case 13: {
+        if (graph_pool[working]->BFSTraverse(VisitNode) == OK) {
+          cout << "操作成功！" << endl;
+        } else {
+          cout << "操作失败！" << endl;
+        }
+        getchar(); getchar(); break;
+      }
+      case 14: {
+        cout << "请输入文件名：";
+        string filename; cin >> filename;
+        if (graph_pool[working]->CommitToFile(filename.c_str()) == OK) {
+          cout << "操作成功！" << endl;
+        } else {
+          cout << "操作失败！" << endl;
+        }
+        getchar(); getchar(); break;
+      }
+      case 15: {
+        cout << "请输入文件名：";
+        string filename; cin >> filename;
+        if (RestoreFromFile(graph_pool[working], filename.c_str()) == OK) {
+          cout << "操作成功！" << endl;
+        } else {
+          cout << "操作失败！" << endl;
+        }
+        getchar(); getchar(); break;
+      }
+      case 16: {
+        cout << "请输入要切换到的图的序号 [1-20]：";
+        int target; cin >> target;
+        if (target <= 0 || target > MAX_VERTEX_NUM) {
+          cout << "操作失败！" << endl;
+        } else {
+          if (SelectGraph(graph_pool, working, (size_t) target) == OK) {
+            cout << "操作成功！" << endl;
+          } else {
+            cout << "操作失败！" << endl;
+          }
         }
         getchar(); getchar(); break;
       }
       case 0: { break; }
       default: { break; }
     }
-  }
+  } // while
 
+  // 退出前清理空间
   for (working = 0; working < GRAPH_POOL_SIZE; working++) {
     DestroyGraph(graph_pool[working]);
   }
