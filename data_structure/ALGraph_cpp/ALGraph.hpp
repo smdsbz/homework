@@ -5,39 +5,33 @@
 #define GRAPH_POOL_SIZE 10
 
 
+// 弧数据原子类型
 typedef int InfoType;
 
+// 顶点数据原子类型
 typedef struct _VertexType {
-  int   id;
-  int   data;
+  int   id;   // 顶点唯一标示域
+  int   data; // 顶点值
 } VertexType;
 
 typedef struct _ArcNode {
-  int               adjvex;
-  InfoType          info;
-  struct _ArcNode  *nextarc;
+  int               adjvex;   // 弧头标示域的值
+  InfoType          info;     // 弧信息
+  struct _ArcNode  *nextarc;  // 指向下一条弧
 } ArcNode;
 
 typedef struct _VNode {
-  VertexType  data;
-  ArcNode    *firstarc;
+  VertexType  data;     // 顶点信息
+  ArcNode    *firstarc; // 与该顶点关联的第一条弧
 } VNode, AdjList[MAX_VERTEX_NUM];
-
-
-// typedef struct _ALGraph {
-//   AdjList   vertices;
-//   int       vexnum, arcnum;
-//   // int       kind;
-// } ALGraph;
-
 
 
 class ALGraph {
 public: // a very Pythonic `public` sign :P
 
-  AdjList vertices;
-  int     vexnum;
-  int     arcnum;
+  AdjList vertices; // 顶点集
+  int     vexnum;   // 顶点总数
+  int     arcnum;   // 弧总数
 
 public:
 
@@ -49,7 +43,7 @@ public:
   status PutVex(int key, int value);
   VNode *FirstAdjVex(int key);
   VNode *NextAdjVex(int v, int w);
-  status InsertVex(int data=0);
+  status InsertVex(int data=233);
   status DeleteVex(int key);
   status InsertArc(int v, int w, InfoType weight=1);
   status DeleteArc(int v, int w);

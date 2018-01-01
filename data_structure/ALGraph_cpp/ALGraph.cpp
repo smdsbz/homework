@@ -27,7 +27,7 @@ ALGraph::ALGraph(size_t V, InfoType **VR) {
   vexnum = (int) V; // 根据教材 P163 定义，vexnum 为 int 型
   for (size_t curr = 0; curr < vexnum; curr++) {
     vertices[curr].data.id = (int) curr;  // NOTE: ID 从 0 开始编号
-                                          //       溢出绕回无影响
+                                          //       不考虑溢出问题
     vertices[curr].data.data = 233;
     vertices[curr].firstarc = nullptr;
   }
@@ -35,7 +35,7 @@ ALGraph::ALGraph(size_t V, InfoType **VR) {
   for (size_t row = 0; row < vexnum; row++) {
     for (size_t col = 0; col < vexnum; col++) {
       if (VR[row][col] != 0) {  // row 与 col 之间有边
-        InsertArc(row, col);
+        InsertArc(row, col);  // HACK: 此时位序值就是对应顶点的 key 值
       }
     }
   }
@@ -220,7 +220,7 @@ ALGraph::NextAdjVex(int v, int w) {
   // 遍历查找弧 <v, w>
   ArcNode *arc = vertices[v_vex].firstarc;
   while (arc != nullptr) {
-    if (LocateVex(arc->adjvex) - 1 == w_vex) { break; }
+    if (arc->adjvex == _Index2Key(w_vex)) { break; }
     else { arc = arc->nextarc; }
   }
   if (arc == nullptr) { // 未找到满足条件 <v, w> 的弧
@@ -250,7 +250,7 @@ ALGraph::InsertVex(int data) {
   // HACK: 借用数据库中 AUTOINCREMENT 概念
   //       由于顶点集中最后一个元素一定是最晚添加进来的，故 VNode.data.id 一定唯一
   if (vexnum == 0) {  // - 图中顶点被全部删除后，第一个被添加进来的顶点
-    vertices[vexnum].data.id = 0;
+    vertices[0].data.id = 0;
   } else {
     vertices[vexnum].data.id = vertices[vexnum - 1].data.id + 1;
   }
@@ -280,7 +280,7 @@ ALGraph::DeleteVex(int key) {
     if (other == vex) { continue; } // 之后再处理 vex ，先跳过
     ArcNode *arc = vertices[other].firstarc;
     // - firstarc 弧头为 vex
-    while (arc && LocateVex(arc->adjvex) - 1 == vex) {
+    while (arc && arc->adjvex == _Index2Key(vex)) {
       vertices[other].firstarc = arc->nextarc;
       delete arc;
       arcnum--;
@@ -288,7 +288,7 @@ ALGraph::DeleteVex(int key) {
     }
     // - 链表中间某条弧的弧头为 vex || 链表尾的弧头为 vex
     for (; arc && arc->nextarc != nullptr; arc = arc->nextarc) {
-      if (LocateVex(arc->nextarc->adjvex) - 1 == vex) {
+      if (arc->nextarc->adjvex == _Index2Key(vex)) {
         ArcNode *arc_to_free = arc->nextarc;
         arc->nextarc = arc_to_free->nextarc;
         delete arc_to_free;
@@ -329,39 +329,20 @@ status
 ALGraph::InsertArc(int v, int w, InfoType weight) {
   size_t v_vex = LocateVex(v);
   size_t w_vex = LocateVex(w);
-  if (v_vex == 0 || w_vex == 0) {
+  if (v_vex == 0 || w_vex == 0 || v_vex == w_vex) {
     // std::cout << "输入数据格式不合法！" << std::endl;
     return ERROR;
   }
   v_vex--; w_vex--;
   // 创建新弧空间
   ArcNode *new_arc = new ArcNode;
-  new_arc->adjvex = w;  // NOTE: 考虑到后面可能涉及到顶点的删除，
-                        //       这里 **必须** 存储顶点的标示域
+  new_arc->adjvex = _Index2Key(w_vex);  // NOTE: 考虑到后面可能涉及到顶点的删除，
+                                        //       这里 **必须** 存储顶点的标示域
   new_arc->info = weight;
-  new_arc->nextarc = nullptr;
-  // 获取弧链表尾地址
-  // NOTE: 新弧在邻接表中位置并不重要
-  ArcNode *tail = vertices[v_vex].firstarc;
-  if (tail != nullptr) {  // - 不是该顶点的第一个弧
-    // -- 检查弧是否已经存在
-    if (LocateVex(tail->adjvex) - 1 == w_vex) {
-      // std::cout << "弧 <v, w> 已经存在！" << std::endl;
-      delete new_arc;
-      return ERROR;
-    }
-    for (; tail->nextarc != nullptr; tail = tail->nextarc) {
-      // -- 检查弧是否已经存在
-      if (LocateVex(tail->nextarc->adjvex) - 1 == w_vex) {
-        // std::cout << "弧 <v, w> 已经存在！" << std::endl;
-        delete new_arc;
-        return ERROR;
-      }
-    }
-    tail->nextarc = new_arc;
-  } else {  // - 是该顶点的第一个弧
-    vertices[v_vex].firstarc = new_arc;
-  }
+  // HACK: 新弧在邻接表中位置并不重要
+  //       出于复杂度考虑，插入到链表第一个位置
+  new_arc->nextarc = vertices[v_vex].firstarc;
+  vertices[v_vex].firstarc = new_arc;
   arcnum++;
   return OK;
 } // InsertArc
@@ -385,15 +366,15 @@ ALGraph::DeleteArc(int v, int w) {
   // 遍历搜索 <v, w>
   ArcNode *arc = vertices[v_vex].firstarc;
   // - 要删除的是 v 的第一个弧
-  if (LocateVex(arc->adjvex) - 1 == w_vex) { // NOTE: 不考虑多重图情况
+  if (arc->adjvex == _Index2Key(w_vex)) { // NOTE: 不考虑多重图情况
     vertices[v_vex].firstarc = arc->nextarc;
     delete arc;
+    arcnum--;
     return OK;
   }
   // - 要删除的不是 v 的第一个弧
-  for (; arc->nextarc
-            && LocateVex(arc->nextarc->adjvex) - 1 == w_vex;
-         arc = arc->nextarc) ;
+  for (; arc->nextarc && arc->nextarc->adjvex != _Index2Key(w_vex);
+        arc = arc->nextarc) ;
   if (arc->nextarc == nullptr) {
     // std::cout << "未找到满足条件的弧！" << std::endl;
     return ERROR;
@@ -474,6 +455,7 @@ ALGraph::DFSTraverse(status (*visit)(VNode *)) {
       } // visit
     } // if enter recursion
   } // outer for
+  delete [] seen;
   return OK;
 }
 
@@ -490,28 +472,28 @@ ALGraph::BFSTraverse(status (*visit)(VNode *)) {
   for (size_t vex = 0; vex < vexnum; vex++) { seen[vex] = false; }
   std::vector<size_t> outskirt; // 用于存储最外层顶点的队列
   for (size_t index = 0; index < vexnum; index++) {
-    if (!seen[index]) {
-      seen[index] = true;
-      if (visit(&vertices[index]) != OK) { return ERROR; }
-      outskirt.insert(outskirt.begin(), index); // 当前顶点入队列
-      while (!outskirt.empty()) {
-        // 出队列，准备以此为中心进行扩展
-        size_t center = outskirt.back();
-        outskirt.pop_back();
-        VNode *outer = FirstAdjVex(_Index2Key(center)); // center 外层中某个元素
-        while (outer != nullptr) {
-          if (!seen[_Address2Index(outer)]) {
-            // 访问其周边的顶点，并使其入队列，成为新的边界
-            seen[_Address2Index(outer)] = true;
-            if (visit(outer) != OK) { return ERROR; }
-            outskirt.insert(outskirt.begin(), _Address2Index(outer));
-          }
-          outer = NextAdjVex(_Index2Key(center),
-                             _Index2Key(_Address2Index(outer)));
-        } // while center has outskirt
-      } // while same connected component
-    }
+    if (seen[index]) { continue; }  // 已经访问过了
+    seen[index] = true;
+    if (visit(&vertices[index]) != OK) { return ERROR; }
+    outskirt.insert(outskirt.begin(), index); // 当前顶点入队列
+    while (!outskirt.empty()) { // 继续直至当前连通分支遍历完毕
+      // 出队列，准备以此为中心进行扩展
+      size_t center = outskirt.back();
+      outskirt.pop_back();
+      VNode *outer = FirstAdjVex(_Index2Key(center)); // center 外层中某个元素
+      while (outer != nullptr) {
+        if (!seen[_Address2Index(outer)]) {
+          // 访问其周边的顶点，并使其入队列，成为新的边界
+          seen[_Address2Index(outer)] = true;
+          if (visit(outer) != OK) { return ERROR; }
+          outskirt.insert(outskirt.begin(), _Address2Index(outer));
+        }
+        outer = NextAdjVex(_Index2Key(center),
+        _Index2Key(_Address2Index(outer)));
+      } // while center has outskirt
+    } // while same connected component
   } // while BFS not done
+  delete [] seen;
   return OK;
 }
 
@@ -552,8 +534,8 @@ ALGraph::CommitToFile(const char*filename, bool overwrite) {
         outfile.write(buffer, sizeof(InfoType) * 1);  // 弧权重
       } // for each arc adjacent to vertex
     } // for each vertex
+    outfile.close();
   } else { return ERROR; }
-  outfile.close();
   return OK;
 }
 
@@ -591,8 +573,8 @@ RestoreFromFile(ALGraph *&G, const char *filename) {
     VertexType node;
     for (size_t vex = 0; vex < vexnum; vex++) {
       infile.read((char *) &node, sizeof(VertexType) * 1);
-      // NOTE: 重新分配 ID，分配策略与构造函数一样（从 0 开始）
-      G->InsertVex(node.data);
+      // NOTE: 同时也读入了顶点之前的 ID，需要直接写入
+      G->vertices[vex].data = node; G->vexnum++;
       filesize -= sizeof(VertexType) * 1;
     }
     // 读取弧
@@ -603,14 +585,14 @@ RestoreFromFile(ALGraph *&G, const char *filename) {
       infile.read((char *) &weight, sizeof(InfoType) * 1);
       G->InsertArc(vec[0], vec[1], weight);
     }
+    infile.close();
     // 文件完整性检查
     if ((vexnum != G->vexnum) || (arcnum != G->arcnum)) {
-      G->DFSTraverse(VisitNode);
-      delete G;
+      G->DFSTraverse(VisitNode);  // DEBUG
+      delete G; G = nullptr;
       return ERROR;
     }
   } else { return ERROR; }
-  infile.close();
   return OK;
 }
 

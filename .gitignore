@@ -2,5 +2,6 @@
 .pyc
 .DS_Store
 ~\$*?.doc?
-^Backup\ of*?.doc?
+^Backup\ of*?.doc?$
+^*?copy.doc?$
 
