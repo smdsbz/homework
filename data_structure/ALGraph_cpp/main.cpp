@@ -259,5 +259,9 @@ int main(void) {
     DestroyGraph(graph_pool[working]);
   }
 
+#if defined(_WIN32) || defined(_WIN64)
+  system("chcp 936");
+#endif
+
   return 0;
 }

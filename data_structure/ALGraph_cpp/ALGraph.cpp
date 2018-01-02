@@ -25,13 +25,17 @@ ALGraph::ALGraph(size_t V, InfoType **VR) {
   }
   // 创建顶点信息
   vexnum = (int) V; // 根据教材 P163 定义，vexnum 为 int 型
-  for (size_t curr = 0; curr < vexnum; curr++) {
-    vertices[curr].data.id = (int) curr;  // NOTE: ID 从 0 开始编号
-                                          //       不考虑溢出问题
-    vertices[curr].data.data = 233;
+  // CRUTIAL: Windows NEVER do default initializations
+  for (size_t curr = 0; curr < MAX_VERTEX_NUM; curr++) {
+    if (curr < vexnum) {
+      vertices[curr].data.id = (int) curr;  // NOTE: ID 从 0 开始编号
+                                            //       不考虑溢出问题
+      vertices[curr].data.data = 233;
+    }
     vertices[curr].firstarc = nullptr;
   }
   // 创建弧信息
+  arcnum = 0;
   for (size_t row = 0; row < vexnum; row++) {
     for (size_t col = 0; col < vexnum; col++) {
       if (VR[row][col] != 0) {  // row 与 col 之间有边
@@ -49,9 +53,12 @@ ALGraph::ALGraph(size_t V, InfoType **VR) {
  *  返回值：  无
  */
 ALGraph::ALGraph() {
-  // double-check
+  // CRUTIAL: Windows NEVER do default initializations
   vexnum = 0;
   arcnum = 0;
+  for (size_t vex = 0; vex < MAX_VERTEX_NUM; vex++) {
+    vertices[vex].firstarc = nullptr;
+  }
 }
 
 
@@ -366,7 +373,7 @@ ALGraph::DeleteArc(int v, int w) {
   // 遍历搜索 <v, w>
   ArcNode *arc = vertices[v_vex].firstarc;
   // - 要删除的是 v 的第一个弧
-  if (arc->adjvex == _Index2Key(w_vex)) { // NOTE: 不考虑多重图情况
+  if (arc->adjvex == _Index2Key(w_vex)) { // NOTE: 只删除第一条符合要求的弧
     vertices[v_vex].firstarc = arc->nextarc;
     delete arc;
     arcnum--;
